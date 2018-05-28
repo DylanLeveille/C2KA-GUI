@@ -7,7 +7,17 @@ from check_if_good import*
 
 main = Tk()
 main.title("C2KA GUI")
-main.geometry("500x500")
+
+windowSize = 500
+
+screenWidth = main.winfo_screenwidth() 
+screenHeight = main.winfo_screenheight()
+
+positionRight = screenWidth/2 - windowSize/2
+positionDown = screenHeight/2 - windowSize/2
+
+main.geometry('%dx%d+%d+%d' % (windowSize, windowSize, positionRight, 
+                               positionDown))
 
 #Note: some global variables will be used due to the button functions
 #being unable to contain parameters.
@@ -152,7 +162,7 @@ def next_page():
     circleTableLabel.grid(row = 0, column = 0)
     
     lambdaGridFrame = Frame(main) 
-    lambdaTableLabel = Label(lambdaGridFrame, text = 'λ')   
+    lambdaTableLabel = Label(lambdaGridFrame, text = 'Î»')   
     lambdaTableLabel.grid(row = 0, column = 0)   
     
     #Generate data collection for the table boxes
@@ -235,15 +245,27 @@ def next_page():
    else:
     pageNum -= 1
     invalidEntryPop = Toplevel()
+    
+    windowSize = 300
+    
+    screenWidth = invalidEntryPop.winfo_screenwidth() 
+    screenHeight = invalidEntryPop.winfo_screenheight()
+    
+    positionRight = screenWidth/2 - windowSize/2
+    positionDown = screenHeight/2 - windowSize/2
+    
+    invalidEntryPop.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+                                              positionRight, positionDown))    
     invalidEntryPop.geometry("300x300")
     invalidEntryPop.resizable(width = False, height = False) 
-    invalidEntryPop.focus_force()
+
     invalidEntryPop.wm_title("INVALID ENTRIES!")
+    invalidEntryPop.overrideredirect(1)
+    
     Label(invalidEntryPop, text = 'Invalid Entries:').pack(side = TOP)
     invalidEntriesLabel = Label(invalidEntryPop, text = str(numInvalid) + 
                                 ' entries to fix')
     invalidEntriesLabel.pack(side = TOP)
-    #invalidEntryPop.protocol("WM_DELETE_WINDOW", return_to_tables)
     
     pressToClose = Button(invalidEntryPop, text = "Return", 
                           command = return_to_tables)
