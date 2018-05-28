@@ -47,47 +47,49 @@ def return_to_tables():
 #Function to add new stimuli (page 1 exclusive)
 def new_entry(): 
  global stimList #list containing every entry box
- global scrollingArea #area for the scrolling/stimuli
+ global stimScrollingArea #area for the scrolling/stimuli
  
  #the scrolling area must be reset every time
- scrollingArea.pack_forget()
+ stimScrollingArea.pack_forget()
 
- scrollingArea = Scrolling_Area(main)
- scrollingArea.pack(expand = 1, fill=BOTH)
+ stimScrollingArea = Scrolling_Area(main)
+ stimScrollingArea.pack(expand = 1, fill=BOTH)
  
- stimTitle = Label(scrollingArea.innerframe, text='Please Enter The Stimuli')
+ stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
  stimTitle.pack(side = TOP)        
      
  for i in range(len(stimList)):
-  stimEntry = Entry(scrollingArea.innerframe)
+  stimEntry = Entry(stimScrollingArea.innerframe)
   stimEntry.insert(0, stimList[i].get())    
   stimList[i] = stimEntry
   stimEntry.pack(side = TOP)
  
- stimEntry = Entry(scrollingArea.innerframe)        
- stimEntry.pack(side = TOP)      
+ stimEntry = Entry(stimScrollingArea.innerframe)        
+ stimEntry.pack(side = TOP)     
+ #stimScrollingArea.innerframe.yview_moveto( 1 )
+ #stimEntry.configure(yscrollcommand = stimScrollingArea.set)
  
  stimList.append(stimEntry)
     
 #Function to remove stimuli (page 1 exclusive) 
 def remove_entry():
- global scrollingArea #area for the scrolling/stimuli
+ global stimScrollingArea #area for the scrolling/stimuli
  if len(stimList) > 0: #must be greater than 0 to be able to remove a stimulus
    entryToDelete = stimList[len(stimList) - 1]
    del stimList[len(stimList) - 1] 
    entryToDelete.destroy()
    
    #the scrolling area must be reset every time
-   scrollingArea.pack_forget()
+   stimScrollingArea.pack_forget()
   
-   scrollingArea = Scrolling_Area(main)
-   scrollingArea.pack(expand = 1, fill=BOTH)   
+   stimScrollingArea = Scrolling_Area(main)
+   stimScrollingArea.pack(expand = 1, fill=BOTH)   
    
-   stimTitle = Label(scrollingArea.innerframe, text='Please Enter The Stimuli')
+   stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
    stimTitle.pack(side = TOP)    
    
    for i in range(len(stimList)):   
-    stimEntry = Entry(scrollingArea.innerframe)
+    stimEntry = Entry(stimScrollingArea.innerframe)
     stimEntry.insert(0, stimList[i].get())
     stimList[i] = stimEntry
     stimEntry.pack(side = TOP)    
@@ -108,6 +110,9 @@ def next_page():
   global circleTableValues #dict to hold values from circle table
   global lambdaTableValues #dict to hold values from lambda table   
   
+  global circleScrollingArea #scrolling area for circle table
+  global lambdaScrollingArea #scrolling area for circle table
+  
   global circleGridFrame #global frame for the circle table
   global lambdaGridFrame #global frame for the circle table
   
@@ -124,11 +129,13 @@ def next_page():
   #PAGE 1 to PAGE 2
   if pageNum == 1:
     stimDict = {} #stimuli dictionary
-       
+    index = 0 #necessary for good indices in the dictionary
+    
     for i in range(len(stimList)):
      #we don't want the empty string
      if stimList[i].get() != '': 
-      stimDict[i + 1] = stimList[i].get()
+      stimDict[index + 1] = stimList[i].get()
+      index +=  1
       
      stimList[i].pack_forget() 
     
@@ -163,7 +170,7 @@ def next_page():
      
     else:
      #set new page 
-     scrollingArea.pack_forget()
+     stimScrollingArea.pack_forget()
      addStim.pack_forget()
      delButton.pack_forget()
      prevButton.pack(side = BOTTOM, fill = X)
@@ -200,12 +207,18 @@ def next_page():
    
    if generated == False:
     #Frame for the tables and corner label
-    circleGridFrame = Frame(main) 
+    circleScrollingArea = Scrolling_Area(main, width=1, height=1)
+    circleScrollingArea.pack(expand=1, fill = BOTH)   
+    
+    circleGridFrame = Frame(circleScrollingArea.innerframe) 
     circleTableLabel = Label(circleGridFrame, text = 'o')   
     circleTableLabel.grid(row = 0, column = 0)
     
-    lambdaGridFrame = Frame(main) 
-    lambdaTableLabel = Label(lambdaGridFrame, text = 'Î»')   
+    lambdaScrollingArea = Scrolling_Area(main, width=1, height=1)
+    lambdaScrollingArea.pack(expand=1, fill = BOTH)      
+    
+    lambdaGridFrame = Frame(lambdaScrollingArea.innerframe) 
+    lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8'))   
     lambdaTableLabel.grid(row = 0, column = 0)   
     
     #Generate data collection for the table boxes
@@ -251,6 +264,9 @@ def next_page():
     circleTableBoxes[0, 0] = len(bevDict), len(stimDict)
     
    else: #Table was already generated
+    circleScrollingArea.pack(expand=1, fill = BOTH)
+    lambdaScrollingArea.pack(expand=1, fill = BOTH)
+    
     circleGridFrame.pack(side=TOP, anchor = NW) 
     lambdaGridFrame.pack(side=TOP, anchor = SW)
     
@@ -322,7 +338,7 @@ def prev_page():
  
  #PAGE 2 to PAGE 1
  if pageNum == 2:
-  scrollingArea.pack(expand=1, fill=BOTH)     
+  stimScrollingArea.pack(expand=1, fill=BOTH)     
      
   for i in range(len(stimList)):   
    stimList[i].pack(side = TOP)
@@ -351,15 +367,18 @@ def prev_page():
  if pageNum == 4:
     
   #set new page 
+  circleScrollingArea.pack_forget()
+  lambdaScrollingArea.pack_forget()
   
   circleGridFrame.pack_forget()
   lambdaGridFrame.pack_forget()
+  
   TitleCBS.pack(side = TOP)
   LabelCBS.pack(side = TOP, anchor = W)
   TextCBS.pack(side = TOP, fill = X)  
  
  
- if pageNum==5:
+ if pageNum == 5:
    circleGridFrame.pack(side=TOP, anchor = NW) 
    lambdaGridFrame.pack(side=TOP, anchor = SW)  
   
@@ -375,10 +394,10 @@ generated = False
 #
 #Label exclusive to page 1
 #
-scrollingArea = Scrolling_Area(main)
-scrollingArea.pack(expand=1, fill=BOTH)
+stimScrollingArea = Scrolling_Area(main)
+stimScrollingArea.pack(expand=1, fill=BOTH)
 
-stimTitle = Label(scrollingArea.innerframe, text='Please Enter The Stimuli')
+stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
 stimTitle.pack(side = TOP)
 #
 #Defining Buttons available on each page
@@ -419,7 +438,9 @@ agentEntry = Entry(main, width = 50)
 agentBevLabel = Label(main, text = 'Enter Agent Behaviour:')
 agentBevEntry = Entry(main, width = 50)
 
-#Labels and Entries for page 3
+#
+#Labels and Entries exclusive for page 3
+#
 
 TitleCBS = Label(main, text='Concrete Behaviours')
 TextCBS = Text(main, height = 10)
