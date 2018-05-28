@@ -22,6 +22,28 @@ main.geometry('%dx%d+%d+%d' % (windowSize, windowSize, positionRight,
 #Note: some global variables will be used due to the button functions
 #being unable to contain parameters.
 
+#function to return to the stimuli entry page after the pop-up 
+def return_to_stims():
+ main.update()
+ main.deiconify()
+ noStims.destroy() 
+ 
+ #regenerate the stim boxes that were un-packed
+ for i in range(len(stimList)):   
+  stimList[i].pack(side = TOP) 
+ 
+#function to return to the behaviour entry page after the pop-up 
+def return_to_bevs():
+ main.update()
+ main.deiconify()
+ noBevs.destroy() 
+
+#function to return to the tables after the pop-up 
+def return_to_tables():
+ main.update()
+ main.deiconify()
+ invalidEntryPop.destroy()
+
 #Function to add new stimuli (page 1 exclusive)
 def new_entry(): 
  global stimList #list containing every entry box
@@ -36,22 +58,16 @@ def new_entry():
  stimTitle = Label(scrollingArea.innerframe, text='Please Enter The Stimuli')
  stimTitle.pack(side = TOP)        
      
- for i in range(len(stimList)):   
-     stimEntry = Entry(scrollingArea.innerframe)
-     stimEntry.insert(0, stimList[i].get())    
-     stimList[i] = stimEntry
-     stimEntry.pack(side = TOP)
-     
+ for i in range(len(stimList)):
+  stimEntry = Entry(scrollingArea.innerframe)
+  stimEntry.insert(0, stimList[i].get())    
+  stimList[i] = stimEntry
+  stimEntry.pack(side = TOP)
  
  stimEntry = Entry(scrollingArea.innerframe)        
  stimEntry.pack(side = TOP)      
  
  stimList.append(stimEntry)
- 
-def return_to_tables():
-    main.update()
-    main.deiconify()
-    invalidEntryPop.destroy()
     
 #Function to remove stimuli (page 1 exclusive) 
 def remove_entry():
@@ -97,7 +113,8 @@ def next_page():
   
   global generated #bool variable to check if tables were generated
   
-  global invalidEntryPop #pop-up window for invalid data entries
+  global noStims #pop-up window for no stims inputted
+  global invalidEntryPop #pop-up window for invalid table entries
   
   global LabelCBS
   
@@ -107,18 +124,44 @@ def next_page():
   #PAGE 1 to PAGE 2
   if pageNum == 1:
     stimDict = {} #stimuli dictionary
-    invalidStim = False #check for non empty stimuli ('')
-    
-    for i in range(len(stimList)):
-     if stimList[i].get() == '':
-       invalidStim = True
-       #//FIXME: DO A POPUP HERE LIKE TABLES
-       pageNum -= 1
        
-    if invalidStim == False:
-     for i in range(len(stimList)):
+    for i in range(len(stimList)):
+     #we don't want the empty string
+     if stimList[i].get() != '': 
       stimDict[i + 1] = stimList[i].get()
-      stimList[i].pack_forget()
+      
+     stimList[i].pack_forget() 
+    
+    if len(stimDict) == 0: #user must imput at least one stimulus
+     pageNum -= 1
+     #generate pop-up to prompt user to enter at least one stimulus   
+     noStims = Toplevel()
+     
+     windowSize = 300
+     
+     screenWidth = noStims.winfo_screenwidth() 
+     screenHeight = noStims.winfo_screenheight()
+     
+     positionRight = screenWidth/2 - windowSize/2
+     positionDown = screenHeight/2 - windowSize/2
+     
+     noStims.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+                                       positionRight, positionDown)) 
+     
+     noStims.resizable(width = False, height = False) 
+ 
+     noStims.wm_title("No stimuli")
+     noStims.overrideredirect(1)
+     
+     Label(noStims, text = 'Please enter at least one stimuli').pack(side = TOP)
+     
+     pressToClose = Button(noStims, text = "Return", 
+                           command = return_to_stims)
+     pressToClose.pack(side = BOTTOM)
+     
+     main.withdraw()     
+     
+    else:
      #set new page 
      scrollingArea.pack_forget()
      addStim.pack_forget()
@@ -215,7 +258,7 @@ def next_page():
     fix_grids(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
               circleGridFrame, lambdaGridFrame) 
     
-  #PAGE 4
+  #PAGE 4 to PAGE 5
   if pageNum == 4:
    #create dictionary to hold values from tables
    circleTableValues = {}
@@ -256,7 +299,6 @@ def next_page():
     
     invalidEntryPop.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
                                               positionRight, positionDown))    
-    invalidEntryPop.geometry("300x300")
     invalidEntryPop.resizable(width = False, height = False) 
 
     invalidEntryPop.wm_title("INVALID ENTRIES!")
@@ -293,7 +335,8 @@ def prev_page():
   prevButton.pack_forget()
   delButton.pack(side = BOTTOM, fill = X)
   addStim.pack(side = BOTTOM, fill = X)
-  
+ 
+ #PAGE 3 to PAGE 2 
  if pageNum == 3:
   agentLabel.pack(side = TOP, anchor = W)
   agentEntry.pack(side = TOP, anchor = W)
