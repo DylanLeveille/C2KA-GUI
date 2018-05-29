@@ -17,18 +17,14 @@ def add_columns(numRows, numColumns, circleTableBoxes, lambdaTableBoxes, stimDic
       circleTableBoxes[0, 0] = numRows, numColumns #new number of columns
       #create label box for a new column
       circleTableBoxes[0, numColumns] = Label(circleGridFrame, text = label)
-      circleTableBoxes[0, numColumns].grid(row = 0, column = numColumns)
       
-      lambdaTableBoxes[0, numColumns] = Label(lambdaGridFrame, text = label)
-      lambdaTableBoxes[0, numColumns].grid(row = 0, column = numColumns)     
+      lambdaTableBoxes[0, numColumns] = Label(lambdaGridFrame, text = label)   
       
       #create the entry boxes at the right side of each table
       for row in range(1, numRows + 1):
         circleTableBoxes[row, numColumns] = Entry(circleGridFrame)
-        circleTableBoxes[row, numColumns].grid(row = row, column = numColumns)
         
-        lambdaTableBoxes[row, numColumns] = Entry(lambdaGridFrame)
-        lambdaTableBoxes[row, numColumns].grid(row = row, column = numColumns)        
+        lambdaTableBoxes[row, numColumns] = Entry(lambdaGridFrame)       
       
   #Now that all the new columns have been added, the columns' positions must 
   #be switched to match the order defined by the user  

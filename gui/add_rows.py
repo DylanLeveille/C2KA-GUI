@@ -17,20 +17,15 @@ def add_rows(numRows, numColumns, circleTableBoxes, lambdaTableBoxes, bevDict,
       circleTableBoxes[0, 0] = numRows, numColumns #new number of columns
       #create label box for a new row
       circleTableBoxes[numRows, 0] = Label(circleGridFrame, text = label)
-      circleTableBoxes[numRows, 0].grid(row = numRows, column = 0)
       
-      lambdaTableBoxes[numRows, 0] = Label(lambdaGridFrame, text = label)
-      lambdaTableBoxes[numRows, 0].grid(row = numRows, column = 0)     
+      lambdaTableBoxes[numRows, 0] = Label(lambdaGridFrame, text = label)   
       
       #create the entry boxes at the bottom of each table
       for column in range(1, numColumns + 1):
         circleTableBoxes[numRows, column] = Entry(circleGridFrame)
-        circleTableBoxes[numRows, column].grid(row = numRows, column = column)
         
-        lambdaTableBoxes[numRows, column] = Entry(lambdaGridFrame)
-        lambdaTableBoxes[numRows, column].grid(row = numRows, column = column)        
+        lambdaTableBoxes[numRows, column] = Entry(lambdaGridFrame)      
       
-  
   #Now that all the new rows have been added, the rows' positions must 
   #be switched to match the order defined by the user  
   for row in range(1, len(bevDict) + 1): #Rows
