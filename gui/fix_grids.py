@@ -23,6 +23,37 @@ def fix_grids(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
   
   #save the tables' new size
   circleTableBoxes[0, 0] = numRows - delRows, numColumns - delColumns
+  
+  #Since numRows may have changed, we will save the new number of rows in a
+  #copy variable to itearte through when deleting the columns
+  currNumRows = numRows - delRows
+  
+  #delete the rows and columns
+  while delRows > 0:
+    for i in range(numColumns + 1):
+      #start deleting from circleTable
+      itemToDelete = circleTableBoxes[(numRows - delRows + 1, i)]
+      del circleTableBoxes[(numRows - delRows + 1, i)] 
+      itemToDelete.destroy()
+      
+      #then delete from lambdaTable
+      itemToDelete = lambdaTableBoxes[(numRows - delRows + 1, i)]
+      del lambdaTableBoxes[(numRows - delRows + 1, i)] 
+      itemToDelete.destroy()       
+    delRows -= 1
+  
+  while delColumns > 0:
+    for i in range(currNumRows + 1):
+      #start deleting from circleTable
+      itemToDelete = circleTableBoxes[(i, numColumns - delColumns + 1)]
+      del circleTableBoxes[(i, numColumns - delColumns + 1)]
+      itemToDelete.destroy()
+        
+      #then delete from lambdaTable
+      itemToDelete = lambdaTableBoxes[(i, numColumns - delColumns + 1)]
+      del lambdaTableBoxes[(i, numColumns - delColumns + 1)] 
+      itemToDelete.destroy()       
+    delColumns -= 1      
     
   #save the new table size in local variables
   numRows, numColumns = circleTableBoxes[0, 0]
