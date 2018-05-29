@@ -2,9 +2,9 @@ from tkinter import*
 from get_word_list import*
 from fix_grids import*
 from create_text import*
+from check_if_good import*
 import vertSuperscroll 
 import superscroll
-from check_if_good import*
 
 main = Tk()
 main.title("C2KA GUI")
@@ -34,10 +34,21 @@ def return_to_stims():
   stimList[i].pack(side = TOP) 
  
 #function to return to the behaviour entry page after the pop-up 
+#NOT YET FUNCTIONAL. AWAITING FULL IMPLEMENTATION OF BEHAVIOUR PAGE
 def return_to_bevs():
  main.update()
  main.deiconify()
  noBevs.destroy() 
+ 
+#button function to fill lambda table with neutral stimulus
+def fill_n(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes):
+ for i in range(1, len(bevDict) + 1): #Rows
+   for j in range(1, len(stimDict) + 1): #Columns
+     #checking if empty in lambda table
+     if lambdaTableBoxes[i, j].get() == ' ' * len(lambdaTableBoxes[i, j].get()):
+       #if empty, put neutral stimulus
+       lambdaTableBoxes[i, j].delete(0, END) 
+       lambdaTableBoxes[i, j].insert(0, 'N')
 
 #function to return to the tables after the pop-up 
 def return_to_tables():
@@ -132,7 +143,7 @@ def next_page():
     
     for i in range(len(stimList)):
      #we don't want the empty string
-     if stimList[i].get() != '': 
+     if stimList[i].get() != ' ' * len(stimList[i].get()): 
       stimDict[index + 1] = stimList[i].get()
       index +=  1
       
@@ -203,6 +214,7 @@ def next_page():
    TitleCBS.pack_forget()
    LabelCBS.pack_forget()
    TextCBS.pack_forget()
+   fillN.pack(side = BOTTOM, fill = X)
    
    if generated == False:
     #Frame for the tables and corner label
@@ -267,6 +279,7 @@ def next_page():
     fix_grids(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
               circleGridFrame, lambdaGridFrame) 
     
+    #recreating the table
     circleScrollingArea.pack_forget()
     circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
     circleScrollingArea.pack(expand=1, fill = BOTH)   
@@ -284,14 +297,14 @@ def next_page():
     lambdaGridFrame = Frame(lambdaScrollingArea.innerframe) 
     lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8'))   
     lambdaTableLabel.grid(row = 0, column = 0)           
-    
+
     #Generate labels for the behaviours
     for i in range(1, len(bevDict) + 1): #Rows
      bevLabel = Label(circleGridFrame, text = bevDict[i])
      bevLabel.grid(row = i, column = 0)
      bevLabel = Label(lambdaGridFrame, text = bevDict[i])
      bevLabel.grid(row = i, column = 0)  
-    
+
     #Generate labels for the stimuli
     for j in range(1, len(stimDict) + 1): #Columns
      stimLabel = Label(circleGridFrame, text = stimDict[j])
@@ -304,10 +317,13 @@ def next_page():
       for j in range(1, len(stimDict) + 1): #Columns
          circleTableEntry = Entry(circleGridFrame)
          lambdaTableEntry = Entry(lambdaGridFrame)
+         
          circleTableEntry.grid(row=i, column=j)
          lambdaTableEntry.grid(row=i, column=j)
+         
          circleTableEntry.insert(0, circleTableBoxes[i, j].get())
          lambdaTableEntry.insert(0, lambdaTableBoxes[i, j].get())
+           
          circleTableBoxes[i, j] = circleTableEntry
          lambdaTableBoxes[i, j] = lambdaTableEntry
          
@@ -331,7 +347,7 @@ def next_page():
     a, b = key #extract corrdinate
     if a!= 0 and b != 0: #we are not interested in labels
      lambdaTableValues[key] = lambdaTableBoxes[key].get()
-    
+ 
    #calling check_if_good() to assure all the inputs are valid
    isGood, numInvalid = check_if_good(bevDict, stimDict, circleTableBoxes, 
                                       lambdaTableBoxes, circleTableValues, 
@@ -413,6 +429,8 @@ def prev_page():
   circleGridFrame.pack_forget()
   lambdaGridFrame.pack_forget()
   
+  fillN.pack_forget()
+  
   TitleCBS.pack(side = TOP)
   LabelCBS.pack(side = TOP, anchor = W)
   TextCBS.pack(side = TOP, fill = X)  
@@ -484,5 +502,13 @@ agentBevEntry = Entry(main, width = 50)
 
 TitleCBS = Label(main, text='Concrete Behaviours')
 TextCBS = Text(main, height = 10)
+
+#
+#Labels and Entries exclusive for page 3
+#
+
+fillN = Button(main, text = 'Fill with neutral stimulus', 
+               command = lambda: fill_n(bevDict, stimDict, 
+                                        circleTableBoxes, lambdaTableBoxes))
 
 main.mainloop()
