@@ -29,7 +29,11 @@ def fix_grids(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
   
   #add new rows if behaviours were added
   add_rows(numRows, numColumns, circleTableBoxes, 
-                 lambdaTableBoxes, bevDict, circleGridFrame, lambdaGridFrame) 
+                 lambdaTableBoxes, bevDict, circleGridFrame, lambdaGridFrame)
+  
+  #if rows were added, the new size must be saved in local variables to be used
+  #when calling the add_columns() function
+  numRows, numColumns = circleTableBoxes[0, 0]      
   
   #add new columns if stimuli were added
   add_columns(numRows, numColumns, circleTableBoxes, lambdaTableBoxes, 
