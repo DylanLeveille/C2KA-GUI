@@ -1,6 +1,6 @@
 from tkinter import*
 
-def check_if_good(bevDict, stimDict,  circleTableBoxes, lambdaTableBoxes, 
+def check_if_good(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes, 
                   circleTableValues, lambdaTableValues):
   invalidEntries = 0 #a counter for invalid entries
   
@@ -23,7 +23,7 @@ def check_if_good(bevDict, stimDict,  circleTableBoxes, lambdaTableBoxes,
   found = False    
   #search for incorrect value in lambdaTableValues     
   for key in lambdaTableValues.keys():
-    if lambdaTableValues[key] not in stimDict.values():
+    if lambdaTableValues[key] not in stimDict.values() and lambdaTableValues[key] != 'N' and lambdaTableValues[key] != 'D':
       if found == False:
         secondFlag = False 
         found = True
