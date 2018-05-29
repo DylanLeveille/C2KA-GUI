@@ -2,7 +2,8 @@ from tkinter import*
 from get_word_list import*
 from fix_grids import*
 from create_text import*
-from superscroll import*
+import vertSuperscroll 
+import superscroll
 from check_if_good import*
 
 main = Tk()
@@ -52,7 +53,7 @@ def new_entry():
  #the scrolling area must be reset every time
  stimScrollingArea.pack_forget()
 
- stimScrollingArea = Scrolling_Area(main)
+ stimScrollingArea = vertSuperscroll.Scrolling_Area(main)
  stimScrollingArea.pack(expand = 1, fill=BOTH)
  
  stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
@@ -66,8 +67,6 @@ def new_entry():
  
  stimEntry = Entry(stimScrollingArea.innerframe)        
  stimEntry.pack(side = TOP)     
- #stimScrollingArea.innerframe.yview_moveto( 1 )
- #stimEntry.configure(yscrollcommand = stimScrollingArea.set)
  
  stimList.append(stimEntry)
     
@@ -82,7 +81,7 @@ def remove_entry():
    #the scrolling area must be reset every time
    stimScrollingArea.pack_forget()
   
-   stimScrollingArea = Scrolling_Area(main)
+   stimScrollingArea = vertSuperscroll.Scrolling_Area(main)
    stimScrollingArea.pack(expand = 1, fill=BOTH)   
    
    stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
@@ -207,14 +206,14 @@ def next_page():
    
    if generated == False:
     #Frame for the tables and corner label
-    circleScrollingArea = Scrolling_Area(main, width=1, height=1)
+    circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
     circleScrollingArea.pack(expand=1, fill = BOTH)   
     
     circleGridFrame = Frame(circleScrollingArea.innerframe) 
     circleTableLabel = Label(circleGridFrame, text = 'o')   
     circleTableLabel.grid(row = 0, column = 0)
     
-    lambdaScrollingArea = Scrolling_Area(main, width=1, height=1)
+    lambdaScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
     lambdaScrollingArea.pack(expand=1, fill = BOTH)      
     
     lambdaGridFrame = Frame(lambdaScrollingArea.innerframe) 
@@ -264,15 +263,56 @@ def next_page():
     circleTableBoxes[0, 0] = len(bevDict), len(stimDict)
     
    else: #Table was already generated
-    circleScrollingArea.pack(expand=1, fill = BOTH)
-    lambdaScrollingArea.pack(expand=1, fill = BOTH)
-    
-    circleGridFrame.pack(side=TOP, anchor = NW) 
-    lambdaGridFrame.pack(side=TOP, anchor = SW)
-    
     #calling fix_grids() to check if modifications are necessary to the grids
     fix_grids(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
               circleGridFrame, lambdaGridFrame) 
+    
+    circleScrollingArea.pack_forget()
+    circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
+    circleScrollingArea.pack(expand=1, fill = BOTH)   
+    
+    circleGridFrame.pack_forget()
+    circleGridFrame = Frame(circleScrollingArea.innerframe) 
+    circleTableLabel = Label(circleGridFrame, text = 'o')   
+    circleTableLabel.grid(row = 0, column = 0)
+    
+    lambdaScrollingArea.pack_forget()
+    lambdaScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
+    lambdaScrollingArea.pack(expand=1, fill = BOTH)      
+    
+    lambdaGridFrame.pack_forget()
+    lambdaGridFrame = Frame(lambdaScrollingArea.innerframe) 
+    lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8'))   
+    lambdaTableLabel.grid(row = 0, column = 0)           
+    
+    #Generate labels for the behaviours
+    for i in range(1, len(bevDict) + 1): #Rows
+     bevLabel = Label(circleGridFrame, text = bevDict[i])
+     bevLabel.grid(row = i, column = 0)
+     bevLabel = Label(lambdaGridFrame, text = bevDict[i])
+     bevLabel.grid(row = i, column = 0)  
+    
+    #Generate labels for the stimuli
+    for j in range(1, len(stimDict) + 1): #Columns
+     stimLabel = Label(circleGridFrame, text = stimDict[j])
+     stimLabel.grid(row = 0, column = j)  
+     stimLabel = Label(lambdaGridFrame, text = stimDict[j])
+     stimLabel.grid(row = 0, column = j)     
+    
+    #re-generate the table with the modifications brought by fix_grids()
+    for i in range(1, len(bevDict) + 1): #Rows
+      for j in range(1, len(stimDict) + 1): #Columns
+         circleTableEntry = Entry(circleGridFrame)
+         lambdaTableEntry = Entry(lambdaGridFrame)
+         circleTableEntry.grid(row=i, column=j)
+         lambdaTableEntry.grid(row=i, column=j)
+         circleTableEntry.insert(0, circleTableBoxes[i, j].get())
+         lambdaTableEntry.insert(0, lambdaTableBoxes[i, j].get())
+         circleTableBoxes[i, j] = circleTableEntry
+         lambdaTableBoxes[i, j] = lambdaTableEntry
+         
+    circleGridFrame.pack(side=TOP, anchor = NW) 
+    lambdaGridFrame.pack(side=TOP, anchor = SW)         
     
   #PAGE 4 to PAGE 5
   if pageNum == 4:
@@ -394,7 +434,7 @@ generated = False
 #
 #Label exclusive to page 1
 #
-stimScrollingArea = Scrolling_Area(main)
+stimScrollingArea = vertSuperscroll.Scrolling_Area(main)
 stimScrollingArea.pack(expand=1, fill=BOTH)
 
 stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
