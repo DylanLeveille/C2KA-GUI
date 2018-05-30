@@ -359,8 +359,17 @@ def next_page():
                                       lambdaTableBoxes, circleTableValues, 
                                       lambdaTableValues)
    if isGood:
+    circleScrollingArea.pack_forget()
+    lambdaScrollingArea.pack_forget()
+    
     circleGridFrame.pack_forget()
     lambdaGridFrame.pack_forget()
+    
+    fillN.pack_forget()
+    nextButton.pack_forget()
+    
+    prevButton.config(width = 70)
+    
     create_text(agentName, agentBehaviour, circleTableBoxes, 
                 lambdaTableBoxes, stimDict, bevDict)
    else:
@@ -449,6 +458,19 @@ def prev_page():
  if pageNum == 5:
    circleGridFrame.pack(side=TOP, anchor = NW) 
    lambdaGridFrame.pack(side=TOP, anchor = SW)  
+
+ #PAGE 5 to PAGE 4
+ if pageNum == 5:
+  prevButton.config(width = 23) 
+  
+  circleScrollingArea.pack(expand=1, fill = BOTH)   
+  lambdaScrollingArea.pack(expand=1, fill = BOTH)   
+  
+  circleGridFrame.pack(side=TOP, anchor = NW) 
+  lambdaGridFrame.pack(side=TOP, anchor = SW) 
+  
+  nextButton.pack(in_=buttonsFrame, side = RIGHT)
+  fillN.pack(in_=buttonsFrame, side = BOTTOM)
   
  pageNum -= 1
  
