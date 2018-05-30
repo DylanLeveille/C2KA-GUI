@@ -8,6 +8,7 @@ import superscroll
 
 main = Tk()
 main.title("C2KA GUI")
+main.resizable(width=False, height=False)
 
 windowSize = 500
 
@@ -57,7 +58,7 @@ def return_to_tables():
  invalidEntryPop.destroy()
 
 #Function to add new stimuli (page 1 exclusive)
-def new_entry(): 
+def add_stim(): 
  global stimList #list containing every entry box
  global stimScrollingArea #area for the scrolling/stimuli
  
@@ -76,13 +77,13 @@ def new_entry():
   stimList[i] = stimEntry
   stimEntry.pack(side = TOP)
  
- stimEntry = Entry(stimScrollingArea.innerframe)        
+ stimEntry = Entry(stimScrollingArea.innerframe)    
  stimEntry.pack(side = TOP)     
  
  stimList.append(stimEntry)
     
 #Function to remove stimuli (page 1 exclusive) 
-def remove_entry():
+def remove_stim():
  global stimScrollingArea #area for the scrolling/stimuli
  if len(stimList) > 0: #must be greater than 0 to be able to remove a stimulus
    entryToDelete = stimList[len(stimList) - 1]
@@ -142,9 +143,11 @@ def next_page():
     index = 0 #necessary for good indices in the dictionary
     
     for i in range(len(stimList)):
-     #we don't want the empty string
-     if stimList[i].get() != ' ' * len(stimList[i].get()): 
-      stimDict[index + 1] = stimList[i].get()
+     #we don't want the empty string or a string we already have
+     if stimList[i].get() != ' ' * len(stimList[i].get()) and stimList[i].get() not in stimDict.values():
+      #take away whitespace from the string
+      stimDict[index + 1] = (stimList[i].get()).replace(" ", "")
+
       index +=  1
       
      stimList[i].pack_forget() 
@@ -183,7 +186,8 @@ def next_page():
      stimScrollingArea.pack_forget()
      addStim.pack_forget()
      delButton.pack_forget()
-     prevButton.pack(side = BOTTOM, fill = X)
+     prevButton.pack(in_=buttonsFrame, side = LEFT)
+     nextButton.config(width = 35)
      agentLabel.pack(side = TOP, anchor = W)
      agentEntry.pack(side = TOP, anchor = W)
      agentBevLabel.pack(side = TOP, anchor = W)
@@ -214,7 +218,9 @@ def next_page():
    TitleCBS.pack_forget()
    LabelCBS.pack_forget()
    TextCBS.pack_forget()
-   fillN.pack(side = BOTTOM, fill = X)
+   nextButton.config(width = 23)
+   prevButton.config(width = 23)
+   fillN.pack(in_=buttonsFrame, side = BOTTOM)
    
    if generated == False:
     #Frame for the tables and corner label
@@ -317,7 +323,7 @@ def next_page():
       for j in range(1, len(stimDict) + 1): #Columns
          circleTableEntry = Entry(circleGridFrame)
          lambdaTableEntry = Entry(lambdaGridFrame)
-         
+
          circleTableEntry.grid(row=i, column=j)
          lambdaTableEntry.grid(row=i, column=j)
          
@@ -340,13 +346,13 @@ def next_page():
    for key in circleTableBoxes.keys():
     a, b = key #extract corrdinate
     if a!= 0 and b != 0: #we are not interested in labels
-     circleTableValues[key] = circleTableBoxes[key].get()
+     circleTableValues[key] = (circleTableBoxes[key].get()).replace(" ", "")
      
    #second table  
    for key in lambdaTableBoxes.keys():
     a, b = key #extract corrdinate
     if a!= 0 and b != 0: #we are not interested in labels
-     lambdaTableValues[key] = lambdaTableBoxes[key].get()
+     lambdaTableValues[key] = (lambdaTableBoxes[key].get()).replace(" ", "")
  
    #calling check_if_good() to assure all the inputs are valid
    isGood, numInvalid = check_if_good(bevDict, stimDict, circleTableBoxes, 
@@ -405,8 +411,9 @@ def prev_page():
   agentBevLabel.pack_forget()
   agentBevEntry.pack_forget()
   prevButton.pack_forget()
-  delButton.pack(side = BOTTOM, fill = X)
-  addStim.pack(side = BOTTOM, fill = X)
+  nextButton.config(width = 23)
+  delButton.pack(in_=buttonsFrame, side = LEFT)
+  addStim.pack(in_=buttonsFrame, side = TOP)
  
  #PAGE 3 to PAGE 2 
  if pageNum == 3:
@@ -431,6 +438,9 @@ def prev_page():
   
   fillN.pack_forget()
   
+  nextButton.config(width = 35)
+  prevButton.config(width = 35)  
+  
   TitleCBS.pack(side = TOP)
   LabelCBS.pack(side = TOP, anchor = W)
   TextCBS.pack(side = TOP, fill = X)  
@@ -449,14 +459,10 @@ pageNum = 1
 #No tables generated yet
 generated = False
 
-#
-#Label exclusive to page 1
-#
-stimScrollingArea = vertSuperscroll.Scrolling_Area(main)
-stimScrollingArea.pack(expand=1, fill=BOTH)
+#Frame for the main buttons
+buttonsFrame = Frame(main)
+buttonsFrame.pack(side = BOTTOM, anchor = S, expand = True)
 
-stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
-stimTitle.pack(side = TOP)
 #
 #Defining Buttons available on each page
 #
@@ -466,23 +472,28 @@ stimTitle.pack(side = TOP)
 #testButton.pack(side = BOTTOM, fill = X)
 
 #Next Button
-nextButton = Button(main, text = 'Next', command = next_page)
-nextButton.pack(side = BOTTOM, fill = X)
+nextButton = Button(main, text = 'Next', command = next_page, width = 23)
+nextButton.pack(in_=buttonsFrame, side = RIGHT)
 
 #Prev Button (will not be availible on page 1)
-prevButton = Button(main, text = 'Prev', command = prev_page)
+prevButton = Button(main, text = 'Prev', command = prev_page, width = 35)
 
 #
-#Buttons exclusive for page 1
+#Label and Buttons exclusive to page 1
 #
+stimScrollingArea = vertSuperscroll.Scrolling_Area(main)
+stimScrollingArea.pack(expand = 1, fill = BOTH)
+
+stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
+stimTitle.pack(side = TOP)
 
 #Delete previous entry Button
-delButton = Button(main, text = 'Delete Previous', command = remove_entry)
-delButton.pack(side = BOTTOM, fill = X)
+delButton = Button(main, text = 'Delete Previous', command = remove_stim, width = 23)
+delButton.pack(in_=buttonsFrame, side = LEFT)
 
 #Add stimulus Button
-addStim = Button(main, text = 'Add new stimulus', command = new_entry)
-addStim.pack(side = BOTTOM, fill = X)
+addStim = Button(main, text = 'Add new stimulus', command = add_stim, width = 23)
+addStim.pack(in_=buttonsFrame, side = TOP)
 
 #
 #Labels and Entries exclusive for page 2
@@ -509,6 +520,6 @@ TextCBS = Text(main, height = 10)
 
 fillN = Button(main, text = 'Fill with neutral stimulus', 
                command = lambda: fill_n(bevDict, stimDict, 
-                                        circleTableBoxes, lambdaTableBoxes))
+                                        circleTableBoxes, lambdaTableBoxes), width = 23)
 
 main.mainloop()
