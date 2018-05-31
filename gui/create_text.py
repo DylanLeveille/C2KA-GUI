@@ -19,8 +19,7 @@ def create_text(agentName, agentBehaviour, circleTableBoxes,
             #write stimulus and behaviour
             a.write("    (%s, %s)" %(stimDict[i], bevDict[j]))
             #finding total whitespace to align '=' sign
-            whiteSpace = len(max(stimDict.values(), key=len)) + len(max(bevDict.values(), key=len))
-            - len(stimDict[i]) - len(bevDict[j])
+            whiteSpace = len(max(stimDict.values(), key=len)) + len(max(bevDict.values(), key=len))- len(stimDict[i]) - len(bevDict[j])
             for k in range(whiteSpace + 1):
                 a.write(" ")
             #Access table box using row and columns
@@ -41,11 +40,3 @@ def create_text(agentName, agentBehaviour, circleTableBoxes,
   
     a.write("end")    
     a.close()
-    
-    
-
-    
-    
- 
-
-    

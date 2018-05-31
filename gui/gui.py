@@ -23,23 +23,6 @@ main.geometry('%dx%d+%d+%d' % (windowSize, windowSize, positionRight,
 
 #Note: some global variables will be used due to the button functions
 #being unable to contain parameters.
-
-#function to return to the stimuli entry page after the pop-up 
-def return_to_stims():
- main.update()
- main.deiconify()
- noStims.destroy() 
- 
- #regenerate the stim boxes that were un-packed
- for i in range(len(stimList)):   
-  stimList[i].pack(side = TOP) 
- 
-#function to return to the behaviour entry page after the pop-up 
-#NOT YET FUNCTIONAL. AWAITING FULL IMPLEMENTATION OF BEHAVIOUR PAGE
-def return_to_bevs():
- main.update()
- main.deiconify()
- noBevs.destroy() 
  
 #button function to fill lambda table with neutral stimulus
 def fill_n(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes):
@@ -140,46 +123,12 @@ def next_page():
   #PAGE 1 to PAGE 2
   if pageNum == 1:
     stimDict = {} #stimuli dictionary
-    index = 0 #necessary for good indices in the dictionary
-    
-    for i in range(len(stimList)):
-     #we don't want the empty string or a string we already have
-     if stimList[i].get() != ' ' * len(stimList[i].get()) and stimList[i].get() not in stimDict.values():
-      #take away whitespace from the string
-      stimDict[index + 1] = (stimList[i].get()).replace(" ", "")
-
-      index +=  1
-      
-     stimList[i].pack_forget() 
-    
-    if len(stimDict) == 0: #user must imput at least one stimulus
-     pageNum -= 1
-     #generate pop-up to prompt user to enter at least one stimulus   
-     noStims = Toplevel()
-     
-     windowSize = 300
-     
-     screenWidth = noStims.winfo_screenwidth() 
-     screenHeight = noStims.winfo_screenheight()
-     
-     positionRight = screenWidth/2 - windowSize/2
-     positionDown = screenHeight/2 - windowSize/2
-     
-     noStims.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
-                                       positionRight, positionDown)) 
-     
-     noStims.resizable(width = False, height = False) 
- 
-     noStims.wm_title("No stimuli")
-     noStims.overrideredirect(1)
-     
-     Label(noStims, text = 'Please enter at least one stimuli').pack(side = TOP)
-     
-     pressToClose = Button(noStims, text = "Return", 
-                           command = return_to_stims)
-     pressToClose.pack(side = BOTTOM)
-     
-     main.withdraw()     
+    stimDict = build_stim_dict(stimList) #behaviour dictionary
+       
+    if stimDict == None or len(stimDict) == 0: #user must imput at least one valid stimulus
+     #stay on current page
+     incorrect_stims(main)
+     pageNum -= 1     
      
     else:
      #set new page 
@@ -195,25 +144,29 @@ def next_page():
   
   #PAGE 2 to PAGE 3
   if pageNum ==2:
-   #set new page
-   agentLabel.pack_forget()
-   agentEntry.pack_forget()
-   agentBevLabel.pack_forget()
-   agentBevEntry.pack_forget()
-   LabelCBS = Label(main, text = agentEntry.get())
-   TitleCBS.pack(side = TOP)
-   LabelCBS.pack(side = TOP, anchor = W)
-   TextCBS.pack(side = TOP, fill = X)
-   agentName = agentEntry.get()
-   agentBehaviour = agentBevEntry.get()   
+   
+   bevDict = build_bev_dict(agentBevEntry.get()) #behaviour dictionary
+   
+   if bevDict == None or len(bevDict) == 0: #user must imput at least one valid behaviour
+    #stay on current page
+    incorrect_bevs(main)
+    pageNum -= 1
+    
+   else:  
+    #set new page
+    agentLabel.pack_forget()
+    agentEntry.pack_forget()
+    agentBevLabel.pack_forget()
+    agentBevEntry.pack_forget()
+    LabelCBS = Label(main, text = agentEntry.get())
+    TitleCBS.pack(side = TOP)
+    LabelCBS.pack(side = TOP, anchor = W)
+    TextCBS.pack(side = TOP, fill = X)
+    agentName = agentEntry.get()
+    agentBehaviour = agentBevEntry.get()   
   
   #PAGE 3 to PAGE 4
   if pageNum == 3:
-   bevDict = {} #behaviour dictionary
-   bevList = build_histogram(agentBevEntry.get()) #behaviour words
-   for i in range(len(bevList)):
-     bevDict[i + 1] = bevList[i]
-     
    #set new page 
    TitleCBS.pack_forget()
    LabelCBS.pack_forget()
@@ -346,13 +299,13 @@ def next_page():
    for key in circleTableBoxes.keys():
     a, b = key #extract corrdinate
     if a!= 0 and b != 0: #we are not interested in labels
-     circleTableValues[key] = (circleTableBoxes[key].get()).replace(" ", "")
+     circleTableValues[key] = (circleTableBoxes[key].get()).replace(" ", "").upper()
      
    #second table  
    for key in lambdaTableBoxes.keys():
     a, b = key #extract corrdinate
     if a!= 0 and b != 0: #we are not interested in labels
-     lambdaTableValues[key] = (lambdaTableBoxes[key].get()).replace(" ", "")
+     lambdaTableValues[key] = (lambdaTableBoxes[key].get()).replace(" ", "").upper()
  
    #calling check_if_good() to assure all the inputs are valid
    isGood, numInvalid = check_if_good(bevDict, stimDict, circleTableBoxes, 
