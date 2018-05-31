@@ -14,10 +14,10 @@ def add_stim(main, stimList):
   stimEntry = Entry(stimScrollingArea.innerframe)
   stimEntry.insert(0, stimList[i].get())    
   stimList[i] = stimEntry
-  stimEntry.pack(side = TOP)
+  stimEntry.pack(side = TOP, pady=10)
  
  stimEntry = Entry(stimScrollingArea.innerframe)    
- stimEntry.pack(side = TOP)     
+ stimEntry.pack(side = TOP, pady=10)     
  
  stimList.append(stimEntry)
  
