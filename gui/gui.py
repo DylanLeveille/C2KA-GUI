@@ -1,5 +1,7 @@
 from tkinter import*
+from entry_mods import*
 from get_word_list import*
+from create_table import*
 from fix_grids import*
 from create_text import*
 from check_if_good import*
@@ -8,7 +10,7 @@ import superscroll
 
 main = Tk()
 main.title("C2KA GUI")
-main.resizable(width=False, height=False)
+#main.resizable(width=False, height=False)
 
 windowSize = 500
 
@@ -23,70 +25,23 @@ main.geometry('%dx%d+%d+%d' % (windowSize, windowSize, positionRight,
 
 #Note: some global variables will be used due to the button functions
 #being unable to contain parameters.
- 
-#button function to fill lambda table with neutral stimulus
-def fill_n(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes):
- for i in range(1, len(bevDict) + 1): #Rows
-   for j in range(1, len(stimDict) + 1): #Columns
-     #checking if empty in lambda table
-     if lambdaTableBoxes[i, j].get() == ' ' * len(lambdaTableBoxes[i, j].get()):
-       #if empty, put neutral stimulus
-       lambdaTableBoxes[i, j].delete(0, END) 
-       lambdaTableBoxes[i, j].insert(0, 'N')
 
-#function to return to the tables after the pop-up 
-def return_to_tables():
- main.update()
- main.deiconify()
- invalidEntryPop.destroy()
-
-#Function to add new stimuli (page 1 exclusive)
-def add_stim(): 
- global stimList #list containing every entry box
- global stimScrollingArea #area for the scrolling/stimuli
- 
+#Function to add new stimuli 
+def clear_stim_add(stimList): 
+ global stimScrollingArea
  #the scrolling area must be reset every time
  stimScrollingArea.pack_forget()
-
- stimScrollingArea = vertSuperscroll.Scrolling_Area(main)
- stimScrollingArea.pack(expand = 1, fill=BOTH)
+ #add the new stim entry
+ stimScrollingArea = add_stim(main, stimList)
  
- stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
- stimTitle.pack(side = TOP)        
-     
- for i in range(len(stimList)):
-  stimEntry = Entry(stimScrollingArea.innerframe)
-  stimEntry.insert(0, stimList[i].get())    
-  stimList[i] = stimEntry
-  stimEntry.pack(side = TOP)
- 
- stimEntry = Entry(stimScrollingArea.innerframe)    
- stimEntry.pack(side = TOP)     
- 
- stimList.append(stimEntry)
-    
-#Function to remove stimuli (page 1 exclusive) 
-def remove_stim():
- global stimScrollingArea #area for the scrolling/stimuli
+#Function to remove new stimuli 
+def clear_stim_remove(main, stimList): 
+ global stimScrollingArea
  if len(stimList) > 0: #must be greater than 0 to be able to remove a stimulus
-   entryToDelete = stimList[len(stimList) - 1]
-   del stimList[len(stimList) - 1] 
-   entryToDelete.destroy()
-   
-   #the scrolling area must be reset every time
-   stimScrollingArea.pack_forget()
-  
-   stimScrollingArea = vertSuperscroll.Scrolling_Area(main)
-   stimScrollingArea.pack(expand = 1, fill=BOTH)   
-   
-   stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
-   stimTitle.pack(side = TOP)    
-   
-   for i in range(len(stimList)):   
-    stimEntry = Entry(stimScrollingArea.innerframe)
-    stimEntry.insert(0, stimList[i].get())
-    stimList[i] = stimEntry
-    stimEntry.pack(side = TOP)    
+  #the scrolling area must be reset every time
+  stimScrollingArea.pack_forget()
+  #remove recent stim entry
+  stimScrollingArea = remove_stim(main, stimList)
    
 #Function to go to next page
 def next_page():
@@ -122,7 +77,7 @@ def next_page():
   
   #PAGE 1 to PAGE 2
   if pageNum == 1:
-    stimDict = {} #stimuli dictionary
+    stimDict = get_empty_dict() #stimuli dictionary
     stimDict = build_stim_dict(stimList) #behaviour dictionary
        
     if stimDict == None or len(stimDict) == 0: #user must imput at least one valid stimulus
@@ -145,9 +100,15 @@ def next_page():
   #PAGE 2 to PAGE 3
   if pageNum ==2:
    
+   agentName = get_agent(agentEntry.get()) #the agent name
    bevDict = build_bev_dict(agentBevEntry.get()) #behaviour dictionary
    
-   if bevDict == None or len(bevDict) == 0: #user must imput at least one valid behaviour
+   if agentName == None: #need at least one agent
+    #stay on current page
+    incorrect_agent(main)
+    pageNum -= 1    
+   
+   elif bevDict == None or len(bevDict) == 0: #user must imput at least one valid behaviour
     #stay on current page
     incorrect_bevs(main)
     pageNum -= 1
@@ -158,11 +119,10 @@ def next_page():
     agentEntry.pack_forget()
     agentBevLabel.pack_forget()
     agentBevEntry.pack_forget()
-    LabelCBS = Label(main, text = agentEntry.get())
+    LabelCBS = Label(main, text = agentName)
     TitleCBS.pack(side = TOP)
     LabelCBS.pack(side = TOP, anchor = W)
     TextCBS.pack(side = TOP, fill = X)
-    agentName = agentEntry.get()
     agentBehaviour = agentBevEntry.get()   
   
   #PAGE 3 to PAGE 4
@@ -191,42 +151,15 @@ def next_page():
     lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8'))   
     lambdaTableLabel.grid(row = 0, column = 0)   
     
-    #Generate data collection for the table boxes
-    circleTableBoxes = {}
-    lambdaTableBoxes = {}    
-    
-    #Generate labels for the behaviours
-    for i in range(1, len(bevDict) + 1): #Rows
-     bevLabel = Label(circleGridFrame, text = bevDict[i])
-     bevLabel.grid(row = i, column = 0)
-     circleTableBoxes[i, 0] = bevLabel
-     bevLabel = Label(lambdaGridFrame, text = bevDict[i])
-     bevLabel.grid(row = i, column = 0)  
-     lambdaTableBoxes[i, 0] = bevLabel
-    
-    #Generate labels for the stimuli
-    for j in range(1, len(stimDict) + 1): #Columns
-     stimLabel = Label(circleGridFrame, text = stimDict[j])
-     stimLabel.grid(row = 0, column = j)  
-     circleTableBoxes[0, j] = stimLabel
-     stimLabel = Label(lambdaGridFrame, text = stimDict[j])
-     stimLabel.grid(row = 0, column = j)   
-     lambdaTableBoxes[0, j] = stimLabel
-    
-    #generate the entry boxes
-    for i in range(1, len(bevDict) + 1): #Rows
-      for j in range(1, len(stimDict) + 1): #Columns
-         circleTableEntry = Entry(circleGridFrame)
-         lambdaTableEntry = Entry(lambdaGridFrame)
-         circleTableEntry.grid(row=i, column=j)
-         lambdaTableEntry.grid(row=i, column=j)
-         circleTableBoxes[i, j] = circleTableEntry
-         lambdaTableBoxes[i, j] = lambdaTableEntry
-         
+    #create the data structures to hold the table entries
+    circleTableBoxes, lambdaTableBoxes = create_table(bevDict, stimDict,
+                                                      circleGridFrame, 
+                                                      lambdaGridFrame)
+    #pack the new frames     
     circleGridFrame.pack(side=TOP, anchor = NW) 
     lambdaGridFrame.pack(side=TOP, anchor = SW) 
     
-    generated = True
+    generated = True #table is now generated
     
     #keep track of table's current lenght and width
     #only necessary to save this in one of the dictionaries
@@ -257,56 +190,23 @@ def next_page():
     lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8'))   
     lambdaTableLabel.grid(row = 0, column = 0)           
 
-    #Generate labels for the behaviours
-    for i in range(1, len(bevDict) + 1): #Rows
-     bevLabel = Label(circleGridFrame, text = bevDict[i])
-     bevLabel.grid(row = i, column = 0)
-     bevLabel = Label(lambdaGridFrame, text = bevDict[i])
-     bevLabel.grid(row = i, column = 0)  
-
-    #Generate labels for the stimuli
-    for j in range(1, len(stimDict) + 1): #Columns
-     stimLabel = Label(circleGridFrame, text = stimDict[j])
-     stimLabel.grid(row = 0, column = j)  
-     stimLabel = Label(lambdaGridFrame, text = stimDict[j])
-     stimLabel.grid(row = 0, column = j)     
-    
-    #re-generate the table with the modifications brought by fix_grids()
-    for i in range(1, len(bevDict) + 1): #Rows
-      for j in range(1, len(stimDict) + 1): #Columns
-         circleTableEntry = Entry(circleGridFrame)
-         lambdaTableEntry = Entry(lambdaGridFrame)
-
-         circleTableEntry.grid(row=i, column=j)
-         lambdaTableEntry.grid(row=i, column=j)
-         
-         circleTableEntry.insert(0, circleTableBoxes[i, j].get())
-         lambdaTableEntry.insert(0, lambdaTableBoxes[i, j].get())
-           
-         circleTableBoxes[i, j] = circleTableEntry
-         lambdaTableBoxes[i, j] = lambdaTableEntry
-         
+    circleTableBoxes, lambdaTableBoxes = recreate_table(bevDict, stimDict, circleTableBoxes, 
+                                                        lambdaTableBoxes,circleGridFrame, 
+                                                        lambdaGridFrame)     
+    #pack the new frames      
     circleGridFrame.pack(side=TOP, anchor = NW) 
     lambdaGridFrame.pack(side=TOP, anchor = SW)         
     
   #PAGE 4 to PAGE 5
   if pageNum == 4:
    #create dictionary to hold values from tables
-   circleTableValues = {}
-   lambdaTableValues = {}
+   circleTableValues = get_empty_dict()
+   lambdaTableValues = get_empty_dict()
    
-   #first table
-   for key in circleTableBoxes.keys():
-    a, b = key #extract corrdinate
-    if a!= 0 and b != 0: #we are not interested in labels
-     circleTableValues[key] = (circleTableBoxes[key].get()).replace(" ", "").upper()
-     
-   #second table  
-   for key in lambdaTableBoxes.keys():
-    a, b = key #extract corrdinate
-    if a!= 0 and b != 0: #we are not interested in labels
-     lambdaTableValues[key] = (lambdaTableBoxes[key].get()).replace(" ", "").upper()
- 
+   #first table values and second table values
+   circleTableValues, lambdaTableValues = getTableValues(circleTableBoxes, 
+                                                         lambdaTableBoxes) 
+   
    #calling check_if_good() to assure all the inputs are valid
    isGood, numInvalid = check_if_good(bevDict, stimDict, circleTableBoxes, 
                                       lambdaTableBoxes, circleTableValues, 
@@ -326,34 +226,8 @@ def next_page():
     create_text(agentName, agentBehaviour, circleTableBoxes, 
                 lambdaTableBoxes, stimDict, bevDict)
    else:
+    incorrect_table(main, numInvalid)
     pageNum -= 1
-    invalidEntryPop = Toplevel()
-    
-    windowSize = 300
-    
-    screenWidth = invalidEntryPop.winfo_screenwidth() 
-    screenHeight = invalidEntryPop.winfo_screenheight()
-    
-    positionRight = screenWidth/2 - windowSize/2
-    positionDown = screenHeight/2 - windowSize/2
-    
-    invalidEntryPop.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
-                                              positionRight, positionDown))    
-    invalidEntryPop.resizable(width = False, height = False) 
-
-    invalidEntryPop.wm_title("INVALID ENTRIES!")
-    invalidEntryPop.overrideredirect(1)
-    
-    Label(invalidEntryPop, text = 'Invalid Entries:').pack(side = TOP)
-    invalidEntriesLabel = Label(invalidEntryPop, text = str(numInvalid) + 
-                                ' entries to fix')
-    invalidEntriesLabel.pack(side = TOP)
-    
-    pressToClose = Button(invalidEntryPop, text = "Return", 
-                          command = return_to_tables)
-    pressToClose.pack(side = BOTTOM)
-    
-    main.withdraw()
   pageNum += 1
 
 #Function to return to previous page
@@ -463,11 +337,13 @@ stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
 stimTitle.pack(side = TOP)
 
 #Delete previous entry Button
-delButton = Button(main, text = 'Delete Previous', command = remove_stim, width = 23)
+delButton = Button(main, text = 'Delete Previous', command = lambda: clear_stim_remove(main, stimList), width = 23)
 delButton.pack(in_=buttonsFrame, side = LEFT)
 
 #Add stimulus Button
-addStim = Button(main, text = 'Add new stimulus', command = add_stim, width = 23)
+addStim = Button(main, text = 'Add new stimulus', 
+                 command = lambda: clear_stim_add(stimList), width = 23)
+
 addStim.pack(in_=buttonsFrame, side = TOP)
 
 #

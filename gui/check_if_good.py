@@ -31,6 +31,39 @@ def incorrect_stims(main):
   #remove main window  
   main.withdraw()    
 
+#function is called when an incorrect agent is entered
+def incorrect_agent(main):
+  global wrongAgent
+  #create pop-up window
+  wrongAgent = Toplevel()
+    
+  windowSize = 300
+  
+  screenWidth = wrongAgent.winfo_screenwidth() 
+  screenHeight = wrongAgent.winfo_screenheight()
+    
+  positionRight = screenWidth/2 - windowSize/2
+  positionDown = screenHeight/2 - windowSize/2
+    
+  wrongAgent.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+                                      positionRight, positionDown)) 
+    
+  wrongAgent.resizable(width = False, height = False) 
+
+  wrongAgent.wm_title("Incorrect behaviour(s)")
+  wrongAgent.overrideredirect(1)
+    
+  Label(wrongAgent, text = 'Please enter at least one valid agent').pack(side = TOP)
+  Label(wrongAgent, text = 'or remove invalid agents').pack(side = TOP)
+    
+  pressToClose = Button(wrongAgent, text = "Return", 
+                        command = lambda: return_to_bevs_agent(main))
+  pressToClose.pack(side = BOTTOM)
+  
+  #remove main window  
+  main.withdraw()    
+
+
 #function is called when an incorrect behaviour is entered
 def incorrect_bevs(main):
   global wrongBevs
@@ -57,7 +90,7 @@ def incorrect_bevs(main):
   Label(wrongBevs, text = 'or remove invalid behaviours').pack(side = TOP)
     
   pressToClose = Button(wrongBevs, text = "Return", 
-                        command = lambda: return_to_bevs(main))
+                        command = lambda: return_to_bevs_bevs(main))
   pressToClose.pack(side = BOTTOM)
   
   #remove main window  
@@ -103,6 +136,38 @@ def check_if_good(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
   else:
     return False, invalidEntries 
 
+def incorrect_table(main, numInvalid):
+  global invalidEntryPop
+  #create pop-up window
+  invalidEntryPop = Toplevel()
+  
+  windowSize = 300
+  
+  screenWidth = invalidEntryPop.winfo_screenwidth() 
+  screenHeight = invalidEntryPop.winfo_screenheight()
+  
+  positionRight = screenWidth/2 - windowSize/2
+  positionDown = screenHeight/2 - windowSize/2
+  
+  invalidEntryPop.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+                                            positionRight, positionDown))    
+  invalidEntryPop.resizable(width = False, height = False) 
+
+  invalidEntryPop.wm_title("INVALID ENTRIES!")
+  invalidEntryPop.overrideredirect(1)
+  
+  Label(invalidEntryPop, text = 'Invalid Entries:').pack(side = TOP)
+  invalidEntriesLabel = Label(invalidEntryPop, text = str(numInvalid) + 
+                              ' entries to fix')
+  invalidEntriesLabel.pack(side = TOP)
+  
+  pressToClose = Button(invalidEntryPop, text = "Return", 
+                        command = lambda: return_to_tables(main))
+  pressToClose.pack(side = BOTTOM)
+  
+  #remove main window
+  main.withdraw()  
+
 #
 #Functions which regenerate the main window
 #
@@ -112,13 +177,21 @@ def return_to_stims(main):
   main.update()
   main.deiconify()
   wrongStims.destroy() 
- 
- #regenerate the stim boxes that were un-packed
- #for i in range(len(stimList)):   
- # stimList[i].pack(side = TOP) 
 
 #function to return to the behaviour entry page after the pop-up 
-def return_to_bevs(main):
+def return_to_bevs_agent(main):
+  main.update()
+  main.deiconify()
+  wrongAgent.destroy() 
+
+#function to return to the behaviour entry page after the pop-up 
+def return_to_bevs_bevs(main):
   main.update()
   main.deiconify()
   wrongBevs.destroy() 
+  
+#function to return to the tables after the pop-up 
+def return_to_tables(main):
+  main.update()
+  main.deiconify()
+  invalidEntryPop.destroy()
