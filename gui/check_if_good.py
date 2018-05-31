@@ -9,9 +9,14 @@ def incorrect_stims(main):
   global wrongStims
   #create pop-up window
   wrongStims = Toplevel()
+  
+  wrongStims.config(takefocus = True)  
+  
   windowSize = 300
+  
   screenWidth = wrongStims.winfo_screenwidth() 
   screenHeight = wrongStims.winfo_screenheight()
+  
   positionRight = screenWidth/2 - windowSize/2
   positionDown = screenHeight/2 - windowSize/2
   
@@ -37,6 +42,8 @@ def incorrect_agent(main):
   #create pop-up window
   wrongAgent = Toplevel()
     
+  wrongAgent.config(takefocus = True)  
+    
   windowSize = 300
   
   screenWidth = wrongAgent.winfo_screenwidth() 
@@ -53,8 +60,7 @@ def incorrect_agent(main):
   wrongAgent.wm_title("Incorrect behaviour(s)")
   wrongAgent.overrideredirect(1)
     
-  Label(wrongAgent, text = 'Please enter at least one valid agent').pack(side = TOP)
-  Label(wrongAgent, text = 'or remove invalid agents').pack(side = TOP)
+  Label(wrongAgent, text = 'Please enter one valid agent').pack(side = TOP)
     
   pressToClose = Button(wrongAgent, text = "Return", 
                         command = lambda: return_to_bevs_agent(main))
@@ -69,6 +75,8 @@ def incorrect_bevs(main):
   global wrongBevs
   #create pop-up window
   wrongBevs = Toplevel()
+  
+  wrongBevs.config(takefocus = True)
     
   windowSize = 300
   
@@ -140,6 +148,7 @@ def incorrect_table(main, numInvalid):
   global invalidEntryPop
   #create pop-up window
   invalidEntryPop = Toplevel()
+  invalidEntryPop.config(takefocus = True)
   
   windowSize = 300
   
