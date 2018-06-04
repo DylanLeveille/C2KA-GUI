@@ -1,9 +1,0 @@
-begin AGENT where
-     := 
-end
-
-begin NEXT_BEHAVIOUR where
-end
-
-begin NEXT_STIMULUS where
-end
