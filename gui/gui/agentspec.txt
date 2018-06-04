@@ -1,0 +1,11 @@
+begin AGENT where
+    A :=  T
+end
+
+begin NEXT_BEHAVIOUR where
+    (Help, T) = T
+end
+
+begin NEXT_STIMULUS where
+    (Help, T) = N
+end
