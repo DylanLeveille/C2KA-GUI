@@ -1,42 +1,46 @@
 from tkinter import *
 from string import *
 
-def create_text(agentName, agentBehaviour, circleTableBoxes,
-                lambdaTableBoxes, stimDict, bevDict):
-    global a
+def create_text(agentName, agentBehaviour, circleTableValues,
+                lambdaTableValues, stimDict, bevDict):
     #Create file if it does not exist
-    a = open("agentspec.txt", "w+") 
-    a.write("begin AGENT where\n")
+    file = open("agentspec.txt", "w+") 
+    file.write("begin AGENT where\n")
     # Printing agent name and behaviour
-    a.write("    %s := %s\n" %(agentName, agentBehaviour)) 
-    a.write("end\n")
-    a.write("\n")
-    a.write("begin NEXT_BEHAVIOUR where\n")
+    file.write("    %s := %s\n" %(agentName, agentBehaviour)) 
+    file.write("end\n")
+    file.write("\n")
+    file.write("begin NEXT_BEHAVIOUR where\n")
     #access each element in stimulus dictionary
     for i in range(1, len(stimDict)+1): 
         #access each element in behaviour dictionary
         for j in range(1, len(bevDict)+1): 
             #write stimulus and behaviour
-            a.write("    (%s, %s)" %(stimDict[i], bevDict[j]))
+            file.write("    (%s, %s)" %(stimDict[i], bevDict[j]))
             #finding total whitespace to align '=' sign
             whiteSpace = len(max(stimDict.values(), key=len)) + len(max(bevDict.values(), key=len))- len(stimDict[i]) - len(bevDict[j])
             for k in range(whiteSpace + 1):
-                a.write(" ")
-            #Access table box using row and columns
-            a.write("= %s" %(circleTableBoxes[j, i].get())) 
-            a.write("\n")
+                file.write(" ")
+            #Access table values using row and columns
+            file.write("= %s" %(circleTableValues[j, i])) 
+            file.write("\n")
     
-    a.write("end\n")
-    a.write("\n")
-    a.write("begin NEXT_STIMULUS where\n")
+    file.write("end\n")
+    file.write("\n")
+    file.write("begin NEXT_STIMULUS where\n")
+    #access each element in stimulus dictionary
     for i in range(1, len(stimDict)+1):
+        #access each element in behaviour dictionary
         for j in range(1, len(bevDict)+1):
-            a.write("    (%s, %s)" %(stimDict[i], bevDict[j]))
+            #write stimulus and behaviour
+            file.write("    (%s, %s)" %(stimDict[i], bevDict[j]))
+            #finding total whitespace to align '=' sign
             whiteSpace = len(max(stimDict.values(), key=len)) + len(max(bevDict.values(), key=len)) - len(stimDict[i]) - len(bevDict[j])
             for k in range(whiteSpace + 1):
-                a.write(" ")
-            a.write("= %s" %(lambdaTableBoxes[j, i].get()))
-            a.write("\n")
+                file.write(" ")
+            #Access table values using row and columns
+            file.write("= %s" %(lambdaTableValues[j, i]))
+            file.write("\n")
   
-    a.write("end")    
-    a.close()
+    file.write("end")    
+    file.close()
