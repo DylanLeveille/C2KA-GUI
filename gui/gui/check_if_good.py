@@ -1,12 +1,12 @@
 from tkinter import*
-from entry_mods import get_num_stims
-from entry_mods import delete_all_stim 
+import vertSuperscroll 
+
 #
 #Functions which validate entries/create pop-ups:
 #
 
 #function to warn user that stims will be deleted
-def specify_stim(main, stimList, numStims):
+def specify_stim(main, stimList, numStims, stimScrollingArea):
   global warningStims
   #create pop-up window
 
@@ -32,7 +32,7 @@ def specify_stim(main, stimList, numStims):
   Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
   
   pressToContinue = Button(warningStims, text = "Continue", 
-                        command = lambda: return_to_stims_deletion(main, stimList, numStims))
+                        command = lambda: return_to_stims_deletion(main, stimList, numStims, stimScrollingArea))
   
   pressToClose = Button(warningStims, text = "Return", 
                         command = lambda: return_to_stims_cancellation(main))
@@ -42,6 +42,37 @@ def specify_stim(main, stimList, numStims):
   pressToClose.pack(side = BOTTOM)
   #remove main window  
   main.withdraw()      
+
+#function to warn the user that the specified number of stims is invalid
+def incorrect_stim_num(main):
+  global wrongStimNum
+  #create pop-up window
+  wrongStimNum = Toplevel()
+  
+  wrongStimNum.config(takefocus = True)  
+  
+  windowSize = 300
+  
+  screenWidth = wrongStimNum.winfo_screenwidth() 
+  screenHeight = wrongStimNum.winfo_screenheight()
+  
+  positionRight = screenWidth/2 - windowSize/2
+  positionDown = screenHeight/2 - windowSize/2
+  
+  wrongStimNum.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+                                    positionRight, positionDown)) 
+  
+  wrongStimNum.resizable(width = False, height = False) 
+
+  wrongStimNum.wm_title("Incorrect stimuli number")
+  wrongStimNum.overrideredirect(1)
+  Label(wrongStimNum, text = 'Please enter a valid number of stimuli').pack(side = TOP)
+  
+  pressToClose = Button(wrongStimNum, text = "Return", 
+                        command = lambda: return_to_stim_num(main))
+  pressToClose.pack(side = BOTTOM)
+  #remove main window
+  main.withdraw()    
 
 #function is called when an incorrect stimuli is entered
 def incorrect_stims(main):
@@ -220,18 +251,53 @@ def incorrect_table(main, numInvalid):
 #Functions which get rid of the pop-up window
 #
 
-def return_to_stims_deletion(main, stimList, numStims):
+#generate the specified stim entries 
+def return_to_stims_deletion(main, stimList, numStims, stimScrollingArea):
   warningStims.destroy()
-  numStims = get_num_stims(numStims)
-  delete_all_stim(main, stimList, numStims)
   
-  main.update()
-  main.deiconify()  
+  #test to see if more than one word in the entry box
+  #and test to see if it is a number only
+  if len(numStims.split()) > 1 or numStims.replace(' ', '').isdigit() != True: 
+    #call a function to pop up
+    incorrect_stim_num(main) 
   
+  else:
+    #extract the number from the string
+    numStims = int(numStims.replace(' ', ''))  
+    
+    #destroy the old frame 
+    stimScrollingArea[0].destroy()
+
+    #clear list for specified entries
+    stimList.clear()   
+    
+    #make a new frame capable of scrolling to the new entry boxes specified
+    #by the user
+    stimScrollingArea[0] = vertSuperscroll.Scrolling_Area(main)
+    stimScrollingArea[0].pack(expand = 1, fill=BOTH)
+    
+    stimTitle = Label(stimScrollingArea[0].innerframe, text='Please Enter The Stimuli')
+    stimTitle.pack(side = TOP) 
+        
+    for i in range(numStims):
+      stimEntry = Entry(stimScrollingArea[0].innerframe)   
+      stimList.append(stimEntry)
+      stimEntry.pack(side = TOP, pady = 10)    
+  
+    main.update()
+    main.deiconify()  
+
+#return to main when user wishes to cancel inputting the stimuli   
 def return_to_stims_cancellation(main):
   main.update()
   main.deiconify()
   warningStims.destroy()
+
+#return to main when invalid number is enetred for the stimuli  
+def return_to_stim_num(main):
+  main.update()
+  main.deiconify()
+  wrongStimNum.destroy()  
 
 #function to return to the stimuli entry page after the pop-up 
 def return_to_stims(main):

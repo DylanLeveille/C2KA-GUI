@@ -65,7 +65,7 @@ def build_bev_dict(line):
   # For each word, remove any punctuation marks immediately
   # before and after the word.
   for word in wordList:
-    word = word.upper()
+    word = word.upper().strip(string.punctuation)
     #test to see if it is a number only
     try:
         float(word)
@@ -80,7 +80,7 @@ def build_bev_dict(line):
       # Don't count any empty strings created when the punctuation marks
       # are removed. For example, if word is bound to a hyphen, '-',
       # word.strip(string.punctuation) yields the empty string, ''.
-      if word not in hist:
+      if word not in hist and word != '':
         hist[i] = word 
         i += 1
       
