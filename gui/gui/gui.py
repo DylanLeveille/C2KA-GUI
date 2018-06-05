@@ -237,8 +237,8 @@ def next_page():
     
       prevButton.config(width = 70)
     
-      create_text(agentName, agentBehaviour, circleTableBoxes, 
-                  lambdaTableBoxes, stimDict, bevDict)
+      create_text(agentName, agentBehaviour, circleTableValues, 
+                  lambdaTableValues, stimDict, bevDict)
     else:
       incorrect_table(main, numInvalid)
       pageNum -= 1
