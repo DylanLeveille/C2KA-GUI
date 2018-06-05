@@ -1,11 +1,12 @@
 from tkinter import*
 from entry_mods import*
 from get_word_list import*
+from CBS import *
 from create_table import*
 from fix_grids import*
 from create_text import*
 from check_if_good import*
-from CBS import *
+from create_save_file import*
 import vertSuperscroll
 import superscroll
 
@@ -105,7 +106,7 @@ def next_page():
     
 
     else:  
-    #set new page
+      #set new page
       agentLabel.pack_forget()
       agentEntry.pack_forget()
       agentBevLabel.pack_forget()
@@ -116,20 +117,20 @@ def next_page():
       AgentCBS.pack(side = TOP, anchor = W)
       FrameCBS.pack(side = TOP, fill = BOTH)
     
-    if generatedCBS == False:
-      rowNum = 0
-      EntriesCBS, LabelsCBS, rowNum = create_CBS_entries(bevDict, FrameCBS, rowNum)
-      generatedCBS = True
+      if generatedCBS == False:
+        rowNum = 0
+        EntriesCBS, LabelsCBS, rowNum = create_CBS_entries(bevDict, FrameCBS, rowNum)
+        generatedCBS = True
  
-    else:
-      rowNum, EntriesCBS, LabelsCBS = fix_CBS(bevDict, EntriesCBS, LabelsCBS, FrameCBS, rowNum)
+      else:
+        rowNum = fix_CBS(bevDict, EntriesCBS, LabelsCBS, FrameCBS, rowNum)
      
-    agentName = agentEntry.get()    
-    agentBehaviour = agentBevEntry.get()   
+      agentName = agentEntry.get()    
+      agentBehaviour = agentBevEntry.get()   
   
   #PAGE 3 to PAGE 4
   if pageNum == 3:
-   #set new page 
+    #set new page 
     FrameCBS.pack_forget()
     TitleCBS.pack_forget()
     AgentCBS.pack_forget()
@@ -138,7 +139,7 @@ def next_page():
     fillN.pack(in_=buttonsFrame, side = BOTTOM)
    
     if generatedTable == False:
-    #Frame for the tables and corner label
+      #Frame for the tables and corner label
       circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
       circleScrollingArea.pack(expand=1, fill = BOTH)   
 
@@ -235,10 +236,19 @@ def next_page():
       fillN.pack_forget()
       nextButton.pack_forget()
     
-      prevButton.config(width = 70)
+      prevButton.config(width = 35)
     
       create_text(agentName, agentBehaviour, circleTableValues, 
                   lambdaTableValues, stimDict, bevDict)
+  
+      textEntry.config(state = 'normal')
+      textEntry.delete(1.0, END)
+      textEntry.insert(INSERT, open("agentspec.txt", "r").read())
+      textEntry.config(state="disabled")
+      textEntry.pack(side = TOP)
+      
+      saveButton.pack(in_=buttonsFrame)
+
     else:
       incorrect_table(main, numInvalid)
       pageNum -= 1
@@ -268,15 +278,13 @@ def prev_page():
 
  #PAGE 3 to PAGE 2 
   if pageNum == 3:
-    FrameCBS.pack_forget()
-    TitleCBS.pack_forget()
-    AgentCBS.pack_forget()    
     agentLabel.pack(side = TOP, anchor = W)
     agentEntry.pack(side = TOP, anchor = W)
     agentBevLabel.pack(side = TOP, anchor = W)
     agentBevEntry.pack(side = TOP, anchor = W)
-
-  
+    FrameCBS.pack_forget()
+    TitleCBS.pack_forget()
+    AgentCBS.pack_forget()
   
   #PAGE 4 to PAGE 3
   if pageNum == 4:
@@ -298,14 +306,11 @@ def prev_page():
     AgentCBS.pack(side = TOP, anchor = W)
     FrameCBS.pack(fill = BOTH) 
 
- 
- 
-  if pageNum == 5:
-    circleGridFrame.pack(side=TOP, anchor = NW) 
-    lambdaGridFrame.pack(side=TOP, anchor = SW)  
-
   #PAGE 5 to PAGE 4
   if pageNum == 5:
+    textEntry.pack_forget()
+    saveButton.pack_forget()
+    
     prevButton.config(width = 23) 
   
     circleScrollingArea.pack(expand=1, fill = BOTH)   
@@ -349,6 +354,7 @@ prevButton = Button(main, text = 'Prev', command = prev_page, width = 35)
 #
 #Label and Buttons exclusive to page 1
 #
+
 #stimScrollingArea is at index zero of the list, this way, the scrolling area
 #can be passed by reference and modified by other functions
 stimScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
@@ -396,11 +402,18 @@ FrameCBS = Frame(main)
 TitleCBS = Label(main, text='Concrete Behaviours')
 
 #
-#Labels and Entries exclusive for page 3
+#Labels and Entries exclusive for page 4
 #
 
 fillN = Button(main, text = 'Fill with neutral stimulus', 
                command = lambda: fill_n(bevDict, stimDict, 
                                         circleTableBoxes, lambdaTableBoxes), width = 23)
+
+#
+#Labels and Entries exclusive for page 5
+#
+textEntry = Text(main)
+
+saveButton = Button(main, text = 'Save File', command = create_save_file, width = 35)
 
 main.mainloop()
