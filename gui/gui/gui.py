@@ -176,30 +176,40 @@ def next_page():
                 circleGridFrame, lambdaGridFrame) 
     
       #recreating the table
-      circleScrollingArea.pack_forget()
-      circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
-      circleScrollingArea.pack(expand=1, fill = BOTH)   
+      circleScrollingAreaTemp = superscroll.Scrolling_Area(main, width=1, height=1)
+      circleScrollingAreaTemp.pack(expand=1, fill = BOTH)   
     
-      circleGridFrame.pack_forget()
-      circleGridFrame = Frame(circleScrollingArea.innerframe) 
-      circleTableLabel = Label(circleGridFrame, text = 'o')   
+      circleGridFrameTemp = Frame(circleScrollingAreaTemp.innerframe) 
+      circleTableLabel = Label(circleGridFrameTemp, text = 'o')   
       circleTableLabel.grid(row = 0, column = 0)
     
-      lambdaScrollingArea.pack_forget()
-      lambdaScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
-      lambdaScrollingArea.pack(expand=1, fill = BOTH)      
+      lambdaScrollingAreaTemp = superscroll.Scrolling_Area(main, width=1, height=1)
+      lambdaScrollingAreaTemp.pack(expand=1, fill = BOTH)      
     
-      lambdaGridFrame.pack_forget()
-      lambdaGridFrame = Frame(lambdaScrollingArea.innerframe) 
-      lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8'))   
+      lambdaGridFrameTemp = Frame(lambdaScrollingAreaTemp.innerframe) 
+      lambdaTableLabel = Label(lambdaGridFrameTemp, text = b'\xce\xbb'.decode('utf-8'))   
       lambdaTableLabel.grid(row = 0, column = 0)           
 
       circleTableBoxes, lambdaTableBoxes = recreate_table(bevDict, stimDict, circleTableBoxes, 
-                                                          lambdaTableBoxes,circleGridFrame, 
-                                                          lambdaGridFrame)     
-      #pack the new frames      
-      circleGridFrame.pack(side=TOP, anchor = NW) 
-      lambdaGridFrame.pack(side=TOP, anchor = SW)         
+                                                          lambdaTableBoxes, circleGridFrameTemp, 
+                                                          lambdaGridFrameTemp)     
+      #destroy old frames
+      circleScrollingArea.destroy()
+      circleGridFrame.destroy()
+      lambdaScrollingArea.destroy()
+      lambdaGridFrame.destroy()
+           
+      #pack the new frames
+      circleScrollingAreaTemp.pack(side=TOP, anchor = NW)
+      circleGridFrameTemp.pack(side=TOP, anchor = NW)
+      lambdaScrollingAreaTemp.pack(side=TOP, anchor = SW)
+      lambdaGridFrameTemp.pack(side=TOP, anchor = SW)
+      
+      #assign to old frames to the new frames
+      circleScrollingArea = circleScrollingAreaTemp
+      circleGridFrame = circleGridFrameTemp
+      lambdaScrollingArea = lambdaScrollingAreaTemp
+      lambdaGridFrame = lambdaGridFrameTemp        
     
   #PAGE 4 to PAGE 5
   if pageNum == 4:
