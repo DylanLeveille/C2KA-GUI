@@ -1,5 +1,6 @@
 from tkinter import*
 from delete_CBS import *
+from add_CBS import*
 
 
 def create_CBS_entries(bevDict, FrameCBS, rowNum):
@@ -27,7 +28,9 @@ def fix_CBS(bevDict, Entries, Labels, FrameCBS, rowNum):
         del Entries[rowNum - count+1]
         count-=1
     
-    return newRowNum
+    
+    rowNum = add_CBS(newRowNum, currRow, count, bevDict, Entries, Labels, FrameCBS)
+    return rowNum, Entries, Labels
     
 
     

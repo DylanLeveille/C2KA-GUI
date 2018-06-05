@@ -104,25 +104,25 @@ def next_page():
       pageNum -= 1
     
 
-   else:  
+    else:  
     #set new page
-    agentLabel.pack_forget()
-    agentEntry.pack_forget()
-    agentBevLabel.pack_forget()
-    agentBevEntry.pack_forget()
+      agentLabel.pack_forget()
+      agentEntry.pack_forget()
+      agentBevLabel.pack_forget()
+      agentBevEntry.pack_forget()
     
-    AgentCBS = Label(main, text = agentEntry.get())
-    TitleCBS.pack(side = TOP)
-    AgentCBS.pack(side = TOP, anchor = W)
-    FrameCBS.pack(side = TOP, fill = BOTH)
+      AgentCBS = Label(main, text = agentEntry.get())
+      TitleCBS.pack(side = TOP)
+      AgentCBS.pack(side = TOP, anchor = W)
+      FrameCBS.pack(side = TOP, fill = BOTH)
     
     if generatedCBS == False:
-     rowNum = 0
-     EntriesCBS, LabelsCBS, rowNum = create_CBS_entries(bevDict, FrameCBS, rowNum)
-     generatedCBS = True
+      rowNum = 0
+      EntriesCBS, LabelsCBS, rowNum = create_CBS_entries(bevDict, FrameCBS, rowNum)
+      generatedCBS = True
  
     else:
-     rowNum = fix_CBS(bevDict, EntriesCBS, LabelsCBS, FrameCBS, rowNum)
+      rowNum, EntriesCBS, LabelsCBS = fix_CBS(bevDict, EntriesCBS, LabelsCBS, FrameCBS, rowNum)
      
     agentName = agentEntry.get()    
     agentBehaviour = agentBevEntry.get()   
@@ -130,17 +130,17 @@ def next_page():
   #PAGE 3 to PAGE 4
   if pageNum == 3:
    #set new page 
-   FrameCBS.pack_forget()
-   TitleCBS.pack_forget()
-   AgentCBS.pack_forget()
-   nextButton.config(width = 23)
-   prevButton.config(width = 23)
-   fillN.pack(in_=buttonsFrame, side = BOTTOM)
+    FrameCBS.pack_forget()
+    TitleCBS.pack_forget()
+    AgentCBS.pack_forget()
+    nextButton.config(width = 23)
+    prevButton.config(width = 23)
+    fillN.pack(in_=buttonsFrame, side = BOTTOM)
    
-   if generatedTable == False:
+    if generatedTable == False:
     #Frame for the tables and corner label
-    circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
-    circleScrollingArea.pack(expand=1, fill = BOTH)   
+      circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
+      circleScrollingArea.pack(expand=1, fill = BOTH)   
 
     
       circleGridFrame = Frame(circleScrollingArea.innerframe) 
@@ -162,7 +162,7 @@ def next_page():
       circleGridFrame.pack(side=TOP, anchor = NW) 
       lambdaGridFrame.pack(side=TOP, anchor = SW) 
     
-    generatedTable = True #table is now generated
+      generatedTable = True #table is now generated
 
     
       #keep track of table's current lenght and width
@@ -267,14 +267,14 @@ def prev_page():
     addStim.pack(in_=buttonsFrame, side = TOP)
 
  #PAGE 3 to PAGE 2 
- if pageNum == 3:
-  agentLabel.pack(side = TOP, anchor = W)
-  agentEntry.pack(side = TOP, anchor = W)
-  agentBevLabel.pack(side = TOP, anchor = W)
-  agentBevEntry.pack(side = TOP, anchor = W)
-  FrameCBS.pack_forget()
-  TitleCBS.pack_forget()
-  AgentCBS.pack_forget()
+  if pageNum == 3:
+    FrameCBS.pack_forget()
+    TitleCBS.pack_forget()
+    AgentCBS.pack_forget()    
+    agentLabel.pack(side = TOP, anchor = W)
+    agentEntry.pack(side = TOP, anchor = W)
+    agentBevLabel.pack(side = TOP, anchor = W)
+    agentBevEntry.pack(side = TOP, anchor = W)
 
   
   
@@ -294,9 +294,9 @@ def prev_page():
     prevButton.config(width = 35)  
   
 
-  TitleCBS.pack(side = TOP)
-  AgentCBS.pack(side = TOP, anchor = W)
-  FrameCBS.pack(fill = BOTH) 
+    TitleCBS.pack(side = TOP)
+    AgentCBS.pack(side = TOP, anchor = W)
+    FrameCBS.pack(fill = BOTH) 
 
  
  
