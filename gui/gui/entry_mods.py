@@ -1,67 +1,60 @@
 from tkinter import*
 import vertSuperscroll 
 
-#function to extract the number of stims in the entry box
-def get_num_stims(numStims):
- #test to see if more than one word in the entry box
- if len(numStims.split()) > 1:
-   #call a function to pop up
-   print('please try again')
-    
- #test to see if it is a number only
- elif numStims.replace(' ', '').isdigit() != True:
-   #call a function to pop up
-   print('please try again')   
-   
- else:
-   print('yay, you win!')
-   return int(numStims.replace(' ', ''))
-
-#function to create specified number of stimuli entry boxes
-def delete_all_stim(main, stimList, numStims):
- print('Hello, world!')
-
 #Function to add new stimuli 
-def add_stim(main, stimList, entryWords):
+def add_stim(main, stimList, stimScrollingArea):
  #make a new frame capable of scrolling to the new entry box
- stimScrollingArea = vertSuperscroll.Scrolling_Area(main)
- stimScrollingArea.pack(expand = 1, fill=BOTH)
+ stimScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
+ stimScrollingAreaTemp.pack(expand = 1, fill=BOTH)
  
- stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
+ stimTitle = Label(stimScrollingAreaTemp.innerframe, text='Please Enter The Stimuli')
  stimTitle.pack(side = TOP) 
      
- for i in range(len(entryWords)):
-  stimEntry = Entry(stimScrollingArea.innerframe)
-  stimEntry.insert(0, entryWords[i])    
+ for i in range(len(stimList)):
+  stimEntry = Entry(stimScrollingAreaTemp.innerframe)
+  stimEntry.insert(0, stimList[i].get())    
   stimList[i] = stimEntry
   stimEntry.pack(side = TOP, pady=10)
  
- stimEntry = Entry(stimScrollingArea.innerframe)    
+ stimEntry = Entry(stimScrollingAreaTemp.innerframe)    
  stimEntry.pack(side = TOP, pady=10)     
  
- stimList.append(stimEntry)
+ #destroy old frame
+ stimScrollingArea[0].destroy()
  
- return stimScrollingArea
+ #assign new frame
+ stimScrollingArea[0] = stimScrollingAreaTemp
+ 
+ #add new entryto the list
+ stimList.append(stimEntry)
     
 #Function to remove stimuli 
-def remove_stim(main, stimList, entryWords):
- #make a new frame capable of scrolling to the new entry box
- stimScrollingArea = vertSuperscroll.Scrolling_Area(main)
- stimScrollingArea.pack(expand = 1, fill=BOTH)
+def remove_stim(main, stimList, stimScrollingArea):
+ #we need at least one entry to be able to remove a stimulus
+ if len(stimList) > 0:
+  #make a new frame capable of scrolling to the new entry box
+  stimScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
+  stimScrollingAreaTemp.pack(expand = 1, fill=BOTH)
+  
+  stimTitle = Label(stimScrollingAreaTemp.innerframe, text='Please Enter The Stimuli')
+  stimTitle.pack(side = TOP) 
+      
+  for i in range(len(stimList) - 1):
+   stimEntry = Entry(stimScrollingAreaTemp.innerframe)
+   stimEntry.insert(0, stimList[i].get())    
+   stimList[i] = stimEntry
+   stimEntry.pack(side = TOP, pady=10)
+  
+  #remove last entry in list 
+  stimList[len(stimList) - 1].destroy()
+  del stimList[len(stimList) - 1]
+  
+  #destroy old frame
+  stimScrollingArea[0].destroy()
+  
+  #assign new frame
+  stimScrollingArea[0] = stimScrollingAreaTemp 
  
- stimTitle = Label(stimScrollingArea.innerframe, text='Please Enter The Stimuli')
- stimTitle.pack(side = TOP) 
-     
- for i in range(len(entryWords)):
-  stimEntry = Entry(stimScrollingArea.innerframe)
-  stimEntry.insert(0, entryWords[i])    
-  stimList[i] = stimEntry
-  stimEntry.pack(side = TOP, pady=10) 
- 
- stimList[len(stimList) - 1].destroy()
- del stimList[len(stimList) - 1]
- 
- return stimScrollingArea
  
 #button function to fill lambda table with neutral stimulus
 def fill_n(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes):
