@@ -2,7 +2,7 @@ from tkinter import *
 from string import *
 
 def create_text(agentName, agentBehaviour, circleTableValues,
-                lambdaTableValues, stimDict, bevDict):
+                lambdaTableValues, stimDict, bevDict, Labels, Entries):
     #Create file if it does not exist
     file = open("agentspec.txt", "w+") 
     file.write("begin AGENT where\n")
@@ -41,6 +41,19 @@ def create_text(agentName, agentBehaviour, circleTableValues,
             #Access table values using row and columns
             file.write("= %s" %(lambdaTableValues[j, i]))
             file.write("\n")
+    
+    file.write("end\n")
+    file.write("\n")
+    
+    
+    file.write("begin CONCRETE BEHAVIOUR where\n")
+    for i in range(1, len(bevDict) +1):
+        file.write("    %s" %(Labels[i].cget("text")))
+        whiteSpace = len(max(bevDict.values(), key=len)) - len(Labels[i].cget("text"))
+        for j in range(whiteSpace + 1):
+            file.write(" ")
+        file.write("=> [ %s ]" %(Entries[i].get()))
+        file.write("\n")
   
     file.write("end")    
     file.close()
