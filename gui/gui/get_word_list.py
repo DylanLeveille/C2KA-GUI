@@ -10,31 +10,52 @@ def build_stim_dict(stimList):
   hist = {}
   i = 1 #index for the list
   index = 1 #index for the dictionary 
+  
+  #Bollean to check if there is at least one bad entry
+  oneBad = False
 
   for i in range (len(stimList)):
+    #Boolean to check if bad
+    isBad = False    
     #test to see if more than one word in each entry box
     stimEntryList = stimList[i].get().split()
     if len(stimEntryList) > 1:
-      return None
+      isBad = True
+
     #test to see if it is a number only
     try:
         float(stimList[i].get())
-        return None
+        if isBad == False:
+          isBad = True
+
     #if not only a number, check to see if characters are valid  
     except ValueError:   
       #return if there is an invalid symbol inside the word
       for character in stimList[i].get():
         if character.upper() not in symbolsList:
-          return None
-      
+          if isBad == False:
+            isBad = True
+  
+    #background configured to red since it is a bad entry
+    if isBad:
+      oneBad = True
+      stimList[i].config(bg = 'red')
+    
+    else:  
+      #background configured to white since it is a good entry
+      stimList[i].config(bg = 'white')
       # Don't count any empty strings created when the punctuation marks
       # are removed. For example, if word is bound to a hyphen, '-',
       # word.strip(string.punctuation) yields the empty string, ''.
       if stimList[i].get() not in hist and stimList[i].get() != ' ' * len(stimList[i].get()):
         hist[index] = stimList[i].get().replace(' ', '')
         index += 1
-  #will only return a histogram if tests are passed    
-  return hist
+          
+  #will only return a histogram if tests are passed 
+  if oneBad:
+    return None
+  else:
+    return hist
 
 def get_agent(agentEntry):
   #test to see if more than one word in the entry box
