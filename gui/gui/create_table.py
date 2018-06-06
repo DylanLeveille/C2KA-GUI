@@ -41,15 +41,25 @@ def recreate_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
  for i in range(1, len(bevDict) + 1): #Rows
   bevLabel = Label(circleGridFrame, text = bevDict[i])
   bevLabel.grid(row = i, column = 0)
+  
+  circleTableBoxes[i, 0] = bevLabel
+  
   bevLabel = Label(lambdaGridFrame, text = bevDict[i])
   bevLabel.grid(row = i, column = 0)  
+  
+  lambdaTableBoxes[i, 0] = bevLabel
  
  #Generate labels for the stimuli
  for j in range(1, len(stimDict) + 1): #Columns
   stimLabel = Label(circleGridFrame, text = stimDict[j])
   stimLabel.grid(row = 0, column = j)  
+  
+  circleTableBoxes[0, j] = bevLabel
+  
   stimLabel = Label(lambdaGridFrame, text = stimDict[j])
-  stimLabel.grid(row = 0, column = j)     
+  stimLabel.grid(row = 0, column = j)   
+  
+  lambdaTableBoxes[0, j] = bevLabel
  
  #re-generate the table with the modifications brought by fix_grids()
  for i in range(1, len(bevDict) + 1): #Rows
