@@ -1,7 +1,7 @@
 from tkinter import*
 from entry_mods import*
 from get_word_list import*
-from CBS import *
+from CBS_mods import*
 from create_table import*
 from fix_grids import*
 from create_text import*
@@ -35,8 +35,13 @@ def next_page():
   global stimDict #dictionary to hold final entries of entered stimuli
   global bevDict #dictionary to hold agent behaviours
   
-  global agentName #Record Entries for name and behaviour of agent
-  global agentBehaviour 
+  global agentName #record entry for name of agent
+  global agentBehaviour #record entry for behaviour of agent
+  
+  global frameCBS #frame to hold concrete behaviours
+  global agentCBS #label for the agent name on the concrete behaviours page
+  
+  global entriesCBS #data scructure to hold concrete behaviour labels and entries
   
   global circleTableBoxes #dict to hold entry boxes and labels of circle table
   global lambdaTableBoxes #dict to hold entry boxes and labels of lambda table 
@@ -56,12 +61,6 @@ def next_page():
   
   global noStims #pop-up window for no stims inputted
   global invalidEntryPop #pop-up window for invalid table entries
-  
-  global FrameCBS
-  global AgentCBS
-  global EntriesCBS
-  global LabelsCBS
-  global CBSrowNum
   
   #Note: dictionaries are set empty when swithing to a next page
   #(depending on pageNum) in order to update the data
@@ -96,57 +95,72 @@ def next_page():
     bevDict = build_bev_dict(agentBevEntry.get()) #behaviour dictionary
    
     if agentName == None: #need at least one agent
+      #change background colour of agent name to red to warn user
+      agentEntry.config(bg = 'red')
       #stay on current page
       incorrect_agent(main)
       pageNum -= 1    
    
     elif bevDict == None or len(bevDict) == 0: #user must imput at least one valid behaviour
+      #we can confirm that the agent entry is good since it passed the first if statement
+      #therefore we set the background back to white 
+      agentEntry.config(bg = 'white')
+      #change background colour of behaviour to red to warn user
+      agentBevEntry.config(bg = 'red')      
       #stay on current page
       incorrect_bevs(main)
       pageNum -= 1
     
 
     else:  
+      #we can confirm that the agent entry and behaviour entry are good since 
+      #they passed the two first if statement,
+      #therefore we set the background back to white 
+      agentEntry.config(bg = 'white')      
+      agentBevEntry.config(bg = 'white') 
       #set new page
       agentLabel.pack_forget()
       agentEntry.pack_forget()
       agentBevLabel.pack_forget()
       agentBevEntry.pack_forget()
     
-      AgentCBS = Label(main, text = agentEntry.get())
-      TitleCBS.pack(side = TOP)
-      AgentCBS.pack(side = TOP, anchor = W)
+      agentCBS = Label(main, text = agentName + ':')
+      titleCBS.pack(side = TOP)
+      agentCBS.pack(side = TOP, anchor = W)
 
-    
-      if generatedCBS == False:
-        
+      #no concrete behaviours generated for the behaviours
+      if generatedCBS == False:   
         concreteScrollingArea = vertSuperscroll.Scrolling_Area(main, width=1, height=1)
         concreteScrollingArea.pack(expand=1, fill = BOTH)   
-        FrameCBS = Frame(concreteScrollingArea.innerframe)
-        FrameCBS.pack(anchor = W)
+        frameCBS = Frame(concreteScrollingArea.innerframe)
+        frameCBS.pack(anchor = W)
         
+        entriesCBS= create_CBS_entries(bevDict, frameCBS)
         
-        CBSrowNum = 0
-        EntriesCBS, LabelsCBS, CBSrowNum = create_CBS_entries(bevDict, FrameCBS, CBSrowNum)
+        #save the number of CBS in the bevDict dictionary at key numRow
+        entriesCBS['numRows'] = len(bevDict)
+        
+        #set generatedCBS to True
         generatedCBS = True
  
+      #create behaviours page was generated => must be modified if necessary to 
+      #adapt to changes made on previous pages
       else:
-        
-        CBSrowNum, EntriesCBS, LabelsCBS = fix_CBS(bevDict, EntriesCBS, LabelsCBS, FrameCBS, CBSrowNum)
+        entriesCBS= fix_CBS(bevDict, frameCBS, entriesCBS)
         
         concreteScrollingAreaTemp = superscroll.Scrolling_Area(main, width = 1, height = 1)
         concreteScrollingAreaTemp.pack(expand = 1, fill = BOTH)
-        FrameCBSTemp = Frame(concreteScrollingAreaTemp.innerframe)
+        frameCBSTemp = Frame(concreteScrollingAreaTemp.innerframe)
         
-        EntriesCBS, LabelsCBS = recreate_CBS_entries(bevDict, FrameCBSTemp, EntriesCBS, LabelsCBS)
+        entriesCBS= recreate_CBS_entries(bevDict, entriesCBS, frameCBSTemp)
         
         concreteScrollingArea.destroy()
-        FrameCBS.destroy()
+        frameCBS.destroy()
       
         concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
-        FrameCBSTemp.pack(anchor =  W)
+        frameCBSTemp.pack(anchor =  W)
         
-        FrameCBS = FrameCBSTemp
+        frameCBS = frameCBSTemp
         concreteScrollingArea = concreteScrollingAreaTemp
      
       agentName = agentEntry.get()    
@@ -155,10 +169,10 @@ def next_page():
   #PAGE 3 to PAGE 4
   if pageNum == 3:
     #set new page 
-    FrameCBS.pack_forget()
+    frameCBS.pack_forget()
     concreteScrollingArea.pack_forget()
-    TitleCBS.pack_forget()
-    AgentCBS.pack_forget()
+    titleCBS.pack_forget()
+    agentCBS.pack_forget()
     nextButton.config(width = 23)
     prevButton.config(width = 23)
     fillN.pack(in_=buttonsFrame, side = BOTTOM)
@@ -264,7 +278,7 @@ def next_page():
       prevButton.config(width = 35)
     
       create_text(agentName, agentBehaviour, circleTableValues, 
-                  lambdaTableValues, stimDict, bevDict, LabelsCBS, EntriesCBS)
+                  lambdaTableValues, stimDict, bevDict, entriesCBS)
   
       textEntry.config(state = 'normal')
       textEntry.delete(1.0, END)
@@ -309,9 +323,9 @@ def prev_page():
     agentBevEntry.pack(side = TOP, anchor = W)
     
     concreteScrollingArea.pack_forget()
-    FrameCBS.pack_forget()
-    TitleCBS.pack_forget()
-    AgentCBS.pack_forget()
+    frameCBS.pack_forget()
+    titleCBS.pack_forget()
+    agentCBS.pack_forget()
   
   #PAGE 4 to PAGE 3
   if pageNum == 4:
@@ -329,9 +343,9 @@ def prev_page():
     prevButton.config(width = 35)  
   
 
-    TitleCBS.pack(side = TOP)
-    AgentCBS.pack(side = TOP, anchor = W)
-    FrameCBS.pack(anchor = W)
+    titleCBS.pack(side = TOP)
+    agentCBS.pack(side = TOP, anchor = W)
+    frameCBS.pack(anchor = W)
     concreteScrollingArea.pack(expand =1, fill = BOTH)
 
   #PAGE 5 to PAGE 4
@@ -425,8 +439,10 @@ agentEntry = Entry(main, width = 50)
 agentBevLabel = Label(main, text = 'Enter Agent Behaviour:')
 agentBevEntry = Entry(main, width = 50)
 
-#Labels and Entries for page 3
-TitleCBS = Label(main, text='Concrete Behaviours')
+#
+#Labels and Entries exclusive for page 3
+#
+titleCBS = Label(main, text='Concrete Behaviours')
 
 #
 #Labels and Entries exclusive for page 4
