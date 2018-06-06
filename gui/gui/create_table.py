@@ -54,12 +54,12 @@ def recreate_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
   stimLabel = Label(circleGridFrame, text = stimDict[j])
   stimLabel.grid(row = 0, column = j)  
   
-  circleTableBoxes[0, j] = bevLabel
+  circleTableBoxes[0, j] = stimLabel
   
   stimLabel = Label(lambdaGridFrame, text = stimDict[j])
   stimLabel.grid(row = 0, column = j)   
   
-  lambdaTableBoxes[0, j] = bevLabel
+  lambdaTableBoxes[0, j] = stimLabel
  
  #re-generate the table with the modifications brought by fix_grids()
  for i in range(1, len(bevDict) + 1): #Rows
