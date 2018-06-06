@@ -1,73 +1,34 @@
-from threading import Thread
+#!/usr/bin/python
 
-import pyautogui
-
-import win32api
-
-import time
+from tkinter import *
+from tkinter import ttk
 
 
-
-class AutoReadManga:
-
-    def __init__(self):
-
-        self.canScroll = False
-
-        self.AltL = True
-
-        self.AltK = False
+main = Tk()
+main.title('Notebook Demo')
+main.geometry('500x500')
 
 
+# gives weight to the cells in the grid
+rows = 0
+while rows < 50:
+    main.rowconfigure(rows, weight=1)
+    main.columnconfigure(rows, weight=1)
+    rows += 1
 
-    def Start(self):
+# Defines and places the notebook widget
+nb = ttk.Notebook(main)
+nb.grid(row=1, column=0, columnspan=50, rowspan=49, sticky='NESW')
 
-        self.canScroll = True
+# Adds tab 1 of the notebook
+page1 = ttk.Frame(nb)
+nb.add(page1, text='Tab1')
 
-        while self.canScroll == True:
+# Adds tab 2 of the notebook
+page2 = ttk.Frame(nb)
+nb.add(page2, text='Tab2')
 
-            pyautogui.scroll(-10)
+Button = Button(page1, text = "test")
+Button.pack()
 
-
-
-    def Stop(self):
-
-        self.canScroll = False
-
-
-
-    def Run(self):
-
-        while True:
-
-            if self.AltL:
-
-                if win32api.GetAsyncKeyState(164) and win32api.GetAsyncKeyState(76):
-
-                    Thread(target=self.Start).start()
-
-                    self.AltL = False
-
-                    self.AltK = True
-
-            if self.AltK:
-
-                if win32api.GetAsyncKeyState(164) and win32api.GetAsyncKeyState(75):
-
-                    self.Stop()
-
-                    self.AltL = True
-
-                    self.AltK = False
-
-            elif win32api.GetAsyncKeyState(164) and win32api.GetAsyncKeyState(81):
-
-                quit()
-
-            time.sleep(0.01)
-
-
-
-LuckyEgg = AutoReadManga()
-
-LuckyEgg.Run()
+main.mainloop()
