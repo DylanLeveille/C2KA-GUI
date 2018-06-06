@@ -123,7 +123,7 @@ def next_page():
         generatedCBS = True
  
       else:
-        rowNum = fix_CBS(bevDict, EntriesCBS, LabelsCBS, FrameCBS, rowNum)
+        rowNum, EntriesCBS, LabelsCBS = fix_CBS(bevDict, EntriesCBS, LabelsCBS, FrameCBS, rowNum)
      
       agentName = agentEntry.get()    
       agentBehaviour = agentBevEntry.get()   
@@ -239,7 +239,7 @@ def next_page():
       prevButton.config(width = 35)
     
       create_text(agentName, agentBehaviour, circleTableValues, 
-                  lambdaTableValues, stimDict, bevDict)
+                  lambdaTableValues, stimDict, bevDict, LabelsCBS, EntriesCBS)
   
       textEntry.config(state = 'normal')
       textEntry.delete(1.0, END)

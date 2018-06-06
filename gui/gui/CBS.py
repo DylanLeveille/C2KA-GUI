@@ -23,7 +23,8 @@ def fix_CBS(bevDict, Entries, Labels, FrameCBS, rowNum):
     count = delete_CBS(rowNum, currRow, count, bevDict, Entries, Labels)
     newRowNum = rowNum - count
     while count>0:
-        
+        Labels[rowNum - count+1].destroy()
+        Entries[rowNum - count+1].destroy()
         del Labels[rowNum - count+1]
         del Entries[rowNum - count+1]
         count-=1

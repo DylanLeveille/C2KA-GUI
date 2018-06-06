@@ -1,11 +1,40 @@
 begin AGENT where
-    A :=  T
+    Agent1 := x null z y
 end
 
 begin NEXT_BEHAVIOUR where
-    (Help, T) = T
+    (a, X)    = X
+    (a, NULL) = X
+    (a, Z)    = X
+    (a, Y)    = Y
+    (b, X)    = X
+    (b, NULL) = X
+    (b, Z)    = X
+    (b, Y)    = Y
+    (c, X)    = X
+    (c, NULL) = X
+    (c, Z)    = X
+    (c, Y)    = Y
 end
 
 begin NEXT_STIMULUS where
-    (Help, T) = N
+    (a, X)    = N
+    (a, NULL) = N
+    (a, Z)    = N
+    (a, Y)    = N
+    (b, X)    = N
+    (b, NULL) = N
+    (b, Z)    = N
+    (b, Y)    = N
+    (c, X)    = N
+    (c, NULL) = N
+    (c, Z)    = N
+    (c, Y)    = N
+end
+
+begin CONCRETE BEHAVIOUR where
+    X    => [ flag ]
+    NULL => [ fill ]
+    Z    => [ both ]
+    Y    => [ all ]
 end
