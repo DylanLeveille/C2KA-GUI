@@ -46,6 +46,7 @@ def next_page():
   
   global circleScrollingArea #scrolling area for circle table
   global lambdaScrollingArea #scrolling area for circle table
+  global concreteScrollingArea #scrolling area for CBS
   
   global circleGridFrame #global frame for the circle table
   global lambdaGridFrame #global frame for the circle table
@@ -60,7 +61,7 @@ def next_page():
   global AgentCBS
   global EntriesCBS
   global LabelsCBS
-  global rowNum
+  global CBSrowNum
   
   #Note: dictionaries are set empty when swithing to a next page
   #(depending on pageNum) in order to update the data
@@ -115,15 +116,38 @@ def next_page():
       AgentCBS = Label(main, text = agentEntry.get())
       TitleCBS.pack(side = TOP)
       AgentCBS.pack(side = TOP, anchor = W)
-      FrameCBS.pack(side = TOP, fill = BOTH)
+
     
       if generatedCBS == False:
-        rowNum = 0
-        EntriesCBS, LabelsCBS, rowNum = create_CBS_entries(bevDict, FrameCBS, rowNum)
+        
+        concreteScrollingArea = vertSuperscroll.Scrolling_Area(main, width=1, height=1)
+        concreteScrollingArea.pack(expand=1, fill = BOTH)   
+        FrameCBS = Frame(concreteScrollingArea.innerframe)
+        FrameCBS.pack(anchor = W)
+        
+        
+        CBSrowNum = 0
+        EntriesCBS, LabelsCBS, CBSrowNum = create_CBS_entries(bevDict, FrameCBS, CBSrowNum)
         generatedCBS = True
  
       else:
-        rowNum, EntriesCBS, LabelsCBS = fix_CBS(bevDict, EntriesCBS, LabelsCBS, FrameCBS, rowNum)
+        
+        CBSrowNum, EntriesCBS, LabelsCBS = fix_CBS(bevDict, EntriesCBS, LabelsCBS, FrameCBS, CBSrowNum)
+        
+        concreteScrollingAreaTemp = superscroll.Scrolling_Area(main, width = 1, height = 1)
+        concreteScrollingAreaTemp.pack(expand = 1, fill = BOTH)
+        FrameCBSTemp = Frame(concreteScrollingAreaTemp.innerframe)
+        
+        EntriesCBS, LabelsCBS = recreate_CBS_entries(bevDict, FrameCBSTemp, EntriesCBS, LabelsCBS)
+        
+        concreteScrollingArea.destroy()
+        FrameCBS.destroy()
+      
+        concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
+        FrameCBSTemp.pack(anchor =  W)
+        
+        FrameCBS = FrameCBSTemp
+        concreteScrollingArea = concreteScrollingAreaTemp
      
       agentName = agentEntry.get()    
       agentBehaviour = agentBevEntry.get()   
@@ -132,6 +156,7 @@ def next_page():
   if pageNum == 3:
     #set new page 
     FrameCBS.pack_forget()
+    concreteScrollingArea.pack_forget()
     TitleCBS.pack_forget()
     AgentCBS.pack_forget()
     nextButton.config(width = 23)
@@ -282,6 +307,8 @@ def prev_page():
     agentEntry.pack(side = TOP, anchor = W)
     agentBevLabel.pack(side = TOP, anchor = W)
     agentBevEntry.pack(side = TOP, anchor = W)
+    
+    concreteScrollingArea.pack_forget()
     FrameCBS.pack_forget()
     TitleCBS.pack_forget()
     AgentCBS.pack_forget()
@@ -304,7 +331,8 @@ def prev_page():
 
     TitleCBS.pack(side = TOP)
     AgentCBS.pack(side = TOP, anchor = W)
-    FrameCBS.pack(fill = BOTH) 
+    FrameCBS.pack(anchor = W)
+    concreteScrollingArea.pack(expand =1, fill = BOTH)
 
   #PAGE 5 to PAGE 4
   if pageNum == 5:
@@ -398,7 +426,6 @@ agentBevLabel = Label(main, text = 'Enter Agent Behaviour:')
 agentBevEntry = Entry(main, width = 50)
 
 #Labels and Entries for page 3
-FrameCBS = Frame(main)
 TitleCBS = Label(main, text='Concrete Behaviours')
 
 #

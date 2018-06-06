@@ -17,6 +17,17 @@ def create_CBS_entries(bevDict, FrameCBS, rowNum):
 
     return Entries, Labels, rowNum
 
+def recreate_CBS_entries(bevDict, FrameCBS, Entries, Labels):
+    for i in range(1, len(bevDict)+1):
+        LabelCBS = Label(FrameCBS, text = bevDict[i])
+        EntryCBS = Entry(FrameCBS)
+        EntryCBS.insert(0, Entries[i].get())
+        LabelCBS.pack(anchor = W)
+        EntryCBS.pack(anchor = W)
+        Labels[i] = LabelCBS
+        Entries[i] = EntryCBS
+    return Entries, Labels
+
 def fix_CBS(bevDict, Entries, Labels, FrameCBS, rowNum):
     currRow = 1
     count = 0
