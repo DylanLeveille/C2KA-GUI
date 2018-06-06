@@ -1,18 +1,15 @@
 begin AGENT where
-    a1 := u d
+    h := ok
 end
 
 begin NEXT_BEHAVIOUR where
-    (a, U) = U
-    (a, D) = U
+    (i, OK) = OK
 end
 
 begin NEXT_STIMULUS where
-    (a, U) = N
-    (a, D) = N
+    (i, OK) = N
 end
 
 begin CONCRETE BEHAVIOUR where
-    U => [ 7 ]
-    D => [  ]
+    OK => [ y ]
 end

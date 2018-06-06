@@ -38,15 +38,15 @@ def build_stim_dict(stimList):
   
     #background configured to red since it is a bad entry
     if isBad:
-      oneBad = True
+      if oneBad == False:
+        oneBad = True
+      #change background to color red to indicate error
       stimList[i].config(bg = 'red')
     
     else:  
       #background configured to white since it is a good entry
       stimList[i].config(bg = 'white')
-      # Don't count any empty strings created when the punctuation marks
-      # are removed. For example, if word is bound to a hyphen, '-',
-      # word.strip(string.punctuation) yields the empty string, ''.
+      #make sure entry is not empty
       if stimList[i].get() not in hist and stimList[i].get() != ' ' * len(stimList[i].get()):
         hist[index] = stimList[i].get().replace(' ', '')
         index += 1
@@ -98,9 +98,7 @@ def build_bev_dict(line):
         if character not in symbolsList:
           return None
       
-      # Don't count any empty strings created when the punctuation marks
-      # are removed. For example, if word is bound to a hyphen, '-',
-      # word.strip(string.punctuation) yields the empty string, ''.
+      #make sure netry isn't the enmpty string
       if word not in hist and word != '':
         hist[i] = word 
         i += 1
