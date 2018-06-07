@@ -1,42 +1,57 @@
-from tkinter import*
+"""Imported modules."""
+from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
 
+"""Function to add columns to the table and shift columns."""
 def add_columns(numRows, numColumns, circleTableBoxes, lambdaTableBoxes, stimDict,
              circleGridFrame, lambdaGridFrame):
-  #create a list containing all the labels the tables currently have 
-  #in their columns
+  """ (int, int, dict, dict, dict, tkinter.Frame, tkinter.Frame) -> (none)
+    
+    Adds columns to the tables for the new stimuli. Once added,
+    the columns are shifted to match the stimuli order defined
+    by the user.
+  
+  """      
+  ##Create a list containing all the labels the tables currently have 
+  ##in their columns.
   listOfLabels = []
+  
+  ##Appending the labels in the data scructure.
   for column in range(1, numColumns + 1):
     listOfLabels.append(circleTableBoxes[0, column].cget("text"))
     
-  #compare current table labels to what stimDict has
-  for i in range(len(stimDict)): #Columns
+  ##Compare current table labels to what stimDict has.
+  for i in range(len(stimDict)): ##Columns.
     label = stimDict[i + 1]
-    if label not in listOfLabels: #means a stimuli was added
-      #therefore, we will add a new column
+    if label not in listOfLabels: ##Means a stimuli was added if True.
+      ##Therefore, we will add a new column.
       numColumns += 1
-      circleTableBoxes[0, 0] = numRows, numColumns #new number of columns
-      #create label box for a new column
+      
+      ##Save the new number of columns in the dictionary.
+      circleTableBoxes[0, 0] = numRows, numColumns 
+      
+      ##Create a label box for a new column in each table.
       circleTableBoxes[0, numColumns] = Label(circleGridFrame, text = label)
       
       lambdaTableBoxes[0, numColumns] = Label(lambdaGridFrame, text = label)   
       
-      #create the entry boxes at the right side of each table
+      ##Create the entry boxes at the right side of each table (underneath
+      ##the new label).
       for row in range(1, numRows + 1):
         circleTableBoxes[row, numColumns] = Entry(circleGridFrame)
         
         lambdaTableBoxes[row, numColumns] = Entry(lambdaGridFrame)       
       
-  #Now that all the new columns have been added, the columns' positions must 
-  #be switched to match the order defined by the user  
-  for column in range(1, len(stimDict) + 1): #Columns
-    #means the column is not in the right position
-    if stimDict[column] != circleTableBoxes[0, column].cget("text"):
-      #find the position of the column that is supposed to be there
+  ##Now that all the new columns have been added, the columns' positions must 
+  ##be switched to match the order defined by the user.  
+  for column in range(1, len(stimDict) + 1): ##Columns.
+    if stimDict[column] != circleTableBoxes[0, column].cget("text"): ##Means the column is not in the right position.
+      
+      ##Therefore, find the position of the column that is supposed to be there by iteration.
       columnPos = column + 1
       while stimDict[column] != circleTableBoxes[0, columnPos].cget("text"):
         columnPos += 1
         
-      #switch the labels of the columns
+      ##Switch the labels of the two columns with a temporary variable.
       auxLabel = stimDict[column]
       
       circleTableBoxes[0, columnPos].config(text = circleTableBoxes[0, column].cget("text"))
@@ -45,7 +60,8 @@ def add_columns(numRows, numColumns, circleTableBoxes, lambdaTableBoxes, stimDic
       lambdaTableBoxes[0, columnPos].config(text = lambdaTableBoxes[0, column].cget("text"))
       lambdaTableBoxes[0, column].config(text = auxLabel)      
       
-      #switch the row entries
+      ##Switch the row entries across each column in each table by using
+      ##a temporary variable..
       for row in range(1, numRows + 1):
         auxEntry = circleTableBoxes[row, columnPos].get()
         
