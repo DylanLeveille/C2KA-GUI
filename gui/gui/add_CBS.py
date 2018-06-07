@@ -1,7 +1,7 @@
 """Imported modules."""
-from tkinter import* ##Import the tkinter module to allow construction of the GUI interface.
+from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
 
-"""Function to add rows to the CBS page if necessary"""
+"""Function to add rows to the CBS page if necessary."""
 def add_CBS(bevDict, numRows, entriesCBS, frameCBS):
   """ (dict, int, dict, tkinter.Frame) -> (none)
     

@@ -1,13 +1,13 @@
 """Imported modules."""
-from tkinter import* ##Import the tkinter module to allow construction of the GUI interface.
-from check_if_good import* ##Functions which validate most of the data in the program.
-from entry_mods import* ##Functions which modify entry boxes.
-from get_word_list import* ##Functions which parse an entry box and returns lists of words.
-from CBS_mods import* ##Functions which modify the concrete behaviours page.
-from create_table import* ##Functions which create/recreate the tables.
-from fix_grids import* ##Functions which modifies the data currently stored in memory for the tables to match the data modified by the user.
-from create_text import* ##A module containing the function that creates the final product (text file).
-from create_save_file import* ##A module that contains the function to allow the text file to be saved to a certain directory. 
+from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
+from check_if_good import * ##Functions which validate most of the data in the program.
+from entry_mods import * ##Functions which modify entry boxes.
+from get_word_list import * ##Functions which parse an entry box and returns lists of words.
+from CBS_mods import * ##Functions which modify the concrete behaviours page.
+from create_table import * ##Functions which create/recreate the tables.
+from fix_grids import * ##Functions which modifies the data currently stored in memory for the tables to match the data modified by the user.
+from create_text import * ##A module containing the function that creates the final product (text file).
+from create_save_file import * ##A module that contains the function to allow the text file to be saved to a certain directory. 
 import vertSuperscroll ##Module containing the widget allowing a vertical scrollbar.
 import superscroll ##Module containing the widget allowing a vertical and horizontal scrollbar.
 
@@ -436,21 +436,21 @@ def prev_page():
 if __name__ == '__main__': ##only start program when running gui.py
   
   """Code related to the main program's window."""
-  main = Tk() ##The main window for the program
-  main.title("C2KA GUI") ##Title for the main window
-  main.resizable(width = False, height = False) ##The main window is not resizeable
+  main = Tk() ##The main window for the program.
+  main.title("C2KA GUI") ##Title for the main window.
+  main.resizable(width = False, height = False) ##The main window is not resizeable.
   
-  windowSize = 500 ##500 is the dimension that will be used for the window (500 x 500)
+  windowSize = 500 ##500 is the dimension that will be used for the window (500 x 500).
   
-  ##Collect screen (monitor) width and height to position the program's main window in the center 
+  ##Collect screen (monitor) width and height to position the program's main window in the center. 
   screenWidth = main.winfo_screenwidth() 
   screenHeight = main.winfo_screenheight()
   
-  ##Calculate this center position
+  ##Calculate the center position.
   positionRight = screenWidth/2 - windowSize/2
   positionDown = screenHeight/2 - windowSize/2
   
-  ##Set the window size using the geometry() method
+  ##Set the window size using the geometry() method.
   main.geometry('%dx%d+%d+%d' % (windowSize, windowSize, positionRight, 
                                  positionDown))
   
