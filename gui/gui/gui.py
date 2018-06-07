@@ -1,184 +1,209 @@
-from tkinter import*
-from entry_mods import*
-from get_word_list import*
-from CBS_mods import*
-from create_table import*
-from fix_grids import*
-from create_text import*
-from check_if_good import*
-from create_save_file import*
-import vertSuperscroll
-import superscroll
+"""Imported modules."""
+from tkinter import* ##Import the tkinter module to allow construction of the GUI interface.
+from check_if_good import* ##Functions which validate most of the data in the program.
+from entry_mods import* ##Functions which modify entry boxes.
+from get_word_list import* ##Functions which parse an entry box and returns lists of words.
+from CBS_mods import* ##Functions which modify the concrete behaviours page.
+from create_table import* ##Functions which create/recreate the tables.
+from fix_grids import* ##Functions which modifies the data currently stored in memory for the tables to match the data modified by the user.
+from create_text import* ##A module containing the function that creates the final product (text file).
+from create_save_file import* ##A module that contains the function to allow the text file to be saved to a certain directory. 
+import vertSuperscroll ##Module containing the widget allowing a vertical scrollbar.
+import superscroll ##Module containing the widget allowing a vertical and horizontal scrollbar.
 
-main = Tk()
-main.title("C2KA GUI")
-main.resizable(width = False, height = False)
-
-windowSize = 500
-
-screenWidth = main.winfo_screenwidth() 
-screenHeight = main.winfo_screenheight()
-
-positionRight = screenWidth/2 - windowSize/2
-positionDown = screenHeight/2 - windowSize/2
-
-main.geometry('%dx%d+%d+%d' % (windowSize, windowSize, positionRight, 
-                               positionDown))
-
-#Note: some global variables will be used due to the button functions
-#being unable to contain parameters.
+"""Next and previous button functions."""
+##Note: some global variables will be used due to the button functions
+##being unable to contain parameters.
    
-#Function to go to next page
+##Function to go to the next page.
 def next_page():
-  global pageNum #keep track of page number
-  
-  global stimDict #dictionary to hold final entries of entered stimuli
-  global bevDict #dictionary to hold agent behaviours
-  
-  global agentName #record entry for name of agent
-  global agentBehaviour #record entry for behaviour of agent
-  
-  global frameCBS #frame to hold concrete behaviours
-  global agentCBS #label for the agent name on the concrete behaviours page
-  
-  global entriesCBS #data scructure to hold concrete behaviour labels and entries
-  
-  global circleTableBoxes #dict to hold entry boxes and labels of circle table
-  global lambdaTableBoxes #dict to hold entry boxes and labels of lambda table 
-  
-  global circleTableValues #dict to hold values from circle table
-  global lambdaTableValues #dict to hold values from lambda table   
-  
-  global circleScrollingArea #scrolling area for circle table
-  global lambdaScrollingArea #scrolling area for circle table
-  global concreteScrollingArea #scrolling area for CBS
-  
-  global circleGridFrame #global frame for the circle table
-  global lambdaGridFrame #global frame for the circle table
-  
-  global generatedTable #bool variable to check if tables were generated
-  global generatedCBS #check to see if CBS was already generated
-  
-  global noStims #pop-up window for no stims inputted
-  global invalidEntryPop #pop-up window for invalid table entries
-  
-  #Note: dictionaries are set empty when swithing to a next page
-  #(depending on pageNum) in order to update the data
-  
-  #PAGE 1 to PAGE 2
-  if pageNum == 1:
-    stimDict = get_empty_dict() #stimuli dictionary
-    stimDict = build_stim_dict(stimList) #behaviour dictionary
+  """ (none) -> (none)
     
-    if stimDict == None or len(stimDict) == 0: #user must imput at least one valid stimulus
-      #stay on current page
-      incorrect_stims(main)
-      pageNum -= 1     
+    Allows the configuration of the next page 
+    in the program depending on the current
+    pageNum. Saves the collected entries (data)
+    in global data structures.
+  
+  """
+  global pageNum ##Keeps track of the page number.
+  
+  global stimDict ##Dictionary to hold final entries of entered stimuli.
+  global bevDict ##Dictionary to hold agent behaviours.
+  
+  global agentName ##Record entry for the name of the agent.
+  global agentBehaviour ##Record entry for the behaviour of the agent.
+  
+  global frameCBS ##Frame to hold concrete behaviours.
+  global agentCBS ##Label for the agent name on the concrete behaviours page.
+  
+  global entriesCBS ##Data scructure to hold concrete behaviour labels and entries.
+  
+  global circleTableBoxes ##Dict to hold entry boxes and labels of circle table.
+  global lambdaTableBoxes ##Dict to hold entry boxes and labels of lambda table.
+  
+  global circleTableValues ##Dict to hold values from circle table.
+  global lambdaTableValues ##Dict to hold values from lambda table.   
+  
+  global circleScrollingArea ##Scrolling area for circle table.
+  global lambdaScrollingArea ##Scrolling area for lambda table.
+  global concreteScrollingArea ##Scrolling area for the concrete behaviours (CBS).
+  
+  global circleGridFrame ##Global frame for the circle table.
+  global lambdaGridFrame ##Global frame for the lambda table.
+  
+  global generatedTable ##Bool variable to check if tables were generated.
+  global generatedCBS ##Bool variable to check if CBS were generated.
+  
+  ##Note: dictionaries are set empty when swithing to a next page
+  ##(depending on pageNum) in order to update the data.
+  
+  """PAGE 1 to PAGE 2."""
+  if pageNum == 1:
+    stimDict = get_empty_dict() ##Stimuli dictionary set empty.
+    stimDict = build_stim_dict(stimList) ##Stimuli dictionary is created usign the list of stim entries.
+    
+    if stimDict == None or len(stimDict) == 0: ##User must imput at least one valid stimulus.
+      ##Stay on current page.
+      incorrect_stims(main) ##Calls function for pop-up.
+      pageNum -= 1 ##Decrease pageNum by one to stay on current page.    
      
-    else:
-      #set new page 
+    else: ##User inputted valid stimuli.
+      ##Set new page by unpacking widgets on page 1.
       stimScrollingArea[0].pack_forget()
       addStim.pack_forget()
       delButton.pack_forget()
       stimFrame.pack_forget()
+      
+      ##Pack new buttons and configure an appropriate size.
       prevButton.pack(in_=buttonsFrame, side = LEFT)
       nextButton.config(width = 35)
+      
+      ##Pack new labels/entries for the agent and its behaviours.
       agentLabel.pack(side = TOP, anchor = W)
       agentEntry.pack(side = TOP, anchor = W)
       agentBevLabel.pack(side = TOP, anchor = W)
       agentBevEntry.pack(side = TOP, anchor = W)   
   
-  #PAGE 2 to PAGE 3
-  if pageNum ==2:
+  """PAGE 2 to PAGE 3."""
+  if pageNum ==2: 
+    agentName = get_agent(agentEntry.get()) ##The agent name is extracted from the entry.
+    bevDict = build_bev_dict(agentBevEntry.get()) ##Behaviour dictionary for the agent.
    
-    agentName = get_agent(agentEntry.get()) #the agent name
-    bevDict = build_bev_dict(agentBevEntry.get()) #behaviour dictionary
-   
-    if agentName == None: #need at least one agent
-      #change background colour of agent name to red to warn user
+    if agentName == None: ##User must input one valid agent to proceed.
+      ##Change background colour of the agent entry to red to warn user.
       agentEntry.config(bg = 'red')
-      #stay on current page
+      ##Stay on current page by warning the user with a pop-up.
       incorrect_agent(main)
+      ##Decrease pageNum to stay on current page.
       pageNum -= 1    
    
-    elif bevDict == None or len(bevDict) == 0: #user must imput at least one valid behaviour
-      #we can confirm that the agent entry is good since it passed the first if statement
-      #therefore we set the background back to white 
+    elif bevDict == None or len(bevDict) == 0: ##User must imput at least one valid behaviour
+      ##We can confirm that the agent entry is good since it passed the first if statement,
+      ##therefore we set the background of the agent entry back to white. 
       agentEntry.config(bg = 'white')
-      #change background colour of behaviour to red to warn user
+      ##Change background colour of behaviour to red to warn user.
       agentBevEntry.config(bg = 'red')      
-      #stay on current page
+      
+      ##Stay on current page by warning the user with a pop-up.
       incorrect_bevs(main)
-      pageNum -= 1
-    
+      ##Decrease pageNum to stay on current page.
+      pageNum -= 1  
 
     else:  
-      #we can confirm that the agent entry and behaviour entry are good since 
-      #they passed the two first if statement,
-      #therefore we set the background back to white 
+      ##We can confirm that the agent entry and behaviour entry are good since 
+      ##they passed the two first if statement,
+      ##therefore we set the background back to white. 
       agentEntry.config(bg = 'white')      
       agentBevEntry.config(bg = 'white') 
-      #set new page
+      
+      ##Before going to the next page, extract the full text describing 
+      ##the agent behaviour (used when create the text file).
+      agentBehaviour = agentBevEntry.get()        
+      
+      ##Set new page by unpacking entries/labels on page 2.
       agentLabel.pack_forget()
       agentEntry.pack_forget()
       agentBevLabel.pack_forget()
       agentBevEntry.pack_forget()
     
+      ##Pack new labels for CBS.
       agentCBS = Label(main, text = agentName + ':')
       titleCBS.pack(side = TOP)
       agentCBS.pack(side = TOP, anchor = W)
 
-      #no concrete behaviours generated for the behaviours
+      ##If no concrete behaviours were yet generated for the behaviours,
+      ##then we generate the rows for the CBS.
       if generatedCBS == False:   
+        ##Create a vertical scrolling area for the rows.
         concreteScrollingArea = vertSuperscroll.Scrolling_Area(main, width=1, height=1)
         concreteScrollingArea.pack(expand=1, fill = BOTH)   
+        ##create a frame for the rows within the scrolling area.
         frameCBS = Frame(concreteScrollingArea.innerframe)
         frameCBS.pack(anchor = W)
         
+        ##Call create_CBS_entries() to create the rows in the CBS frame.
         entriesCBS= create_CBS_entries(bevDict, frameCBS)
         
-        #save the number of CBS in the bevDict dictionary at key numRow
-        entriesCBS['numRows'] = len(bevDict)
+        ##Save the number of CBS in the bevDict dictionary at key 0, 0 since
+        ##that coordinate is unused.
+        entriesCBS[0, 0] = len(bevDict)
         
-        #set generatedCBS to True
+        ##Set generatedCBS to True.
         generatedCBS = True
  
-      #create behaviours page was generated => must be modified if necessary to 
-      #adapt to changes made on previous pages
+      ##If concrete behaviours page was already generated, it must be modified 
+      ##if necessary to adapt to changes made on previous pages.
       else:
+        ##fix_CBS() function will modify the data scructures related to CBS.
         entriesCBS= fix_CBS(bevDict, frameCBS, entriesCBS)
         
+        ##Create a temporary scrolling area that will be later used as the main scrolling
+        ##area. This is done in order to destroy the previous scrolling area
+        ##at the end of the else statement once all the necessary widgets were
+        ##saved from the old frame.
         concreteScrollingAreaTemp = superscroll.Scrolling_Area(main, width = 1, height = 1)
         concreteScrollingAreaTemp.pack(expand = 1, fill = BOTH)
+        ##Create a temporary frame to hold CBS (for the same reason described 
+        ##in the temporary scrolling area).
         frameCBSTemp = Frame(concreteScrollingAreaTemp.innerframe)
         
+        ##calling recreate_CBS_entries() to recreate the CBS rows in the new 
+        ##temporary frame.
         entriesCBS= recreate_CBS_entries(bevDict, entriesCBS, frameCBSTemp)
         
+        ##Destroy the old scrolling area and the old frame for the CBS.
         concreteScrollingArea.destroy()
         frameCBS.destroy()
-      
+        
+        ##Pack the new scrolling area and the new frame for the CBS.
         concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
         frameCBSTemp.pack(anchor =  W)
         
-        frameCBS = frameCBSTemp
+        ##Assing the old scrolling area and the old frame to the new ones.
         concreteScrollingArea = concreteScrollingAreaTemp
-     
-      agentName = agentEntry.get()    
-      agentBehaviour = agentBevEntry.get()   
+        frameCBS = frameCBSTemp 
   
-  #PAGE 3 to PAGE 4
+  """PAGE 3 to PAGE 4."""
   if pageNum == 3:
-    #set new page 
+    ##Set new page by forgetting the CBS scrolling area and frame, and
+    ##by forgetting the title and agent name labels.
     frameCBS.pack_forget()
     concreteScrollingArea.pack_forget()
     titleCBS.pack_forget()
     agentCBS.pack_forget()
+    
+    ##Configure the buttons' new size.
     nextButton.config(width = 23)
     prevButton.config(width = 23)
+    
+    ##Pack the fillN button which fills the lambda table with the 
+    ##neutral stimulus.
     fillN.pack(in_=buttonsFrame, side = BOTTOM)
    
+    ##If no tables were yet generated, we create a new one.
     if generatedTable == False:
-      #Frame for the tables and corner label
+      ##Creating ccrolling areas and frames for both the circle and lambda tables.
+      ##Also creating the labels in the upper corner of each table.
       circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
       circleScrollingArea.pack(expand=1, fill = BOTH)   
 
@@ -191,31 +216,33 @@ def next_page():
       lambdaScrollingArea.pack(expand=1, fill = BOTH)      
     
       lambdaGridFrame = Frame(lambdaScrollingArea.innerframe) 
-      lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8'))   
+      lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.  
       lambdaTableLabel.grid(row = 0, column = 0)   
     
-      #create the data structures to hold the table entries
+      ##Create the data structures to hold the table entries and
+      ##create the boxes within the frames.
       circleTableBoxes, lambdaTableBoxes = create_table(bevDict, stimDict,
                                                       circleGridFrame, 
                                                       lambdaGridFrame)
-      #pack the new frames     
+      ##pack the new table frames.   
       circleGridFrame.pack(side=TOP, anchor = NW) 
       lambdaGridFrame.pack(side=TOP, anchor = SW) 
     
-      generatedTable = True #table is now generated
+      generatedTable = True ##Table is now generated.
 
     
-      #keep track of table's current lenght and width
-      #only necessary to save this in one of the dictionaries
-      #will be saved at coordinate (0, 0) since not in use
+      ##Keep track of table's current lenght and width
+      ##in one of the dictionaries at coordinate (0, 0),
+      ##since that key is not in use.
       circleTableBoxes[0, 0] = len(bevDict), len(stimDict)
     
-    else: #Table was already generated
-      #calling fix_grids() to check if modifications are necessary to the grids
+    else: ##Table was already generated.
+      ##Calling fix_grids() to check if modifications are necessary to the grids.
       fix_grids(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
                 circleGridFrame, lambdaGridFrame) 
     
-      #recreating the table
+      ##Recreating the table by using a technique similar to the one described
+      ##on the CBS page (see PAGE 2 to PAGE 3).
       circleScrollingAreaTemp = superscroll.Scrolling_Area(main, width=1, height=1)
       circleScrollingAreaTemp.pack(expand=1, fill = BOTH)   
     
@@ -227,236 +254,291 @@ def next_page():
       lambdaScrollingAreaTemp.pack(expand=1, fill = BOTH)      
     
       lambdaGridFrameTemp = Frame(lambdaScrollingAreaTemp.innerframe) 
-      lambdaTableLabel = Label(lambdaGridFrameTemp, text = b'\xce\xbb'.decode('utf-8'))   
-      lambdaTableLabel.grid(row = 0, column = 0)           
-
+      lambdaTableLabel = Label(lambdaGridFrameTemp, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.     
+      lambdaTableLabel.grid(row = 0, column = 0) 
+      
+      ##Recreate the tables with the new data structures, and assing the data scructures
+      ##to the newly created entry boxes.
       circleTableBoxes, lambdaTableBoxes = recreate_table(bevDict, stimDict, circleTableBoxes, 
                                                           lambdaTableBoxes, circleGridFrameTemp, 
                                                           lambdaGridFrameTemp)     
-      #destroy old frames
+      ##Destroy old scrolling areas and frames.
       circleScrollingArea.destroy()
       circleGridFrame.destroy()
       lambdaScrollingArea.destroy()
       lambdaGridFrame.destroy()
            
-      #pack the new frames
+      ##Pack the new scrolling areas and frames.
       circleScrollingAreaTemp.pack(side=TOP, anchor = NW)
       circleGridFrameTemp.pack(side=TOP, anchor = NW)
       lambdaScrollingAreaTemp.pack(side=TOP, anchor = SW)
       lambdaGridFrameTemp.pack(side=TOP, anchor = SW)
       
-      #assign to old frames to the new frames
+      ##Assign the old scrolling areas and frames to the new ones.
       circleScrollingArea = circleScrollingAreaTemp
       circleGridFrame = circleGridFrameTemp
       lambdaScrollingArea = lambdaScrollingAreaTemp
       lambdaGridFrame = lambdaGridFrameTemp        
     
-  #PAGE 4 to PAGE 5
+  """PAGE 4 to PAGE 5."""
   if pageNum == 4:
-    #create dictionary to hold values from tables
+    ##Create dictionaries to hold the values from tables.
     circleTableValues = get_empty_dict()
     lambdaTableValues = get_empty_dict()
    
-    #first table values and second table values
+    ##Extract circle table values and lambda table values.
     circleTableValues, lambdaTableValues = getTableValues(circleTableBoxes, 
                                                          lambdaTableBoxes) 
    
-    #calling check_if_good() to assure all the inputs are valid
-    isGood, numInvalid = check_if_good(bevDict, stimDict, circleTableBoxes, 
+    ##Calling check_if_good() to assure all the inputs are valid.
+    isGood, numInvalid = check_if_good_table(bevDict, stimDict, circleTableBoxes, 
                                        lambdaTableBoxes, circleTableValues, 
                                        lambdaTableValues)
+    ##If the table is good, proceed.
     if isGood:
+      ##Forget table scrolling areas.
       circleScrollingArea.pack_forget()
       lambdaScrollingArea.pack_forget()
     
+      ##Forget table frames.
       circleGridFrame.pack_forget()
       lambdaGridFrame.pack_forget()
     
+      ##Forget next button and fillN button, since they are not
+      ##needed on the last page of the program.
       fillN.pack_forget()
       nextButton.pack_forget()
     
+      ##Configure previous button to a new size.
       prevButton.config(width = 35)
     
+      ##Call create_text() to create the agentspec.txt file.
       create_text(agentName, agentBehaviour, circleTableValues, 
                   lambdaTableValues, stimDict, bevDict, entriesCBS)
-  
+      
+      ##Configure the text entry to be modifiable.
       textEntry.config(state = 'normal')
+      ##Remove the previous text to insert new one.
       textEntry.delete(1.0, END)
       textEntry.insert(INSERT, open("agentspec.txt", "r").read())
+      ##Configure the text entry so that it cannot be modified.
       textEntry.config(state="disabled")
+      ##Pack the text entry to give a preview tp the user.
       textEntry.pack(side = TOP)
       
+      ##Pack the button allowing the user to save the file if satisfied
+      ##with the result.
       saveButton.pack(in_=buttonsFrame)
-
+    
+    ##Table is not good.
     else:
+      ##Deliver a pop-up to the user to warn of invalid entries in the table.
       incorrect_table(main, numInvalid)
+      ##Decrease pageNum to stay on current page.
       pageNum -= 1
+  
+  ##Add one to pageNum everytime the next button is clicked.
   pageNum += 1
 
-#Function to return to previous page
+##Function to return to the previous page.
 def prev_page():
-  global pageNum #keep track of page number
+  """ (none) -> (none)
+    
+    Allows the configuration of the previous page 
+    in the program depending on the current
+    pageNum. Unpacks newer widgets and packs older ones.
+  
+  """  
+  global pageNum ##Keeps track of the page number.
  
-  #PAGE 2 to PAGE 1
+  """PAGE 2 to PAGE 1."""
   if pageNum == 2:
+    ##Repack the scrolling area for the stimuli.
     stimScrollingArea[0].pack(expand=1, fill=BOTH)     
-     
-    for i in range(len(stimList)):   
-      stimList[i].pack(side = TOP)
    
-    #set new page 
+    ##Set new page by unpacking agent related labels/entries.
     agentLabel.pack_forget()
     agentEntry.pack_forget()
     agentBevLabel.pack_forget()
     agentBevEntry.pack_forget()
+    
+    ##Unpack the previous button since it it not necessary on page 1.
     prevButton.pack_forget()
+    ##configure the next button to a new size.
     nextButton.config(width = 23)
+    
+    ##Pack buttons for stimuli and frame to specify number of stimuli.
     stimFrame.pack(side = BOTTOM, anchor = S, expand = True)
     delButton.pack(in_=buttonsFrame, side = LEFT)
     addStim.pack(in_=buttonsFrame, side = TOP)
 
- #PAGE 3 to PAGE 2 
+  """PAGE 3 to PAGE 2.""" 
   if pageNum == 3:
+    ##Repack the agent related labels/entries.
     agentLabel.pack(side = TOP, anchor = W)
     agentEntry.pack(side = TOP, anchor = W)
     agentBevLabel.pack(side = TOP, anchor = W)
     agentBevEntry.pack(side = TOP, anchor = W)
     
+    ##Forget the scrolling area, frame and labels for the CBS.
     concreteScrollingArea.pack_forget()
     frameCBS.pack_forget()
     titleCBS.pack_forget()
     agentCBS.pack_forget()
   
-  #PAGE 4 to PAGE 3
+  """PAGE 4 to PAGE 3."""
   if pageNum == 4:
     
-    #set new page 
+    ##Forget scrolling areas and frames for the tables.
     circleScrollingArea.pack_forget()
     lambdaScrollingArea.pack_forget()
   
     circleGridFrame.pack_forget()
     lambdaGridFrame.pack_forget()
   
+    ##Forget the fillN button.
     fillN.pack_forget()
   
+    ##Configure buttons to a new size.
     nextButton.config(width = 35)
     prevButton.config(width = 35)  
   
-
+    ##Pack scrolling area, frame and labels for the CBS.
     titleCBS.pack(side = TOP)
     agentCBS.pack(side = TOP, anchor = W)
     frameCBS.pack(anchor = W)
     concreteScrollingArea.pack(expand =1, fill = BOTH)
 
-  #PAGE 5 to PAGE 4
+  """PAGE 5 to PAGE 4."""
   if pageNum == 5:
+    ##Forget text preview box and save button.
     textEntry.pack_forget()
     saveButton.pack_forget()
     
+    ##Configure previous button to a new size.
     prevButton.config(width = 23) 
   
+    ##Repack table scrolling areas.
     circleScrollingArea.pack(expand=1, fill = BOTH)   
     lambdaScrollingArea.pack(expand=1, fill = BOTH)   
   
+    ##Repack table frames.
     circleGridFrame.pack(side=TOP, anchor = NW) 
     lambdaGridFrame.pack(side=TOP, anchor = SW) 
   
+    ##Repack the next button and fillN button.
     nextButton.pack(in_=buttonsFrame, side = RIGHT)
     fillN.pack(in_=buttonsFrame, side = BOTTOM)
   
+  ##Decrease pageNum everytime the previous button is clicked.
   pageNum -= 1
- 
-#Initializing the page number variable and the stimuli list
-stimList = []
-pageNum = 1
 
-#No tables generated yet
-generatedTable = False
-generatedCBS = False
-
-#Frame for the main buttons
-buttonsFrame = Frame(main)
-buttonsFrame.pack(side = BOTTOM, anchor = S, expand = True)
-
-#Frame for the stim # Label, button and entry box
-stimFrame = Frame(main)
-stimFrame.pack(side = BOTTOM, anchor = S, expand = True)
-
-#
-#Defining Buttons available on each page
-#
-
-#Next Button
-nextButton = Button(main, text = 'Next', command = next_page, width = 23)
-nextButton.pack(in_=buttonsFrame, side = RIGHT)
-
-#Prev Button (will not be availible on page 1)
-prevButton = Button(main, text = 'Prev', command = prev_page, width = 35)
-
-#
-#Label and Buttons exclusive to page 1
-#
-
-#stimScrollingArea is at index zero of the list, this way, the scrolling area
-#can be passed by reference and modified by other functions
-stimScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
-stimScrollingArea[0].pack(expand = 1, fill = BOTH)
-
-stimTitle = Label(stimScrollingArea[0].innerframe, text='Please Enter The Stimuli')
-stimTitle.pack(side = TOP)
-
-#label, button and entry box to generate specified number of stimuli
-enterStimLabel = Label(main, text = 'enter # of stims')
-enterStimLabel.pack(in_=stimFrame, side = LEFT)
-
-enterStimButton = Button(main, text = 'OK', command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea))
-enterStimButton.pack(in_=stimFrame, side = RIGHT)
-
-enterStimBox = Entry(main)
-enterStimBox.pack(in_=stimFrame, side = TOP)
-
-#Delete previous entry Button
-delButton = Button(main, text = 'Delete Previous', command = lambda: remove_stim(main, stimList, stimScrollingArea), 
+if __name__ == '__main__': ##only start program when running gui.py
+  
+  """Code related to the main program's window."""
+  main = Tk() ##The main window for the program
+  main.title("C2KA GUI") ##Title for the main window
+  main.resizable(width = False, height = False) ##The main window is not resizeable
+  
+  windowSize = 500 ##500 is the dimension that will be used for the window (500 x 500)
+  
+  ##Collect screen (monitor) width and height to position the program's main window in the center 
+  screenWidth = main.winfo_screenwidth() 
+  screenHeight = main.winfo_screenheight()
+  
+  ##Calculate this center position
+  positionRight = screenWidth/2 - windowSize/2
+  positionDown = screenHeight/2 - windowSize/2
+  
+  ##Set the window size using the geometry() method
+  main.geometry('%dx%d+%d+%d' % (windowSize, windowSize, positionRight, 
+                                 positionDown))
+  
+  """Code to load initial data/widgets in the main window.""" 
+  ##Initializing the page number variable and the stimuli list.
+  stimList = []
+  pageNum = 1
+  
+  ##No concrete behaviours generated yet.
+  generatedCBS = False
+  
+  ##No tables generated yet.
+  generatedTable = False
+  
+  ##Frame to hold the main buttons
+  buttonsFrame = Frame(main)
+  buttonsFrame.pack(side = BOTTOM, anchor = S, expand = True)
+  
+  ##Frame for the stim number Label, button and entry box (to specify
+  ##a number of stimuli to be generated).
+  stimFrame = Frame(main)
+  stimFrame.pack(side = BOTTOM, anchor = S, expand = True)
+  
+  """Defining Buttons available on each page.""" 
+  ##Next Button (will not be availible on page 5).
+  nextButton = Button(main, text = 'Next', command = next_page, width = 23)
+  nextButton.pack(in_=buttonsFrame, side = RIGHT)
+  
+  ##Prev Button (will not be availible on page 1).
+  prevButton = Button(main, text = 'Prev', command = prev_page, width = 35)
+  
+  """Label and Buttons exclusive to page 1."""  
+  ##The scrolling area is at index zero of the stimScrollingArea list, this way, 
+  ##the scrolling area can be passed by reference and be modified by other functions.
+  stimScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
+  stimScrollingArea[0].pack(expand = 1, fill = BOTH)
+  
+  ##Title for the stimuli on page 1.
+  stimTitle = Label(stimScrollingArea[0].innerframe, text='Please Enter The Stimuli')
+  stimTitle.pack(side = TOP)
+  
+  ##Label, button and entry box to generate specified number of stimuli.
+  enterStimLabel = Label(main, text = 'enter # of stims')
+  enterStimLabel.pack(in_=stimFrame, side = LEFT)
+  
+  enterStimButton = Button(main, text = 'OK', command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea))
+  enterStimButton.pack(in_=stimFrame, side = RIGHT)
+  
+  enterStimBox = Entry(main)
+  enterStimBox.pack(in_=stimFrame, side = TOP)
+  
+  ##Delete previous entry Button (for the stimuli)
+  delButton = Button(main, text = 'Delete Previous', command = lambda: remove_stim(main, stimList, stimScrollingArea), 
+                     width = 23)
+  delButton.pack(in_=buttonsFrame, side = LEFT)
+  
+  ##Add stimulus entry Button
+  addStim = Button(main, text = 'Add new stimulus', 
+                   command = lambda: add_stim(main, stimList, stimScrollingArea), 
                    width = 23)
-delButton.pack(in_=buttonsFrame, side = LEFT)
+  
+  addStim.pack(in_=buttonsFrame, side = TOP)
+  
+  """Labels and Entries exclusive for page 2.""" 
+  ##Agent Name Label and Entry
+  agentLabel = Label(main, text = 'Enter Agent Name:')
+  agentEntry = Entry(main, width = 50)
+  
+  ##Agent Behaviour Label and Entry
+  agentBevLabel = Label(main, text = 'Enter Agent Behaviour:')
+  agentBevEntry = Entry(main, width = 50)
+  
+  """Labels and Entries exclusive for page 3."""
+  ##Title for the concrete behaviours.
+  titleCBS = Label(main, text='Concrete Behaviours')
 
-#Add stimulus Button
-addStim = Button(main, text = 'Add new stimulus', 
-                 command = lambda: add_stim(main, stimList, stimScrollingArea), 
-                 width = 23)
-
-addStim.pack(in_=buttonsFrame, side = TOP)
-
-#
-#Labels and Entries exclusive for page 2
-#
-
-#Agent Name Label and Entry
-agentLabel = Label(main, text = 'Enter Agent Name:')
-agentEntry = Entry(main, width = 50)
-
-#Agent Behaviour Label and Entry
-agentBevLabel = Label(main, text = 'Enter Agent Behaviour:')
-agentBevEntry = Entry(main, width = 50)
-
-#
-#Labels and Entries exclusive for page 3
-#
-titleCBS = Label(main, text='Concrete Behaviours')
-
-#
-#Labels and Entries exclusive for page 4
-#
-
-fillN = Button(main, text = 'Fill with neutral stimulus', 
-               command = lambda: fill_n(bevDict, stimDict, 
-                                        circleTableBoxes, lambdaTableBoxes), width = 23)
-
-#
-#Labels and Entries exclusive for page 5
-#
-textEntry = Text(main)
-
-saveButton = Button(main, text = 'Save File', command = create_save_file, width = 35)
-
-main.mainloop()
+  """Labels and Entries exclusive for page 4."""
+  ##Button to fill lambda table with neutral stimulus.
+  fillN = Button(main, text = 'Fill with neutral stimulus', 
+                 command = lambda: fill_n(bevDict, stimDict, 
+                                          circleTableBoxes, lambdaTableBoxes), width = 23)
+  
+  """Labels and Entries exclusive for page 5."""
+  ##Text entry to give the user a preview of the text file.
+  textEntry = Text(main)
+  
+  ##Save button to have the user save the text file.
+  saveButton = Button(main, text = 'Save File', command = create_save_file, width = 35)
+  
+  """Loop the main window."""
+  main.mainloop()
