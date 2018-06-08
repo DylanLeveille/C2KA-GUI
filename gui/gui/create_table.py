@@ -92,4 +92,5 @@ def recreate_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
       circleTableBoxes[i, j] = circleTableEntry
       lambdaTableBoxes[i, j] = lambdaTableEntry
        
-return circleTableBoxes, lambdaTableBoxes 
+  return circleTableBoxes, lambdaTableBoxes ##Return updated data structures
+                                            ##to the main program.

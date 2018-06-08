@@ -1,3 +1,8 @@
+""" Internship Project.
+
+GUI to Assist the C2KA TOOL.
+"""
+
 """Imported modules."""
 from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
 from check_if_good import * ##Functions which validate most of the data in the program.
@@ -313,8 +318,8 @@ def next_page():
       prevButton.config(width = 35)
     
       ##Call create_text() to create the agentspec.txt file.
-      create_text(agentName, agentBehaviour, circleTableValues, 
-                  lambdaTableValues, stimDict, bevDict, entriesCBS)
+      create_text(agentName, agentBehaviour, entriesCBS, circleTableValues, 
+                  lambdaTableValues, stimDict, bevDict)
       
       ##Configure the text entry to be modifiable.
       textEntry.config(state = 'normal')
