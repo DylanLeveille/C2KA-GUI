@@ -13,49 +13,61 @@ def specify_stim(main, stimList, numStims, stimScrollingArea):
   
   """   
   global warningStims
-  ##Create pop-up window.
-  warningStims = Toplevel()
-
-  warningStims.config(takefocus = True) ##Get focus on screen.  
   
-  windowSize = 300 ##Pop up size (300 x 300).
+  ##Test to see if there is more than one word in the entry box
+  ##and test to see if it is a number only.
+  if len(numStims.split()) > 1 or numStims.replace(' ', '').isdigit() != True:    
+    ##Removes main window.  
+    main.withdraw()          
+    
+    ##Call a function to pop up.
+    incorrect_stim_num(main) 
+    
+  else: ##True if entry is valid.  
+    ##Create pop-up window.
+    warningStims = Toplevel()
   
-  ##Collect screen (monitor) width and height to position the window in the center. 
-  screenWidth = warningStims.winfo_screenwidth() 
-  screenHeight = warningStims.winfo_screenheight()
+    warningStims.config(takefocus = True) ##Get focus on screen.  
+    
+    windowSize = 300 ##Pop up size (300 x 300).
+    
+    ##Collect screen (monitor) width and height to position the window in the center. 
+    screenWidth = warningStims.winfo_screenwidth() 
+    screenHeight = warningStims.winfo_screenheight()
+    
+    ##Calculate the center position.
+    positionRight = screenWidth/2 - windowSize/2
+    positionDown = screenHeight/2 - windowSize/2
+    
+    ##Set the window size using the geometry() method.
+    warningStims.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+                                      positionRight, positionDown)) 
+    
+    warningStims.resizable(width = False, height = False) ##The window is not resizeable.
   
-  ##Calculate the center position.
-  positionRight = screenWidth/2 - windowSize/2
-  positionDown = screenHeight/2 - windowSize/2
-  
-  ##Set the window size using the geometry() method.
-  warningStims.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
-                                    positionRight, positionDown)) 
-  
-  warningStims.resizable(width = False, height = False) ##The window is not resizeable.
-
-  warningStims.wm_title("WARNING")
-  warningStims.overrideredirect(1) ##Removes task bar.
-  
-  Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
-  
-  pressToContinue = Button(warningStims, text = "Continue", 
-                        command = lambda: return_to_stims_deletion(main, stimList, numStims, stimScrollingArea))
-  
-  pressToClose = Button(warningStims, text = "Return", 
-                        command = lambda: return_to_stims_cancellation(main))
-  
-  pressToContinue.pack(side = BOTTOM)
-  
-  pressToClose.pack(side = BOTTOM)
-  ##Removes main window.  
-  main.withdraw()      
+    warningStims.wm_title("WARNING")
+    warningStims.overrideredirect(1) ##Removes task bar.
+    
+    Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
+    
+    pressToContinue = Button(warningStims, text = "Continue", 
+                          command = lambda: return_to_stims_deletion(main, stimList, numStims, stimScrollingArea))
+    
+    pressToClose = Button(warningStims, text = "Return", 
+                          command = lambda: return_to_stims_cancellation(main))
+    
+    pressToContinue.pack(side = BOTTOM)
+    
+    pressToClose.pack(side = BOTTOM)
+    
+    ##Removes main window.  
+    main.withdraw()      
 
 ##Function to warn the user that the specified number of stims is invalid.
 def incorrect_stim_num(main):
   """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
     
-    Pop-up when the user specifies a number of
+    Pop-up when the user specifies a wrong number of
     stimuli to add.
   
   """     
@@ -94,6 +106,12 @@ def incorrect_stim_num(main):
 
 ##Function is called when an incorrect stimuli is entered.
 def incorrect_stims(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Pop-up to tell user that a stimulis (or stimuli) 
+    are invalid.
+  
+  """       
   global wrongStims
   ##Create pop-up window.
   wrongStims = Toplevel()
@@ -130,6 +148,12 @@ def incorrect_stims(main):
 
 ##Function is called when an incorrect agent is entered.
 def incorrect_agent(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Pop-up to tell the user that the agent entry
+    is incorrect.
+  
+  """       
   global wrongAgent
   ##Create pop-up window.
   wrongAgent = Toplevel()
@@ -166,6 +190,12 @@ def incorrect_agent(main):
 
 ##Function is called when an incorrect behaviour is entered.
 def incorrect_bevs(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Pop-up to tell the user that the agent behaviour entry
+    is incorrect.
+  
+  """       
   global wrongBevs
   ##Create pop-up window.
   wrongBevs = Toplevel()
@@ -204,6 +234,12 @@ def incorrect_bevs(main):
 ##Function is called to verify entries in tables.
 def check_if_good_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes, 
                   circleTableValues, lambdaTableValues):
+  """ (dict, dict, dict, dict, dict, dict) -> (bool)
+    
+    Validates all data in the tables by returning True
+    if the data is valid, or False if it is not.
+  
+  """       
   invalidEntries = 0 ##A counter for invalid entries.
   
   firstFlag = True
@@ -242,6 +278,13 @@ def check_if_good_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
     return False, invalidEntries 
 
 def incorrect_table(main, numInvalid):
+  """ (tkinter.Tk, int) -> (none)
+    
+    Pop-up to tell the user that some entries are inccorect
+    in the table. The pop-up specifies the number of entries 
+    to fix.
+  
+  """       
   global invalidEntryPop
   ##Create pop-up window
   invalidEntryPop = Toplevel()
@@ -282,72 +325,108 @@ def incorrect_table(main, numInvalid):
 
 ##Generate the specified stim entries. 
 def return_to_stims_deletion(main, stimList, numStims, stimScrollingArea):
+  """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
+    
+    After confirming with the user that the stimuli entries
+    will be deleted, this function begins deleting the current
+    entries and creates the specified number of stimuli.
+  
+  """       
   warningStims.destroy()
   
-  ##Test to see if there is more than one word in the entry box
-  ##and test to see if it is a number only.
-  if len(numStims.split()) > 1 or numStims.replace(' ', '').isdigit() != True: 
-    ##Call a function to pop up.
-    incorrect_stim_num(main) 
+  ##Extract the number from the string.
+  numStims = int(numStims.replace(' ', ''))  
   
-  else:
-    ##Extract the number from the string.
-    numStims = int(numStims.replace(' ', ''))  
-    
-    ##Destroy the old frame. 
-    stimScrollingArea[0].destroy()
+  ##Destroy the old frame. 
+  stimScrollingArea[0].destroy()
 
-    ##Clear list for specified entries.
-    stimList.clear()   
-    
-    ##Make a new frame capable of scrolling to the new entry boxes specified
-    ##by the user.
-    stimScrollingArea[0] = vertSuperscroll.Scrolling_Area(main)
-    stimScrollingArea[0].pack(expand = 1, fill=BOTH)
-    
-    stimTitle = Label(stimScrollingArea[0].innerframe, text='Please Enter The Stimuli')
-    stimTitle.pack(side = TOP) 
-        
-    for i in range(numStims):
-      stimEntry = Entry(stimScrollingArea[0].innerframe)   
-      stimList.append(stimEntry)
-      stimEntry.pack(side = TOP, pady = 10)    
+  ##Clear list for specified entries.
+  stimList.clear()   
   
-    main.update()
-    main.deiconify()  
+  ##Make a new frame capable of scrolling to the new entry boxes specified
+  ##by the user.
+  stimScrollingArea[0] = vertSuperscroll.Scrolling_Area(main)
+  stimScrollingArea[0].pack(expand = 1, fill=BOTH)
+  
+  stimTitle = Label(stimScrollingArea[0].innerframe, text='Please Enter The Stimuli')
+  stimTitle.pack(side = TOP) 
+      
+  for i in range(numStims):
+    stimEntry = Entry(stimScrollingArea[0].innerframe)   
+    stimList.append(stimEntry)
+    stimEntry.pack(side = TOP, pady = 10)    
+
+  main.update()
+  main.deiconify()  
 
 ##Function to return to main when user wishes to cancel inputting the stimuli.   
 def return_to_stims_cancellation(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the warningStims window and re-generates
+    the main window.
+  
+  """       
   main.update()
   main.deiconify()
   warningStims.destroy()
 
 ##Function to return to main when invalid number is enetred for the stimuli.  
 def return_to_stim_num(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the wrongStimNum window and re-generates
+    the main window.
+  
+  """   
   main.update()
   main.deiconify()
   wrongStimNum.destroy()  
 
 ##Function to return to the stimuli entry page after the pop-up. 
 def return_to_stims(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the wrongStims window and re-generates
+    the main window.
+  
+  """   
   main.update()
   main.deiconify()
   wrongStims.destroy() 
 
 ##Function to return to the behaviour entry page after the pop-up. 
 def return_to_bevs_agent(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the wrongAgent window and re-generates
+    the main window.
+  
+  """   
   main.update()
   main.deiconify()
   wrongAgent.destroy() 
 
 ##Function to return to the behaviour entry page after the pop-up. 
 def return_to_bevs_bevs(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the wrongBevs window and re-generates
+    the main window.
+  
+  """   
   main.update()
   main.deiconify()
   wrongBevs.destroy() 
   
 ##Function to return to the tables after the pop-up. 
 def return_to_tables(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the invalidEntryPop window and re-generates
+    the main window.
+  
+  """   
   main.update()
   main.deiconify()
   invalidEntryPop.destroy()

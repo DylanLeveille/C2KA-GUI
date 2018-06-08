@@ -25,7 +25,7 @@ def delete_CBS(bevDict, entriesCBS, currRow, numRows, delRows):
           entriesCBS[i, 1].insert(0, entriesCBS[i + 1, 1].get())
       
       ##Search again from current row.    
-      return delete_CBS(bevDict, currRow, numRows - 1, entriesCBS, delRows)
+      return delete_CBS(bevDict, entriesCBS, currRow, numRows - 1, delRows)
  
   ##If current row is good, search next row.
-  return delete_CBS(bevDict, currRow + 1, numRows, entriesCBS, delRows)
+  return delete_CBS(bevDict, entriesCBS, currRow + 1, numRows, delRows)
