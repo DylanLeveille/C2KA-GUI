@@ -135,7 +135,43 @@ def build_bev_dict(line):
   ##Will only return a histogram if tests are passed.    
   return hist  
 
-def getTableValues(circleTableBoxes, lambdaTableBoxes):
+##Function to get concrete behaviour entry.
+def get_concrete_behaviours(entriesCBS):
+  """ (dict) -> (dict)
+    
+    Parse the concrete behaviours to ignore any
+    whitespace that may have been added unintentionally.
+  
+  """   
+  ##Create the dictionary to hold the values.
+  concreteBehaviours = {}
+  
+  ##Get the number of rows.
+  numRows = entriesCBS[0, 0]
+  
+  for row in range(1, numRows + 1):
+    line = entriesCBS[row, 1] ##Get the line of concrete behaviours.
+    
+    ##Split each concrete behaviour into a list of words.
+    ##The split method removes the whitespace from around each word.  
+    wordList = line.get().split()
+    
+    line = "" ##Set line to an empty string in order to store the correct concrete behaviour.
+    
+    ##Correctly append each word to the list.
+    for i in range(len(wordList)): 
+      if i == len(wordList) - 1: ##No whitespace if True.
+        line += wordList[i]
+      else:
+        line += wordList[i] + " " ##Add a whitespace to the end of each word for spacing.
+    
+    ##Add the line to the dictionary at the appropriate key.
+    concreteBehaviours[row] = line
+  
+  return concreteBehaviours      
+
+##Function to get values form table.
+def get_table_values(circleTableBoxes, lambdaTableBoxes):
   """ (dict, dict) -> (dict, dict)
     
     Extracts the table values from the table entries.

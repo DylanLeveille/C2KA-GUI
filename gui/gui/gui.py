@@ -8,6 +8,7 @@ from tkinter import * ##Import the tkinter module to allow construction of the G
 from check_if_good import * ##Functions which validate most of the data in the program.
 from entry_mods import * ##Functions which modify entry boxes.
 from get_word_list import * ##Functions which parse an entry box and returns lists of words.
+from CBS_radio import * ##Functions that set the CBS page depending on which radio button is clicked.
 from CBS_mods import * ##Functions which modify the concrete behaviours page.
 from create_table import * ##Functions which create/recreate the tables.
 from fix_grids import * ##Functions which modifies the data currently stored in memory for the tables to match the data modified by the user.
@@ -42,6 +43,7 @@ def next_page():
   global agentCBS ##Label for the agent name on the concrete behaviours page.
   
   global entriesCBS ##Data scructure to hold concrete behaviour labels and entries.
+  global concreteBehaviours ##Dict to hold parsed concrete behaviours
   
   global circleTableBoxes ##Dict to hold entry boxes and labels of circle table.
   global lambdaTableBoxes ##Dict to hold entry boxes and labels of lambda table.
@@ -114,7 +116,7 @@ def next_page():
       ##Decrease pageNum to stay on current page.
       pageNum -= 1  
 
-    else:  
+    else: ##All good. 
       ##We can confirm that the agent entry and behaviour entry are good since 
       ##they passed the two first if statement,
       ##therefore we set the background back to white. 
@@ -132,7 +134,7 @@ def next_page():
       agentBevEntry.pack_forget()
     
       ##Pack new labels for CBS.
-      agentCBS = Label(main, text = agentName + ':')
+      agentCBS = Label(main, text = agentName + ' =>')
       titleCBS.pack(side = TOP)
       agentCBS.pack(side = TOP, anchor = W)
 
@@ -187,15 +189,21 @@ def next_page():
         ##Assing the old scrolling area and the old frame to the new ones.
         concreteScrollingArea = concreteScrollingAreaTemp
         frameCBS = frameCBSTemp 
+        
+      ##Pack frame for the radio Buttons
+      formatCBS.pack(side = BOTTOM, anchor = S, expand = True)      
   
   """PAGE 3 to PAGE 4."""
   if pageNum == 3:
-    ##Set new page by forgetting the CBS scrolling area and frame, and
-    ##by forgetting the title and agent name labels.
+    ##Extract concrete behaviour in a dictionary.
+    concreteBehaviours = get_concrete_behaviours(entriesCBS)
+    
+    ##Set new page by forgetting the CBS related frames and entries.
     frameCBS.pack_forget()
     concreteScrollingArea.pack_forget()
     titleCBS.pack_forget()
     agentCBS.pack_forget()
+    formatCBS.pack_forget()
     
     ##Configure the buttons' new size.
     nextButton.config(width = 23)
@@ -292,7 +300,7 @@ def next_page():
     lambdaTableValues = get_empty_dict()
    
     ##Extract circle table values and lambda table values.
-    circleTableValues, lambdaTableValues = getTableValues(circleTableBoxes, 
+    circleTableValues, lambdaTableValues = get_table_values(circleTableBoxes, 
                                                          lambdaTableBoxes) 
    
     ##Calling check_if_good() to assure all the inputs are valid.
@@ -318,7 +326,7 @@ def next_page():
       prevButton.config(width = 35)
     
       ##Call create_text() to create the agentspec.txt file.
-      create_text(agentName, agentBehaviour, entriesCBS, circleTableValues, 
+      create_text(agentName, agentBehaviour, concreteBehaviours, circleTableValues, 
                   lambdaTableValues, stimDict, bevDict)
       
       ##Configure the text entry to be modifiable.
@@ -329,7 +337,7 @@ def next_page():
       ##Configure the text entry so that it cannot be modified.
       textEntry.config(state="disabled")
       ##Pack the text entry to give a preview tp the user.
-      textEntry.pack(side = TOP)
+      textEntry.pack(side = TOP)  
       
       ##Pack the button allowing the user to save the file if satisfied
       ##with the result.
@@ -390,6 +398,7 @@ def prev_page():
     frameCBS.pack_forget()
     titleCBS.pack_forget()
     agentCBS.pack_forget()
+    formatCBS.pack_forget()
   
   """PAGE 4 to PAGE 3."""
   if pageNum == 4:
@@ -413,6 +422,9 @@ def prev_page():
     agentCBS.pack(side = TOP, anchor = W)
     frameCBS.pack(anchor = W)
     concreteScrollingArea.pack(expand =1, fill = BOTH)
+    
+    ##Pack frame for the radio Buttons
+    formatCBS.pack(side = BOTTOM, anchor = S, expand = True)    
 
   """PAGE 5 to PAGE 4."""
   if pageNum == 5:
@@ -531,6 +543,29 @@ if __name__ == '__main__': ##only start program when running gui.py
   """Labels and Entries exclusive for page 3."""
   ##Title for the concrete behaviours.
   titleCBS = Label(main, text='Concrete Behaviours')
+  
+  ##Frame for the two radio buttons
+  formatCBS = Frame(main)
+  
+  ##Set a variable that the radio Buttons share to determine what happens when 
+  ##one of them is pressed.
+  whichRadio = StringVar()
+  whichRadio.set('Rows')  
+  
+  ##Create a text box for the entry box radio button.
+  textBoxCBS = Text(main)
+  
+  ##Radio button for the default style of entering concrete behaviours
+  radioRowsCBS = Radiobutton(main, text = 'CBS Rows', variable = whichRadio, value = 'Rows', 
+                             state = 'disabled', command = lambda: rows_CBS(radioRowsCBS, 
+                             radioBoxCBS, concreteScrollingArea, frameCBS, textBoxCBS))
+  radioRowsCBS.pack(in_=formatCBS, side = LEFT)
+  
+  ##Radio button for the alternate style of entering concrete behaviours
+  radioBoxCBS = Radiobutton(main, text = 'CBS Box', variable = whichRadio, value = 'Box', 
+                            command = lambda: box_CBS(radioRowsCBS, radioBoxCBS, 
+                            concreteScrollingArea, frameCBS, textBoxCBS))
+  radioBoxCBS.pack(in_=formatCBS, side = RIGHT)
 
   """Labels and Entries exclusive for page 4."""
   ##Button to fill lambda table with neutral stimulus.
