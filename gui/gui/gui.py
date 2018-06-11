@@ -185,100 +185,110 @@ def next_page():
   
   """PAGE 3 to PAGE 4."""
   if pageNum == 3:
+    ##Boolean variable for validity of entries
+    isGoodCBS = check_if_good_CBS(main, entriesCBS)
+    
+    ##If there are invalid entries, create popup
+    if isGoodCBS == False:
+      incorrect_CBS(main) ##Calls function for pop-up.
+      pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
+      
+      
     ##Set new page by forgetting the CBS scrolling area and frame, and
     ##by forgetting the title and agent name labels.
-    frameCBS.pack_forget()
-    concreteScrollingArea.pack_forget()
-    titleCBS.pack_forget()
-    agentCBS.pack_forget()
-    
-    ##Configure the buttons' new size.
-    nextButton.config(width = 23)
-    prevButton.config(width = 23)
-    
-    ##Pack the fillN button which fills the lambda table with the 
-    ##neutral stimulus.
-    fillN.pack(in_=buttonsFrame, side = BOTTOM)
-   
-    ##If no tables were yet generated, we create a new one.
-    if generatedTable == False:
-      ##Creating ccrolling areas and frames for both the circle and lambda tables.
-      ##Also creating the labels in the upper corner of each table.
-      circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
-      circleScrollingArea.pack(expand=1, fill = BOTH)   
-
-    
-      circleGridFrame = Frame(circleScrollingArea.innerframe) 
-      circleTableLabel = Label(circleGridFrame, text = 'o')   
-      circleTableLabel.grid(row = 0, column = 0)
-    
-      lambdaScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
-      lambdaScrollingArea.pack(expand=1, fill = BOTH)      
-    
-      lambdaGridFrame = Frame(lambdaScrollingArea.innerframe) 
-      lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.  
-      lambdaTableLabel.grid(row = 0, column = 0)   
-    
-      ##Create the data structures to hold the table entries and
-      ##create the boxes within the frames.
-      circleTableBoxes, lambdaTableBoxes = create_table(bevDict, stimDict,
-                                                      circleGridFrame, 
-                                                      lambdaGridFrame)
-      ##pack the new table frames.   
-      circleGridFrame.pack(side=TOP, anchor = NW) 
-      lambdaGridFrame.pack(side=TOP, anchor = SW) 
-    
-      generatedTable = True ##Table is now generated.
-
-    
-      ##Keep track of table's current lenght and width
-      ##in one of the dictionaries at coordinate (0, 0),
-      ##since that key is not in use.
-      circleTableBoxes[0, 0] = len(bevDict), len(stimDict)
-    
-    else: ##Table was already generated.
-      ##Calling fix_grids() to check if modifications are necessary to the grids.
-      fix_grids(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
-                circleGridFrame, lambdaGridFrame) 
-    
-      ##Recreating the table by using a technique similar to the one described
-      ##on the CBS page (see PAGE 2 to PAGE 3).
-      circleScrollingAreaTemp = superscroll.Scrolling_Area(main, width=1, height=1)
-      circleScrollingAreaTemp.pack(expand=1, fill = BOTH)   
-    
-      circleGridFrameTemp = Frame(circleScrollingAreaTemp.innerframe) 
-      circleTableLabel = Label(circleGridFrameTemp, text = 'o')   
-      circleTableLabel.grid(row = 0, column = 0)
-    
-      lambdaScrollingAreaTemp = superscroll.Scrolling_Area(main, width=1, height=1)
-      lambdaScrollingAreaTemp.pack(expand=1, fill = BOTH)      
-    
-      lambdaGridFrameTemp = Frame(lambdaScrollingAreaTemp.innerframe) 
-      lambdaTableLabel = Label(lambdaGridFrameTemp, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.     
-      lambdaTableLabel.grid(row = 0, column = 0) 
+    else:
+      frameCBS.pack_forget()
+      concreteScrollingArea.pack_forget()
+      titleCBS.pack_forget()
+      agentCBS.pack_forget()
       
-      ##Recreate the tables with the new data structures, and assing the data scructures
-      ##to the newly created entry boxes.
-      circleTableBoxes, lambdaTableBoxes = recreate_table(bevDict, stimDict, circleTableBoxes, 
-                                                          lambdaTableBoxes, circleGridFrameTemp, 
-                                                          lambdaGridFrameTemp)     
-      ##Destroy old scrolling areas and frames.
-      circleScrollingArea.destroy()
-      circleGridFrame.destroy()
-      lambdaScrollingArea.destroy()
-      lambdaGridFrame.destroy()
-           
-      ##Pack the new scrolling areas and frames.
-      circleScrollingAreaTemp.pack(side=TOP, anchor = NW)
-      circleGridFrameTemp.pack(side=TOP, anchor = NW)
-      lambdaScrollingAreaTemp.pack(side=TOP, anchor = SW)
-      lambdaGridFrameTemp.pack(side=TOP, anchor = SW)
+      ##Configure the buttons' new size.
+      nextButton.config(width = 23)
+      prevButton.config(width = 23)
       
-      ##Assign the old scrolling areas and frames to the new ones.
-      circleScrollingArea = circleScrollingAreaTemp
-      circleGridFrame = circleGridFrameTemp
-      lambdaScrollingArea = lambdaScrollingAreaTemp
-      lambdaGridFrame = lambdaGridFrameTemp        
+      ##Pack the fillN button which fills the lambda table with the 
+      ##neutral stimulus.
+      fillN.pack(in_=buttonsFrame, side = BOTTOM)
+     
+      ##If no tables were yet generated, we create a new one.
+      if generatedTable == False:
+        ##Creating ccrolling areas and frames for both the circle and lambda tables.
+        ##Also creating the labels in the upper corner of each table.
+        circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
+        circleScrollingArea.pack(expand=1, fill = BOTH)   
+  
+      
+        circleGridFrame = Frame(circleScrollingArea.innerframe) 
+        circleTableLabel = Label(circleGridFrame, text = 'o')   
+        circleTableLabel.grid(row = 0, column = 0)
+      
+        lambdaScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
+        lambdaScrollingArea.pack(expand=1, fill = BOTH)      
+      
+        lambdaGridFrame = Frame(lambdaScrollingArea.innerframe) 
+        lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.  
+        lambdaTableLabel.grid(row = 0, column = 0)   
+      
+        ##Create the data structures to hold the table entries and
+        ##create the boxes within the frames.
+        circleTableBoxes, lambdaTableBoxes = create_table(bevDict, stimDict,
+                                                        circleGridFrame, 
+                                                        lambdaGridFrame)
+        ##pack the new table frames.   
+        circleGridFrame.pack(side=TOP, anchor = NW) 
+        lambdaGridFrame.pack(side=TOP, anchor = SW) 
+      
+        generatedTable = True ##Table is now generated.
+  
+      
+        ##Keep track of table's current lenght and width
+        ##in one of the dictionaries at coordinate (0, 0),
+        ##since that key is not in use.
+        circleTableBoxes[0, 0] = len(bevDict), len(stimDict)
+      
+      else: ##Table was already generated.
+        ##Calling fix_grids() to check if modifications are necessary to the grids.
+        fix_grids(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
+                  circleGridFrame, lambdaGridFrame) 
+      
+        ##Recreating the table by using a technique similar to the one described
+        ##on the CBS page (see PAGE 2 to PAGE 3).
+        circleScrollingAreaTemp = superscroll.Scrolling_Area(main, width=1, height=1)
+        circleScrollingAreaTemp.pack(expand=1, fill = BOTH)   
+      
+        circleGridFrameTemp = Frame(circleScrollingAreaTemp.innerframe) 
+        circleTableLabel = Label(circleGridFrameTemp, text = 'o')   
+        circleTableLabel.grid(row = 0, column = 0)
+      
+        lambdaScrollingAreaTemp = superscroll.Scrolling_Area(main, width=1, height=1)
+        lambdaScrollingAreaTemp.pack(expand=1, fill = BOTH)      
+      
+        lambdaGridFrameTemp = Frame(lambdaScrollingAreaTemp.innerframe) 
+        lambdaTableLabel = Label(lambdaGridFrameTemp, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.     
+        lambdaTableLabel.grid(row = 0, column = 0) 
+        
+        ##Recreate the tables with the new data structures, and assing the data scructures
+        ##to the newly created entry boxes.
+        circleTableBoxes, lambdaTableBoxes = recreate_table(bevDict, stimDict, circleTableBoxes, 
+                                                            lambdaTableBoxes, circleGridFrameTemp, 
+                                                            lambdaGridFrameTemp)     
+        ##Destroy old scrolling areas and frames.
+        circleScrollingArea.destroy()
+        circleGridFrame.destroy()
+        lambdaScrollingArea.destroy()
+        lambdaGridFrame.destroy()
+             
+        ##Pack the new scrolling areas and frames.
+        circleScrollingAreaTemp.pack(side=TOP, anchor = NW)
+        circleGridFrameTemp.pack(side=TOP, anchor = NW)
+        lambdaScrollingAreaTemp.pack(side=TOP, anchor = SW)
+        lambdaGridFrameTemp.pack(side=TOP, anchor = SW)
+        
+        ##Assign the old scrolling areas and frames to the new ones.
+        circleScrollingArea = circleScrollingAreaTemp
+        circleGridFrame = circleGridFrameTemp
+        lambdaScrollingArea = lambdaScrollingAreaTemp
+        lambdaGridFrame = lambdaGridFrameTemp        
     
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:

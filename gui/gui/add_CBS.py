@@ -26,10 +26,10 @@ def add_CBS(bevDict, numRows, entriesCBS, frameCBS):
           entriesCBS[0, 0] = numRows
           
           ##Assign the new label to entries dictionary.
-          entriesCBS[numRows, 0] = Label(FrameCBS, text = currLabel)
+          entriesCBS[numRows, 0] = Label(frameCBS, text = currLabel)
           
           ##Assign new entry to entries dictionary.
-          entriesCBS[numRows, 1] = Entry(FrameCBS)
+          entriesCBS[numRows, 1] = Entry(frameCBS)
           
           ##Pack the new label/entry in the frame.
           entriesCBS[numRows, 0].pack(anchor = W)
