@@ -3,7 +3,7 @@ from tkinter import * ##Import the tkinter module to allow construction of the G
 
 """Function to change CBS page based on radio button."""
 def change_CBS(radioRowsCBS, radioBoxCBS, concreteScrollingArea, frameCBS, 
-               textBoxCBS, whichRadio):
+               textBoxCBSFrame, whichRadio):
   """ (tkinter.Radiobutton, tkinter.Radiobutton, vertSuperscroll.Scrolling_Area, 
        tkinter.Frame, tkinter.Text, StringVar) -> (none)
     
@@ -14,7 +14,7 @@ def change_CBS(radioRowsCBS, radioBoxCBS, concreteScrollingArea, frameCBS,
   
   """   
   if (whichRadio.get() == 'Rows'): ##User clicked on rowsCBS Button.
-    textBoxCBS.pack_forget()
+    textBoxCBSFrame.pack_forget()
     concreteScrollingArea.pack(expand=1, fill = BOTH) 
     frameCBS.pack(anchor = W)
     radioRowsCBS.config(state = 'disabled')
@@ -23,6 +23,6 @@ def change_CBS(radioRowsCBS, radioBoxCBS, concreteScrollingArea, frameCBS,
   else: ##User clicked on boxCBS Button.
     concreteScrollingArea.pack_forget()
     frameCBS.pack_forget()
-    textBoxCBS.pack()
+    textBoxCBSFrame.pack()
     radioRowsCBS.config(state = 'normal')
     radioBoxCBS.config(state = 'disabled')

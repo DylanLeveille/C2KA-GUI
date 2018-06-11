@@ -168,7 +168,7 @@ def next_page():
         ##area. This is done in order to destroy the previous scrolling area
         ##at the end of the else statement once all the necessary widgets were
         ##saved from the old frame.
-        concreteScrollingAreaTemp = superscroll.Scrolling_Area(main, width = 1, height = 1)
+        concreteScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main, width = 1, height = 1)
         
         ##Create a temporary frame to hold CBS (for the same reason described 
         ##in the temporary scrolling area).
@@ -192,35 +192,34 @@ def next_page():
           frameCBSTemp.pack(anchor =  W)
         
         else: ##Repack the text box. 
-          textBoxCBS.pack()
+          textBoxCBSFrame.pack()
         
       ##Pack frame for the radio Buttons
       formatCBS.pack(side = BOTTOM, anchor = S, expand = True)      
   
   """PAGE 3 to PAGE 4."""
   if pageNum == 3:
-    ##Boolean variable for validity of entries
+    ##Boolean variable for validity of entries.
+
     isGoodCBS = check_if_good_CBS(main, entriesCBS)
-    
-    ##If there are invalid entries, create popup
+
+    ##If there are invalid entries, create popup.
     if isGoodCBS == False:
       incorrect_CBS(main) ##Calls function for pop-up.
+
       pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
-      
-      
-    ##Set new page by forgetting the CBS scrolling area and frame, and
-    ##by forgetting the title and agent name labels.
-    else:
+
+    else: ##Entries are good.    
       ##Extract concrete behaviour in a dictionary.
       concreteBehaviours = get_concrete_behaviours(entriesCBS)
-    
-    ##Set new page by forgetting the CBS related frames and entries.
+      
+      ##Set new page by forgetting the CBS related frames and entries.
       if whichRadio.get() == 'Rows': ##User was using rowsCBS.
         frameCBS.pack_forget()
         concreteScrollingArea.pack_forget()
-      
+        
       else: ##User was using boxCBS.
-        textBoxCBS.pack_forget()
+        textBoxCBSFrame.pack_forget()
         
       titleCBS.pack_forget()
       agentCBS.pack_forget()
@@ -248,7 +247,6 @@ def next_page():
       
         lambdaScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
         lambdaScrollingArea.pack(expand=1, fill = BOTH)      
-
       
         lambdaGridFrame = Frame(lambdaScrollingArea.innerframe) 
         lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.  
@@ -314,7 +312,7 @@ def next_page():
         circleGridFrame = circleGridFrameTemp
         lambdaScrollingArea = lambdaScrollingAreaTemp
         lambdaGridFrame = lambdaGridFrameTemp        
-    
+      
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
     ##Create dictionaries to hold the values from tables.
@@ -358,8 +356,8 @@ def next_page():
       textEntry.insert(INSERT, open("agentspec.txt", "r").read())
       ##Configure the text entry so that it cannot be modified.
       textEntry.config(state="disabled")
-      ##Pack the text entry to give a preview tp the user.
-      textEntry.pack(side = TOP)  
+      ##Pack the text entry frame to give a preview to the user.
+      textEntryFrame.pack()
       
       ##Pack the button allowing the user to save the file if satisfied
       ##with the result.
@@ -422,8 +420,8 @@ def prev_page():
       frameCBS.pack_forget()
       
     else:##Radio button was on boxCBS.
-      ##Forget the text box.
-      textBoxCBS.pack_forget()
+      ##Forget the text box frame.
+      textBoxCBSFrame.pack_forget()
     ##Forget the title and radio button frame regardless of which radio button was pressed.  
     titleCBS.pack_forget()
     agentCBS.pack_forget()      
@@ -455,7 +453,7 @@ def prev_page():
       concreteScrollingArea.pack(expand =1, fill = BOTH)
     
     else: ##User was using boxCBS.
-      textBoxCBS.pack()  
+      textBoxCBSFrame.pack()  
     
     ##Pack frame for the radio Buttons
     formatCBS.pack(side = BOTTOM, anchor = S, expand = True)    
@@ -463,7 +461,7 @@ def prev_page():
   """PAGE 5 to PAGE 4."""
   if pageNum == 5:
     ##Forget text preview box and save button.
-    textEntry.pack_forget()
+    textEntryFrame.pack_forget()
     saveButton.pack_forget()
     
     ##Configure previous button to a new size.
@@ -599,7 +597,8 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##Create the text box widget for the CBS page.
   textBoxCBS = Text(textBoxCBSFrame, wrap=NONE,
               xscrollcommand=xscrollbarCBS.set,
-              yscrollcommand=yscrollbarCBS.set)
+              yscrollcommand=yscrollbarCBS.set,
+              width = 60)
   
   textBoxCBS.grid(row=0, column=0)
 
@@ -609,13 +608,13 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##Radio button for the default style of entering concrete behaviours.
   radioRowsCBS = Radiobutton(main, text = 'CBS Rows', variable = whichRadio, value = 'Rows', 
                              state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
-                             radioBoxCBS, concreteScrollingArea, frameCBS, textBoxCBS, whichRadio))
+                             radioBoxCBS, concreteScrollingArea, frameCBS, textBoxCBSFrame, whichRadio))
   radioRowsCBS.pack(in_=formatCBS, side = LEFT)
   
   ##Radio button for the alternate style of entering concrete behaviours.
   radioBoxCBS = Radiobutton(main, text = 'CBS Box', variable = whichRadio, value = 'Box', 
                             command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
-                            concreteScrollingArea, frameCBS, textBoxCBS, whichRadio))
+                            concreteScrollingArea, frameCBS, textBoxCBSFrame, whichRadio))
   radioBoxCBS.pack(in_=formatCBS, side = RIGHT)
 
   """Labels and Entries exclusive for page 4."""
@@ -626,7 +625,27 @@ if __name__ == '__main__': ##only start program when running gui.py
   
   """Labels and Entries exclusive for page 5."""
   ##Text entry to give the user a preview of the text file.
-  textEntry = Text(main)
+  ##Create a frame for the text box.
+  textEntryFrame = Frame(main)
+  textEntry = Text(textEntryFrame)
+  
+  ##Declaring x and y scrollbars for the text box.
+  xscrollbarText = Scrollbar(textEntryFrame, orient=HORIZONTAL)
+  xscrollbarText.grid(row=1, column=0, sticky=N+S+E+W)
+
+  yscrollbarText = Scrollbar(textEntryFrame)
+  yscrollbarText.grid(row=0, column=1, sticky=N+S+E+W)
+
+  ##Create the text box widget for the CBS page.
+  textEntry = Text(textEntryFrame, wrap=NONE,
+              xscrollcommand=xscrollbarText.set,
+              yscrollcommand=yscrollbarText.set,
+              width = 60)
+  
+  textEntry.grid(row=0, column=0)
+
+  xscrollbarText.config(command=textEntry.xview)
+  yscrollbarText.config(command=textEntry.yview)    
   
   ##Save button to have the user save the text file.
   saveButton = Button(main, text = 'Save File', command = create_save_file, width = 35)
