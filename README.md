@@ -62,7 +62,158 @@ For circle table, please insert each row (behaviour) name along the row.
 For lambda Table, fill with Neutral stimuli (N), except bottom right corner, in which is entered the deactivation stimulus (D).
 
 Product:
+begin AGENT where
+    R := SINCE1 ; SINCE2 ; SINCE3; SINCE4 ; READ ; ((AVG1 ; RESET1) + (AVG2 ; RESET2) + (AVG3 ; RESET3) + (AVG4 ; RESET4))
+end
 
+begin NEXT_BEHAVIOUR where
+    (ips, SINCE1)  = SINCE1
+    (ips, SINCE2)  = SINCE2
+    (ips, SINCE3)  = SINCE3
+    (ips, SINCE4)  = SINCE4
+    (ips, READ)    = READ
+    (ips, AVG1)    = AVG1
+    (ips, RESET1)  = RESET1
+    (ips, AVG2)    = AVG2
+    (ips, RESET2)  = RESET2
+    (ips, AVG3)    = AVG3
+    (ips, RESET3)  = RESET3
+    (ips, AVG4)    = AVG4
+    (ips, RESET4)  = RESET4
+    (abor, SINCE1) = SINCE1
+    (abor, SINCE2) = SINCE2
+    (abor, SINCE3) = SINCE3
+    (abor, SINCE4) = SINCE4
+    (abor, READ)   = READ
+    (abor, AVG1)   = AVG1
+    (abor, RESET1) = RESET1
+    (abor, AVG2)   = AVG2
+    (abor, RESET2) = RESET2
+    (abor, AVG3)   = AVG3
+    (abor, RESET3) = RESET3
+    (abor, AVG4)   = AVG4
+    (abor, RESET4) = RESET4
+    (allo, SINCE1) = SINCE1
+    (allo, SINCE2) = SINCE2
+    (allo, SINCE3) = SINCE3
+    (allo, SINCE4) = SINCE4
+    (allo, READ)   = READ
+    (allo, AVG1)   = AVG1
+    (allo, RESET1) = RESET1
+    (allo, AVG2)   = AVG2
+    (allo, RESET2) = RESET2
+    (allo, AVG3)   = AVG3
+    (allo, RESET3) = RESET3
+    (allo, AVG4)   = AVG4
+    (allo, RESET4) = RESET4
+    (help, SINCE1) = SINCE1
+    (help, SINCE2) = SINCE2
+    (help, SINCE3) = SINCE3
+    (help, SINCE4) = SINCE4
+    (help, READ)   = READ
+    (help, AVG1)   = AVG1
+    (help, RESET1) = RESET1
+    (help, AVG2)   = AVG2
+    (help, RESET2) = RESET2
+    (help, AVG3)   = AVG3
+    (help, RESET3) = RESET3
+    (help, AVG4)   = AVG4
+    (help, RESET4) = RESET4
+    (noop, SINCE1) = SINCE1
+    (noop, SINCE2) = SINCE2
+    (noop, SINCE3) = SINCE3
+    (noop, SINCE4) = SINCE4
+    (noop, READ)   = READ
+    (noop, AVG1)   = AVG1
+    (noop, RESET1) = RESET1
+    (noop, AVG2)   = AVG2
+    (noop, RESET2) = RESET2
+    (noop, AVG3)   = AVG3
+    (noop, RESET3) = RESET3
+    (noop, AVG4)   = AVG4
+    (noop, RESET4) = RESET4
+end
+
+begin NEXT_STIMULUS where
+    (ips, SINCE1)  = N
+    (ips, SINCE2)  = N
+    (ips, SINCE3)  = N
+    (ips, SINCE4)  = N
+    (ips, READ)    = N
+    (ips, AVG1)    = N
+    (ips, RESET1)  = N
+    (ips, AVG2)    = N
+    (ips, RESET2)  = N
+    (ips, AVG3)    = N
+    (ips, RESET3)  = N
+    (ips, AVG4)    = N
+    (ips, RESET4)  = N
+    (abor, SINCE1) = N
+    (abor, SINCE2) = N
+    (abor, SINCE3) = N
+    (abor, SINCE4) = N
+    (abor, READ)   = N
+    (abor, AVG1)   = N
+    (abor, RESET1) = N
+    (abor, AVG2)   = N
+    (abor, RESET2) = N
+    (abor, AVG3)   = N
+    (abor, RESET3) = N
+    (abor, AVG4)   = N
+    (abor, RESET4) = N
+    (allo, SINCE1) = N
+    (allo, SINCE2) = N
+    (allo, SINCE3) = N
+    (allo, SINCE4) = N
+    (allo, READ)   = N
+    (allo, AVG1)   = N
+    (allo, RESET1) = N
+    (allo, AVG2)   = N
+    (allo, RESET2) = N
+    (allo, AVG3)   = N
+    (allo, RESET3) = N
+    (allo, AVG4)   = N
+    (allo, RESET4) = N
+    (help, SINCE1) = N
+    (help, SINCE2) = N
+    (help, SINCE3) = N
+    (help, SINCE4) = N
+    (help, READ)   = N
+    (help, AVG1)   = N
+    (help, RESET1) = N
+    (help, AVG2)   = N
+    (help, RESET2) = N
+    (help, AVG3)   = N
+    (help, RESET3) = N
+    (help, AVG4)   = N
+    (help, RESET4) = N
+    (noop, SINCE1) = N
+    (noop, SINCE2) = N
+    (noop, SINCE3) = N
+    (noop, SINCE4) = N
+    (noop, READ)   = N
+    (noop, AVG1)   = N
+    (noop, RESET1) = N
+    (noop, AVG2)   = N
+    (noop, RESET2) = N
+    (noop, AVG3)   = N
+    (noop, RESET3) = N
+    (noop, AVG4)   = N
+    (noop, RESET4) = D
+end
+
+begin CONCRETE BEHAVIOUR where
+    R => [ since1 := since1 + delta;
+           since2 := since2 + delta;
+           since3 := since3 + delta;
+           since4 := since4 + delta;
+           n := cmd;
+           if n = 1 -> avg1 := since1 / num1; since1 := 0
+            | n = 2 -> avg2 := since2 / num2; since2 := 0
+            | n = 3 -> avg3 := since3 / num3; since3 := 0
+            | n = 4 -> avg4 := since4 / num4; since4 := 0
+           fi  ]
+end
     
 
 Do note that there is no guarantee that the program won't crash if uncommon characters are inputted in the entry boxes. Characters which are found on the standard English keyboard should work fine and are usually .
