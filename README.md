@@ -1,4 +1,5 @@
- GUI to Assist the C2KA TOOL
+
+GUI to Assist the C2KA TOOL
 
 This project consists of a graphical user interface (GUI) to assist the C2KA tool (developed by Dr. Jason Jaskolka). With simple entries, the GUI can generate a text file describing an agent’s specification.  
 
@@ -32,10 +33,15 @@ No automated tests available due to the nature of this project.
 However, we recommend testing out the project with various different text entries and taking advantage of the scrollbars to facilitate entries.
 
 Example:
+
 Inserting the following information should generate the preview shown below.
+
 Stimuli: ips, abor, allo, help, noop.
+
 Agent Name: R
+
 Behaviour:  SINCE1 ; SINCE2 ; SINCE3; SINCE4 ; READ ; ((AVG1 ; RESET1) + (AVG2 ; RESET2) + (AVG3 ; RESET3) + (AVG4 ; RESET4))
+
 Table values:
   circle table: 
 
