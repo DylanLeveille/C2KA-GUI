@@ -374,4 +374,5 @@ We accept contributions from anyone willing to put effort into the project.
 ## Acknowledgments
 
 Dr. Jason Jaskolka for giving us an interesting project for our internship and for his continous help.
+
 Miguel Martinez Lopez for letting us use his code for a scrollable frame. 
