@@ -42,7 +42,7 @@ def next_page():
   global frameCBS ##Frame to hold concrete behaviours.
   global agentCBS ##Label for the agent name on the concrete behaviours page.
   
-  global entriesCBS ##Data scructure to hold concrete behaviour labels and entries.
+  global entriesCBS ##Dict to hold concrete behaviour labels and entries.
   global concreteBehaviours ##Dict to hold parsed concrete behaviours
   
   global circleTableBoxes ##Dict to hold entry boxes and labels of circle table.
@@ -151,7 +151,7 @@ def next_page():
         ##Call create_CBS_entries() to create the rows in the CBS frame.
         entriesCBS= create_CBS_entries(bevDict, frameCBS)
         
-        ##Save the number of CBS in the bevDict dictionary at key 0, 0 since
+        ##Save the number of CBS in the bevDict dictionary at key (0, 0) since
         ##that coordinate is unused.
         entriesCBS[0, 0] = len(bevDict)
         
@@ -169,26 +169,30 @@ def next_page():
         ##at the end of the else statement once all the necessary widgets were
         ##saved from the old frame.
         concreteScrollingAreaTemp = superscroll.Scrolling_Area(main, width = 1, height = 1)
-        concreteScrollingAreaTemp.pack(expand = 1, fill = BOTH)
+        
         ##Create a temporary frame to hold CBS (for the same reason described 
         ##in the temporary scrolling area).
         frameCBSTemp = Frame(concreteScrollingAreaTemp.innerframe)
         
         ##calling recreate_CBS_entries() to recreate the CBS rows in the new 
         ##temporary frame.
-        entriesCBS= recreate_CBS_entries(bevDict, entriesCBS, frameCBSTemp)
+        entriesCBS = recreate_CBS_entries(bevDict, entriesCBS, frameCBSTemp)
         
         ##Destroy the old scrolling area and the old frame for the CBS.
         concreteScrollingArea.destroy()
-        frameCBS.destroy()
-        
-        ##Pack the new scrolling area and the new frame for the CBS.
-        concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
-        frameCBSTemp.pack(anchor =  W)
+        frameCBS.destroy()        
         
         ##Assing the old scrolling area and the old frame to the new ones.
         concreteScrollingArea = concreteScrollingAreaTemp
-        frameCBS = frameCBSTemp 
+        frameCBS = frameCBSTemp         
+        
+        if whichRadio.get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
+          ##Pack the new scrolling area and the new frame for the CBS.
+          concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
+          frameCBSTemp.pack(anchor =  W)
+        
+        else: ##Repack the text box. 
+          textBoxCBS.pack()
         
       ##Pack frame for the radio Buttons
       formatCBS.pack(side = BOTTOM, anchor = S, expand = True)      
@@ -199,8 +203,13 @@ def next_page():
     concreteBehaviours = get_concrete_behaviours(entriesCBS)
     
     ##Set new page by forgetting the CBS related frames and entries.
-    frameCBS.pack_forget()
-    concreteScrollingArea.pack_forget()
+    if whichRadio.get() == 'Rows': ##User was using rowsCBS.
+      frameCBS.pack_forget()
+      concreteScrollingArea.pack_forget()
+      
+    else: ##User was using boxCBS.
+      textBoxCBS.pack_forget()
+      
     titleCBS.pack_forget()
     agentCBS.pack_forget()
     formatCBS.pack_forget()
@@ -326,8 +335,8 @@ def next_page():
       prevButton.config(width = 35)
     
       ##Call create_text() to create the agentspec.txt file.
-      create_text(agentName, agentBehaviour, concreteBehaviours, circleTableValues, 
-                  lambdaTableValues, stimDict, bevDict)
+      create_text(agentName, agentBehaviour, concreteBehaviours, textBoxCBS, 
+                  circleTableValues, lambdaTableValues, stimDict, bevDict, whichRadio)
       
       ##Configure the text entry to be modifiable.
       textEntry.config(state = 'normal')
@@ -393,11 +402,18 @@ def prev_page():
     agentBevLabel.pack(side = TOP, anchor = W)
     agentBevEntry.pack(side = TOP, anchor = W)
     
-    ##Forget the scrolling area, frame and labels for the CBS.
-    concreteScrollingArea.pack_forget()
-    frameCBS.pack_forget()
+    ##Checking which widgets to unpack from the window.
+    if (whichRadio.get() == 'Rows'): ##Radio button was on rowsCBS.
+      ##Forget the scrolling area for the CBS.
+      concreteScrollingArea.pack_forget()
+      frameCBS.pack_forget()
+      
+    else:##Radio button was on boxCBS.
+      ##Forget the text box.
+      textBoxCBS.pack_forget()
+    ##Forget the title and radio button frame regardless of which radio button was pressed.  
     titleCBS.pack_forget()
-    agentCBS.pack_forget()
+    agentCBS.pack_forget()      
     formatCBS.pack_forget()
   
   """PAGE 4 to PAGE 3."""
@@ -417,11 +433,16 @@ def prev_page():
     nextButton.config(width = 35)
     prevButton.config(width = 35)  
   
-    ##Pack scrolling area, frame and labels for the CBS.
+    ##Pack widgets related to CBS page.
     titleCBS.pack(side = TOP)
-    agentCBS.pack(side = TOP, anchor = W)
-    frameCBS.pack(anchor = W)
-    concreteScrollingArea.pack(expand =1, fill = BOTH)
+    agentCBS.pack(side = TOP, anchor = W)  
+    
+    if whichRadio.get() == 'Rows': ##User was using rowsCBS.
+      frameCBS.pack(anchor = W)
+      concreteScrollingArea.pack(expand =1, fill = BOTH)
+    
+    else: ##User was using boxCBS.
+      textBoxCBS.pack()  
     
     ##Pack frame for the radio Buttons
     formatCBS.pack(side = BOTTOM, anchor = S, expand = True)    
@@ -447,7 +468,7 @@ def prev_page():
     nextButton.pack(in_=buttonsFrame, side = RIGHT)
     fillN.pack(in_=buttonsFrame, side = BOTTOM)
   
-  ##Decrease pageNum everytime the previous button is clicked.
+  ##Decrease pageNum every time the previous button is clicked.
   pageNum -= 1
 
 if __name__ == '__main__': ##only start program when running gui.py
@@ -504,7 +525,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##the scrolling area can be passed by reference and be modified by other functions.
   stimScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
   stimScrollingArea[0].pack(expand = 1, fill = BOTH)
-  
+
   ##Title for the stimuli on page 1.
   stimTitle = Label(stimScrollingArea[0].innerframe, text='Please Enter The Stimuli')
   stimTitle.pack(side = TOP)
@@ -519,12 +540,12 @@ if __name__ == '__main__': ##only start program when running gui.py
   enterStimBox = Entry(main)
   enterStimBox.pack(in_=stimFrame, side = TOP)
   
-  ##Delete previous entry Button (for the stimuli)
+  ##Delete previous entry Button (for the stimuli).
   delButton = Button(main, text = 'Delete Previous', command = lambda: remove_stim(main, stimList, stimScrollingArea), 
                      width = 23)
   delButton.pack(in_=buttonsFrame, side = LEFT)
   
-  ##Add stimulus entry Button
+  ##Add stimulus entry Button.
   addStim = Button(main, text = 'Add new stimulus', 
                    command = lambda: add_stim(main, stimList, stimScrollingArea), 
                    width = 23)
@@ -532,11 +553,11 @@ if __name__ == '__main__': ##only start program when running gui.py
   addStim.pack(in_=buttonsFrame, side = TOP)
   
   """Labels and Entries exclusive for page 2.""" 
-  ##Agent Name Label and Entry
+  ##Agent Name Label and Entry.
   agentLabel = Label(main, text = 'Enter Agent Name:')
   agentEntry = Entry(main, width = 50)
   
-  ##Agent Behaviour Label and Entry
+  ##Agent Behaviour Label and Entry.
   agentBevLabel = Label(main, text = 'Enter Agent Behaviour:')
   agentBevEntry = Entry(main, width = 50)
   
@@ -544,7 +565,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##Title for the concrete behaviours.
   titleCBS = Label(main, text='Concrete Behaviours')
   
-  ##Frame for the two radio buttons
+  ##Frame for the two radio buttons.
   formatCBS = Frame(main)
   
   ##Set a variable that the radio Buttons share to determine what happens when 
@@ -552,19 +573,36 @@ if __name__ == '__main__': ##only start program when running gui.py
   whichRadio = StringVar()
   whichRadio.set('Rows')  
   
-  ##Create a text box for the entry box radio button.
-  textBoxCBS = Text(main)
+  ##Create a frame for the text box.
+  textBoxCBSFrame = Frame(main)
   
-  ##Radio button for the default style of entering concrete behaviours
+  ##Declaring x and y scrollbars for the CBS text box.
+  xscrollbarCBS = Scrollbar(textBoxCBSFrame, orient=HORIZONTAL)
+  xscrollbarCBS.grid(row=1, column=0, sticky=N+S+E+W)
+
+  yscrollbarCBS = Scrollbar(textBoxCBSFrame)
+  yscrollbarCBS.grid(row=0, column=1, sticky=N+S+E+W)
+
+  ##Create the text box widget for the CBS page.
+  textBoxCBS = Text(textBoxCBSFrame, wrap=NONE,
+              xscrollcommand=xscrollbarCBS.set,
+              yscrollcommand=yscrollbarCBS.set)
+  
+  textBoxCBS.grid(row=0, column=0)
+
+  xscrollbarCBS.config(command=textBoxCBS.xview)
+  yscrollbarCBS.config(command=textBoxCBS.yview)    
+  
+  ##Radio button for the default style of entering concrete behaviours.
   radioRowsCBS = Radiobutton(main, text = 'CBS Rows', variable = whichRadio, value = 'Rows', 
-                             state = 'disabled', command = lambda: rows_CBS(radioRowsCBS, 
-                             radioBoxCBS, concreteScrollingArea, frameCBS, textBoxCBS))
+                             state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
+                             radioBoxCBS, concreteScrollingArea, frameCBS, textBoxCBS, whichRadio))
   radioRowsCBS.pack(in_=formatCBS, side = LEFT)
   
-  ##Radio button for the alternate style of entering concrete behaviours
+  ##Radio button for the alternate style of entering concrete behaviours.
   radioBoxCBS = Radiobutton(main, text = 'CBS Box', variable = whichRadio, value = 'Box', 
-                            command = lambda: box_CBS(radioRowsCBS, radioBoxCBS, 
-                            concreteScrollingArea, frameCBS, textBoxCBS))
+                            command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
+                            concreteScrollingArea, frameCBS, textBoxCBS, whichRadio))
   radioBoxCBS.pack(in_=formatCBS, side = RIGHT)
 
   """Labels and Entries exclusive for page 4."""

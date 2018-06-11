@@ -15,7 +15,7 @@ def add_CBS(bevDict, numRows, entriesCBS, frameCBS):
   ##Appending the labels to the data scructure.
   for row in range(1, numRows + 1):
       listofLabels.append(entriesCBS[row, 0].cget("text"))
-      
+
   ##Check behaviour dictionary to see if new behaviours were added.   
   for i in range(1, len(bevDict) + 1):
       currLabel = bevDict[i]
@@ -26,10 +26,10 @@ def add_CBS(bevDict, numRows, entriesCBS, frameCBS):
           entriesCBS[0, 0] = numRows
           
           ##Assign the new label to entries dictionary.
-          entriesCBS[numRows, 0] = Label(FrameCBS, text = currLabel)
+          entriesCBS[numRows, 0] = Label(frameCBS, text = currLabel)
           
           ##Assign new entry to entries dictionary.
-          entriesCBS[numRows, 1] = Entry(FrameCBS)
+          entriesCBS[numRows, 1] = Entry(frameCBS)
           
           ##Pack the new label/entry in the frame.
           entriesCBS[numRows, 0].pack(anchor = W)
@@ -52,7 +52,11 @@ def add_CBS(bevDict, numRows, entriesCBS, frameCBS):
           entriesCBS[rowPos, 0].config(text = entriesCBS[row, 0].cget("text"))
           entriesCBS[row, 0].config(text = auxLabel)
           
-          ##And switch the entries too.
+          ##And switch the entries in the same manner as the labels.
+          auxEntry = entriesCBS[rowPos, 1].get()
+          
           entriesCBS[rowPos, 1].delete(0, END)
           entriesCBS[rowPos, 1].insert(0, entriesCBS[row, 1].get())
+          
           entriesCBS[row, 1].delete(0, END)
+          entriesCBS[row, 1].insert(0, auxEntry)
