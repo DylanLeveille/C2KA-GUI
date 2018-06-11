@@ -62,7 +62,7 @@ For circle table, please insert each row (behaviour) name along the row.
 
 For lambda Table, fill with Neutral stimuli (N), except bottom right corner, in which is entered the deactivation stimulus (D).
 
-Product:
+RESULT:
 
 begin AGENT where
 
@@ -364,25 +364,14 @@ Also, since we decided that the behaviours would be stored based on the order th
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We accept contributions from anyone willing to put effort into the project.
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+* **Dylan Leveille** - *Intern* - [DylanLeveille](https://github.com/DylanLeveille)
+* **Idir Zerrouk** - *Intern* - [idirz](https://github.com/idirz)
 
 ## Acknowledgments
 
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+Dr. Jason Jaskolka for giving us an interesting project for our internship and for his continous help.
+Miguel Martinez Lopez for letting us use his code for a scrollable frame. 
