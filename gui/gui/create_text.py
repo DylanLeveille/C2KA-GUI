@@ -3,9 +3,9 @@ from tkinter import * ##Import the tkinter module to allow construction of the G
 from string import * ##Module containing functions to modify strings.
 
 """Function which creates the product (text file)."""
-def create_text(agentName, agentBehaviour, concreteBehaviours, circleTableValues,
-                lambdaTableValues, stimDict, bevDict):
-  """ (str, str, str, dict, dict, dict, dict) -> (none)
+def create_text(agentName, agentBehaviour, concreteBehaviours, textBoxCBS, 
+                circleTableValues, lambdaTableValues, stimDict, bevDict, whichRadio):
+  """ (str, str, str, dict, dict, dict, dict, StringVar) -> (none)
     
     Creates the text file for the agent specifications.
     File is saved in program's folder.
@@ -62,17 +62,26 @@ def create_text(agentName, agentBehaviour, concreteBehaviours, circleTableValues
   
   ##Text for concrete behaviours.
   file.write("begin CONCRETE BEHAVIOUR where\n")
-  ##Iterate through concrete behaviours.
-  for i in range(1, len(bevDict) +1):
-      ##Write label for CBS.
-      file.write("    %s" %(bevDict[i]))
-      ##Finding total whitespace to align '=>' sign.
-      whiteSpace = len(max(bevDict.values(), key=len)) - len(bevDict[i])
-      for j in range(whiteSpace + 1):
-          file.write(" ")
-      ##Write concrete behaviour entry for each label.
-      file.write("=> [ %s ]" %(concreteBehaviours[i]))
-      file.write("\n")
+  
+  if whichRadio.get() == 'Rows': ##User used rows for concrete behaviours.
+    ##Iterate through concrete behaviours.
+    for i in range(1, len(bevDict) +1):
+        ##Write label for CBS.
+        file.write("    %s" %(bevDict[i]))
+        ##Finding total whitespace to align '=>' sign.
+        whiteSpace = len(max(bevDict.values(), key=len)) - len(bevDict[i])
+        for j in range(whiteSpace + 1):
+            file.write(" ")
+        ##Write concrete behaviour entry for each label.
+        file.write("=> [ %s ]" %(concreteBehaviours[i]))
+        file.write("\n")
+        
+  else: ##User used the text box for the concrete behaviours
+    ##Write agent name.
+    file.write("    %s" %(agentName))
+    ##Write text Box entry.
+    file.write(" => [ %s ]" %(textBoxCBS.get("1.0",END)))
+    
   ##END.
   file.write("end")    
   file.close()

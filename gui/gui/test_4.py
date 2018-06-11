@@ -1,124 +1,39 @@
-# Author: Miguel Martinez Lopez
-# Uncomment the next line to see my email
-# print "Author's email: ", "61706c69636163696f6e616d656469646140676d61696c2e636f6d".decode("hex")
+from tkinter import*
 
-try:
-   import Tkinter as tk
-   import ttk
-except ImportError:
-   import tkinter as tk
-   from tkinter import ttk
+class DpWin(object):
+    def run(self):
+        root=Tk()
+        root.geometry('768x612')
+        title='dp'
+        root.title(title)
 
+        f = Frame(root)
+        f.pack()
 
-class MouseWheel(object):
-   def __init__(self, root, factor = 0.5):
-      self.activeArea = None
-      self.factor = factor
+        xscrollbar = Scrollbar(f, orient=HORIZONTAL)
+        xscrollbar.grid(row=1, column=0, sticky=N+S+E+W)
 
-      import platform
-      os = platform.system()
+        yscrollbar = Scrollbar(f)
+        yscrollbar.grid(row=0, column=1, sticky=N+S+E+W)
 
-      if os == "Linux" :
-         root.bind_all('<4>', self.onMouseWheel,  add='+')
-         root.bind_all('<5>', self.onMouseWheel,  add='+')
-      else:
-         # Windows and MacOS
-         root.bind_all("<MouseWheel>", self.onMouseWheel,  add='+')
+        text = Text(f, wrap=NONE,
+                    xscrollcommand=xscrollbar.set,
+                    yscrollcommand=yscrollbar.set)
+        text.grid(row=0, column=0)
 
-   def onMouseWheel(self,event):
-      if self.activeArea:
-         self.activeArea.onMouseWheel(event.delta)
+        xscrollbar.config(command=text.xview)
+        yscrollbar.config(command=text.yview)
+        text.insert(END, 'a'*999)
+        mainloop()
 
-   def mouseWheel_bind(self, widget):
-      self.activeArea = widget
+    def start(self):
+        self.b_start.config(state=DISABLED)
+        self.b_stop.config(state=ACTIVE)
 
-   def mouseWheel_unbind(self):
-      self.activeArea = None
+    def stop(self):
+        self.b_stop.config(state=DISABLED)
+        self.b_start.config(state=ACTIVE)
 
-   def add_scrolling(self, scrollingArea, xscrollbar=None, yscrollbar=None):
-      scrollingArea.bind('<Enter>',lambda event: self.mouseWheel_bind(scrollingArea))
-      scrollingArea.bind('<Leave>', lambda event: self.mouseWheel_unbind())
-
-      if xscrollbar and not hasattr(xscrollbar, 'onMouseWheel'):
-         setattr(xscrollbar, 'onMouseWheel', lambda delta: scrollingArea.xview("scroll",(-1)*int(delta/(120*self.factor)),"units" ) )
-
-      if yscrollbar and not hasattr(yscrollbar, 'onMouseWheel'):
-         setattr(yscrollbar, 'onMouseWheel', lambda delta: scrollingArea.yview("scroll",(-1)*int(delta/(120*self.factor)),"units" ) )
-
-      active_scrollbar_on_mouse_wheel = yscrollbar or xscrollbar
-      if active_scrollbar_on_mouse_wheel:
-         setattr(scrollingArea, 'onMouseWheel', active_scrollbar_on_mouse_wheel.onMouseWheel)
-
-      for scrollbar in (xscrollbar, yscrollbar):
-         if scrollbar:
-            scrollbar.bind('<Enter>', lambda event, scrollbar=scrollbar: self.mouseWheel_bind(scrollbar) )
-            scrollbar.bind('<Leave>', lambda event: self.mouseWheel_unbind())
-
-
-class simultaneousScrollbar(ttk.Scrollbar):
-   def __init__(self, master, factor = 0.5, **kwargs):
-      self.__scrollableWidgets = []
-
-      if 'orient' in kwargs:
-         if kwargs['orient']== tk.VERTICAL:
-            self.__orientLabel = 'y'
-         elif kwargs['orient']== tk.HORIZONTAL:
-            self.__orientLabel = 'x'
-         else:
-            raise Exception("Bad 'orient' argument in scrollbar.")
-      else:
-         self.__orientLabel = 'y'
-
-      kwargs['command'] = self.onScroll
-      self.factor = factor
-
-      ttk.Scrollbar.__init__(self, master, **kwargs)
-
-
-
-   def add_ScrollableArea(self, *scrollableWidgets):
-      for widget in scrollableWidgets:
-         self.__scrollableWidgets.append(widget)
-         widget[self.__orientLabel+'scrollcommand']=self.set
-
-   def onScroll(self, *args):
-      for widget in self.__scrollableWidgets:
-         getattr(widget, self.__orientLabel+'view')(*args)
-
-   def onMouseWheel(self, delta):
-      for widget in self.__scrollableWidgets:
-         getattr(widget, self.__orientLabel+'view')("scroll",(-1)*int(delta/(120*self.factor)),"units" )
-
-def test():
-   root = tk.Tk()
-
-   scrollbar = simultaneousScrollbar(root, orient=tk.HORIZONTAL)
-   scrollbar.grid(row = 0, column = 0)
-   
-   #emptySpace = tk.Frame(root, height=18)
-  # emptySpace.grid(row = 1, column = 0)
-
-   tk.Label(root, text='First scrolled frame:').grid(row = 1, column = 1)
-   canvas1 = tk.Canvas(root, width=300, height=100)
-   canvas1.grid(row = 2, column = 2)
-
-   frame1= tk.Frame(canvas1)
-   frame1.grid(row = 3, column = 3)
-
-   for i in range(20):
-      tk.Label(frame1, text="Label "+str(i)).grid(row = 2, column = i)
-
-   canvas1.create_window(0, 0, window=frame1, anchor='nw')
-
-   canvas1.update_idletasks()
-
-   canvas1['scrollregion'] = (0,0,frame1.winfo_reqwidth(), frame1.winfo_reqheight())
-
-   scrollbar.add_ScrollableArea(canvas1)
-
-   MouseWheel(root).add_scrolling(canvas1, xscrollbar=scrollbar)
-
-   root.mainloop()
-
-if __name__== '__main__':
-   test()
+if __name__=='__main__':
+    win=DpWin()
+    win.run()
