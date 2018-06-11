@@ -1,19 +1,16 @@
 begin AGENT where
-    j := k
+    a := a
 end
 
 begin NEXT_BEHAVIOUR where
-    (i, K) = K
+    (a, A) = A
 end
 
 begin NEXT_STIMULUS where
-    (i, K) = N
+    (a, A) = N
 end
 
 begin CONCRETE BEHAVIOUR where
-    j => [ receive x;
-if (x >= ABOR || x >= ALLO || x >= HELP || x >= NOOP) -> delta := time - last; last := time
-| ~(x >= ABOR || x >= ALLO || x >= HELP || x >= NOOP) -> skip
-fi;
-send x 
- ]end
+    A => [             a ]
+end
+

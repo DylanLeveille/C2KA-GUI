@@ -230,6 +230,42 @@ def incorrect_bevs(main):
   
   ##Removes main window.  
   main.withdraw()    
+##Function is called when an incorrect concrete behaviour is entered.
+def incorrect_CBS(main):
+  global wrongCBS
+  ##Create pop-up window.
+  wrongCBS = Toplevel()
+  
+  wrongCBS.config(takefocus = True) ##Get focus on screen. 
+  
+  windowSize = 300 ##Pop up size (300 x 300).
+  
+  ##Collect screen (monitor) width and height to position the window in the center. 
+  screenWidth = wrongCBS.winfo_screenwidth() 
+  screenHeight = wrongCBS.winfo_screenheight()
+  
+  ##Calculate the center position.
+  positionRight = screenWidth/2 - windowSize/2
+  positionDown = screenHeight/2 - windowSize/2
+  
+  ##Set the window size using the geometry() method.
+  wrongCBS.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+                                    positionRight, positionDown)) 
+  
+  wrongCBS.resizable(width = False, height = False) ##The window is not resizeable.
+
+  wrongCBS.wm_title("Incorrect Concrete Behaviour")
+  wrongCBS.overrideredirect(1) ##Removes task bar.
+  
+  Label(wrongCBS, text = 'Please enter at least one valid concrete behaviour').pack(side = TOP)
+  Label(wrongCBS, text = 'or remove invalid concrete behaviour').pack(side = TOP)
+  
+  pressToClose = Button(wrongCBS, text = "Return", 
+                        command = lambda: return_to_CBS(main))
+  pressToClose.pack(side = BOTTOM)
+  ##Removes main window.  
+  main.withdraw()
+  
 
 ##Function is called to verify entries in tables.
 def check_if_good_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes, 
@@ -320,6 +356,31 @@ def incorrect_table(main, numInvalid):
   
   ##Removes main window.  
   main.withdraw()  
+
+def check_if_good_CBS(main, entriesCBS):
+  ##Flag to check if there are any invalid entries
+  flag = True 
+  
+  for entry in range(1, entriesCBS[0,0]+1):
+    ##Check through CBS dictionary to find specific invalidities
+    if entriesCBS[entry, 1].get() == ' '*len(entriesCBS[entry, 1].get()):
+      
+      flag = False
+      ##If entry is invalid, change the background to white
+      entriesCBS[entry, 1].config(background = 'red')
+    else:
+      ##If entry is valid, change the backgound to white
+      entriesCBS[entry, 1].config(background = 'white')
+    
+  ##If there are no invalid entries, return True; else return False  
+  if flag == True:
+    return True
+  else:
+    return False
+      
+
+
+
 
 """Functions which get rid of the pop-up window."""
 
@@ -418,6 +479,12 @@ def return_to_bevs_bevs(main):
   main.update()
   main.deiconify()
   wrongBevs.destroy() 
+  
+##Function to return to the concrete behaviour page after the pop-up
+def return_to_CBS(main):
+  main.update()
+  main.deiconify()
+  wrongCBS.destroy()  
   
 ##Function to return to the tables after the pop-up. 
 def return_to_tables(main):
