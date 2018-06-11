@@ -201,7 +201,7 @@ def next_page():
   if pageNum == 3:
     ##Boolean variable for validity of entries.
 
-    isGoodCBS = check_if_good_CBS(main, entriesCBS)
+    isGoodCBS = check_if_good_CBS(main, entriesCBS, whichRadio, textBoxCBS)
 
     ##If there are invalid entries, create popup.
     if isGoodCBS == False:
@@ -594,6 +594,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   yscrollbarCBS = Scrollbar(textBoxCBSFrame)
   yscrollbarCBS.grid(row=0, column=1, sticky=N+S+E+W)
 
+  content = StringVar()
   ##Create the text box widget for the CBS page.
   textBoxCBS = Text(textBoxCBSFrame, wrap=NONE,
               xscrollcommand=xscrollbarCBS.set,
@@ -636,7 +637,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   yscrollbarText = Scrollbar(textEntryFrame)
   yscrollbarText.grid(row=0, column=1, sticky=N+S+E+W)
 
-  ##Create the text box widget for the CBS page.
+  ##Create the text box widget for the preview page.
   textEntry = Text(textEntryFrame, wrap=NONE,
               xscrollcommand=xscrollbarText.set,
               yscrollcommand=yscrollbarText.set,

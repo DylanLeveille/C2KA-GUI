@@ -78,9 +78,15 @@ def create_text(agentName, agentBehaviour, concreteBehaviours, textBoxCBS,
         
   else: ##User used the text box for the concrete behaviours
     ##Write agent name.
-    file.write("    %s" %(agentName))
-    ##Write text Box entry.
-    file.write(" => [ %s ]" %(textBoxCBS.get("1.0",END)))
+    file.write("    %s => [%s\n" %(agentName,textBoxCBS.get("1.0", "1.0 lineend")))
+    whitespace = 9+len(agentName)
+      ##Write text Box entry.
+    textBoxList = textBoxCBS.get("2.0",'end-1c').split()  
+    for lineNum in range(len(textBoxList)):
+      if lineNum <len(textBoxList)-1:
+        file.write("%s%s\n" %(' '*whitespace, textBoxList[lineNum]))
+      else:
+        file.write("%s%s ]\n" %(' '*(whitespace), textBoxList[lineNum]))
     
   ##END.
   file.write("end")    
