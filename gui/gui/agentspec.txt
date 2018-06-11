@@ -1,16 +1,15 @@
 begin AGENT where
-    a := a
+    a := b
 end
 
 begin NEXT_BEHAVIOUR where
-    (a, A) = A
+    (p, B) = B
 end
 
 begin NEXT_STIMULUS where
-    (a, A) = N
+    (p, B) = N
 end
 
 begin CONCRETE BEHAVIOUR where
-    A => [             a ]
+    B => [ b ]
 end
-
