@@ -1,36 +1,29 @@
-# Project Title
+# GUI to Assist the C2KA TOOL
 
-One Paragraph of project description goes here
+This project consists of a graphical user interface (GUI) to assist the C2KA tool (developed by Dr. Jason Jaskolka). With simple entries, the GUI can generate a text file describing an agent’s specification.  
 
 ## Getting Started
+1.	Download entire project folder (found at https://github.com/DylanLeveille/C2KA-GUI). 
+2.	Open a python IDE (using a version of Python 3.6).
+3.	Run the main program by compiling the gui.py file in the IDE.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Note: Steps 2 and 3 may be skipped by starting the executable found in the project folder (Not yet implemented). 
 
-### Prerequisites
+### Prerequisites *(ideas borrowed from Dr. Bailey's course outline for SYSC 1005)
 
-What things you need to install the software and how to install them
+All the software used in this project is free. Here's what you need to install this software on your own computer:
 
-```
-Give examples
-```
+● Python 3.6.2 can be downloaded from: python.org/downloads/release/python-362. For Windows platforms, download the Windows x86-64 executable installer: python-3.6.2-amd64.exe. 
+
+● Wing 101 v. 6.0.7-1 can be downloaded from: wingware.com. Please ensure that you download and install Wing 101, not Wing Professional. The latter IDE has a free 30-day trial license, after which a license must be purchased. Wing 101 is free, and does not require you to purchase a license. For Windows platforms, download the 32-bit/64-bit installer (wingide-101-6.0.7-1.exe). 
+
+Note: as of Version 6.0, Wing Personal is free. This IDE has more features than Wing 101, but fewer than Wing Professional.
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+To install the software correctly, install python, followed by Wing 101. 
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+Please note there are known issues with OS X, Python's Tkinter module and the third-party Tcl/Tk GUI toolkit on which it depends (these issues are documented at python.org). This should, however, not be an issue for this project.
 
 ## Running the tests
 
@@ -81,6 +74,7 @@ See also the list of [contributors](https://github.com/your/project/contributors
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
+
 
 * Hat tip to anyone whose code was used
 * Inspiration
