@@ -317,7 +317,8 @@ begin NEXT_STIMULUS where
     
     (noop, AVG1)   = N
     
-    (noop, RESET1) = N
+
+(noop, RESET1) = N
     
     (noop, AVG2)   = N
     
@@ -333,6 +334,7 @@ begin NEXT_STIMULUS where
 end
 
 begin CONCRETE BEHAVIOUR where
+
     R => [ since1 := since1 + delta;
            since2 := since2 + delta;
            since3 := since3 + delta;
