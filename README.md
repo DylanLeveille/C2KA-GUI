@@ -42,7 +42,7 @@ Stimuli: ips, abor, allo, help, noop.
 Agent Name: R
 
 Behaviour:  
-    |SINCE1 ; SINCE2 ; SINCE3; SINCE4 ; READ ; ((AVG1 ; RESET1) + (AVG2 ; RESET2) + (AVG3 ; RESET3) + (AVG4 ; RESET4))
+    SINCE1 ; SINCE2 ; SINCE3; SINCE4 ; READ ; ((AVG1 ; RESET1) + (AVG2 ; RESET2) + (AVG3 ; RESET3) + (AVG4 ; RESET4))
 
 Concrete behaviour (with text radio button active): 
 
