@@ -279,7 +279,7 @@ def incorrect_CBS(main):
   ##Removes main window.  
   main.withdraw()
 
-def check_if_good_CBS(main, entriesCBS):
+def check_if_good_CBS(main, entriesCBS, whichRadio, textBoxCBS):
   """ (tkinter.Tk, dict) -> (Bool)
     
     Pop-up to tell the user that the agent behaviour entry
@@ -287,26 +287,33 @@ def check_if_good_CBS(main, entriesCBS):
   
   """    
   ##Flag to check if there are any invalid entries
-  flag = True
+  global flagCBS
+  flagCBS = True
   
-  for entry in range(1, entriesCBS[0,0]+1):
-    ##Check through CBS dictionary to find specific invalidities
-    if entriesCBS[entry, 1].get() == ' '*len(entriesCBS[entry, 1].get()):
-
-      flag = False
-      ##If entry is invalid, change the background to white
-      entriesCBS[entry, 1].config(background = 'red')
-
-    else:
-      ##If entry is valid, change the backgound to white
-      entriesCBS[entry, 1].config(background = 'white')
-
-  ##If there are no invalid entries, return True; else return False  
-  if flag == True:
-    return True
+  ##Check which template is being used (either Rows or Box)
+  if whichRadio.get() == 'Rows':
+    for entry in range(1, entriesCBS[0,0]+1):
+      ##Check through CBS dictionary to find specific invalidities
+      if entriesCBS[entry, 1].get() == ' '*len(entriesCBS[entry, 1].get()):
+  
+        flagCBS = False
+        ##If entry is invalid, change the background to white
+        entriesCBS[entry, 1].config(background = 'red')
+  
+      else:
+        ##If entry is valid, change the backgound to white
+        entriesCBS[entry, 1].config(background = 'white')
 
   else:
-    return False
+    ##Create list of texbox lines, filters out empty lines
+    textBoxLines = textBoxCBS.get("1.0",'end-1c').split()
+    
+    ##Check if the textbox is empty
+    if len(textBoxLines) ==0:
+      flagCBS = False
+      
+  ##If there are no invalid entries, return True; else return False  
+  return flagCBS
 
 ##Function is called to verify entries in tables.
 def check_if_good_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes, 
