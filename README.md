@@ -57,12 +57,17 @@ Concrete behaviour (with text radio button active):
     fi
 
 Table values:
+
 For circle table, please insert each row (behaviour) name along the row.
+
 For lambda Table, fill with Neutral stimuli (N), except bottom right corner, in which is entered the deactivation stimulus (D).
 
 Product:
+
 begin AGENT where
+
     R := SINCE1 ; SINCE2 ; SINCE3; SINCE4 ; READ ; ((AVG1 ; RESET1) + (AVG2 ; RESET2) + (AVG3 ; RESET3) + (AVG4 ; RESET4))
+    
 end
 
 begin NEXT_BEHAVIOUR where
