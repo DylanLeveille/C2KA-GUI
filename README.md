@@ -1,6 +1,4 @@
-
-
-GUI to Assist the C2KA TOOL
+#GUI to Assist the C2KA TOOL
 
 This project consists of a graphical user interface (GUI) to assist the C2KA tool (developed by Dr. Jason Jaskolka). With simple entries, the GUI can generate a text file describing an agent’s specification.  
 
@@ -82,6 +80,7 @@ begin NEXT_BEHAVIOUR where
     (ips, AVG1)    = AVG1
     
     (ips, RESET1)  = RESET1
+    
     (ips, AVG2)    = AVG2
     
     (ips, RESET2)  = RESET2
@@ -346,35 +345,17 @@ begin CONCRETE BEHAVIOUR where
             | n = 4 -> avg4 := since4 / num4; since4 := 0
            fi  ]
 end
-    
 
-Do note that there is no guarantee that the program won't crash if uncommon characters are inputted in the entry boxes. Characters which are found on the standard English keyboard should work fine and are usually .
+### Things to be aware of
 
-### Break down into end to end tests
+Do note that there is no guarantee that the program won't crash if uncommon characters are inputted in the entry boxes. Characters which are found on the standard English keyboard should work fine and are usually.
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+Also, since we decided that the behaviours would be stored based on the order they appeared, the stimulis-behaiour order in the text file is somewhat disorganized to maintain that order. This will NOT disrupt the functionality of the text file.
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [Python](https://www.python.org/) - The programming language used
+* [Tkinter](https://wiki.python.org/moin/TkInter) - Python's de-facto standard GUI package
 
 ## Contributing
 
