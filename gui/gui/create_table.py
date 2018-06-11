@@ -57,6 +57,7 @@ def recreate_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
   for i in range(1, len(bevDict) + 1): ##Rows.
     bevLabel = Label(circleGridFrame, text = bevDict[i])
     bevLabel.grid(row = i, column = 0)
+
   
     circleTableBoxes[i, 0] = bevLabel
   
@@ -78,6 +79,7 @@ def recreate_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
     lambdaTableBoxes[0, j] = stimLabel
  
  ##Re-generate the table with the modifications brought by fix_grids()
+
   for i in range(1, len(bevDict) + 1): ##Rows
     for j in range(1, len(stimDict) + 1): ##Columns
       circleTableEntry = Entry(circleGridFrame)
@@ -91,5 +93,7 @@ def recreate_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
       
       circleTableBoxes[i, j] = circleTableEntry
       lambdaTableBoxes[i, j] = lambdaTableEntry
-      
-  return circleTableBoxes, lambdaTableBoxes 
+
+  return circleTableBoxes, lambdaTableBoxes ##Return updated data structures
+                                            ##to the main program.
+

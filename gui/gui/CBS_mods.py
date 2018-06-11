@@ -52,7 +52,7 @@ def fix_CBS(bevDict, frameCBS, entriesCBS):
   delRows = 0
   
   ##Check to see how many rows need to be deleted.
-  delRows = delete_CBS(bevDict, currRow, numRows, entriesCBS, delRows)
+  delRows = delete_CBS(bevDict, entriesCBS, currRow, numRows, delRows)
   
   ##Save new number of rows in the dictionary.
   entriesCBS[0, 0] = numRows - delRows    

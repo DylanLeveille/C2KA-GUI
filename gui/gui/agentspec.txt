@@ -13,3 +13,4 @@ end
 begin CONCRETE BEHAVIOUR where
     A => [             a ]
 end
+
