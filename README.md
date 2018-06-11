@@ -28,6 +28,7 @@ Please note there are known issues with OS X, Python's Tkinter module and the th
 
 ## Running tests
 
+
 No automated tests available due to the nature of this project. 
 
 However, we recommend testing out the project with various different text entries and taking advantage of the scrollbars to facilitate entries.
@@ -43,8 +44,8 @@ Agent Name: R
 Behaviour:  SINCE1 ; SINCE2 ; SINCE3; SINCE4 ; READ ; ((AVG1 ; RESET1) + (AVG2 ; RESET2) + (AVG3 ; RESET3) + (AVG4 ; RESET4))
 
 Table values:
-  circle table: 
 
+  circle table: 
        |   ips    |    abor   |   allo   |   help  |   noop  |    
 ---------------------------------------------------------------------       
 SINCE1 |  SINCE1  |   SINCE1  |  SINCE 1 |  SINCE1 |  SINCE1 |   
