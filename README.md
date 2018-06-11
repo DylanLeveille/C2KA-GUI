@@ -29,7 +29,6 @@ Please note there are known issues with OS X, Python's Tkinter module and the th
 
 ## Running tests
 
-
 No automated tests available due to the nature of this project. 
 
 However, we recommend testing out the project with various different text entries and taking advantage of the scrollbars to facilitate entries.
@@ -42,39 +41,27 @@ Stimuli: ips, abor, allo, help, noop.
 
 Agent Name: R
 
-Behaviour:  SINCE1 ; SINCE2 ; SINCE3; SINCE4 ; READ ; ((AVG1 ; RESET1) + (AVG2 ; RESET2) + (AVG3 ; RESET3) + (AVG4 ; RESET4))
+Behaviour:  
+    SINCE1 ; SINCE2 ; SINCE3; SINCE4 ; READ ; ((AVG1 ; RESET1) + (AVG2 ; RESET2) + (AVG3 ; RESET3) + (AVG4 ; RESET4))
+
+Concrete behaviour (with text radio button active): 
+
+    since1 := since1 + delta;
+    since2 := since2 + delta;
+    since3 := since3 + delta;
+    since4 := since4 + delta;
+    n := cmd;
+    if n = 1 -> avg1 := since1 / num1; since1 := 0
+     | n = 2 -> avg2 := since2 / num2; since2 := 0
+     | n = 3 -> avg3 := since3 / num3; since3 := 0
+     | n = 4 -> avg4 := since4 / num4; since4 := 0
+    fi
 
 Table values:
+For circle table, please insert each row (behaviour) name along the row.
+For lambda Table, fill with Neutral stimuli (N), except bottom right corner, in which is entered the deactivation stimulus (D).
 
-  circle table: 
-       |   ips    |    abor   |   allo   |   help  |   noop  |    
----------------------------------------------------------------------       
-SINCE1 |  SINCE1  |   SINCE1  |  SINCE 1 |  SINCE1 |  SINCE1 |   
----------------------------------------------------------------------       
-SINCE2 |  SINCE2  |   SINCE2  |  SINCE2  |  SINCE2 |  SINCE2 | 
----------------------------------------------------------------------       
-SINCE3 |  SINCE3  |   SINCE3  |  SINCE3  |  SINCE3 |  SINCE3 | 
----------------------------------------------------------------------       
-SINCE4 |  SINCE4  |   SINCE4  |  SINCE4  |  SINCE4 |  SINCE4 | 
----------------------------------------------------------------------       
-READ   |   READ   |    READ   |   READ   |   READ  |   READ  | 
----------------------------------------------------------------------       
-AVG1   |   AVG1   |    AVG1   |   AVG1   |   AVG1  |   AVG1  | 
----------------------------------------------------------------------       
-AVG2   |   AVG2   |    AVG2   |   AVG2   |   AVG2  |   AVG2  | 
----------------------------------------------------------------------       
-AVG3   |   AVG3   |    AVG3   |   AVG3   |   AVG3  |   AVG3  | 
----------------------------------------------------------------------       
-AVG4   |   AVG4   |    AVG4   |   AVG4   |   AVG4  |   AVG4  | 
----------------------------------------------------------------------       
-RESET1 |  RESET1  |   RESET1  |  RESET1  |  RESET1 |  RESET1 | 
----------------------------------------------------------------------       
-RESET2 |  RESET2  |   RESET2  |  RESET2  |  RESET2 |  RESET2 | 
----------------------------------------------------------------------       
-RESET3 |  RESET3  |   RESET3  |  RESET3  |  RESET3 | RESET3  | 
----------------------------------------------------------------------       
-RESET4 |  RESET4  |   RESET4  |  RESET4  |  RESET4 | RESET4  | 
----------------------------------------------------------------------
+Product:
 
     
 
