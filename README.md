@@ -3,7 +3,7 @@
 This project consists of a graphical user interface (GUI) to assist the C2KA tool (developed by Dr. Jason Jaskolka). With simple entries, the GUI can generate a text file describing an agent’s specification.  
 
 ## Getting Started
-1.	Download entire project folder (found at https://github.com/DylanLeveille/C2KA-GUI). 
+1.	Download the entire project folder (found at https://github.com/DylanLeveille/C2KA-GUI). 
 2.	Open a python IDE (using a version of Python 3.6).
 3.	Run the main program by compiling the gui.py file in the IDE.
 
@@ -25,9 +25,52 @@ To install the software correctly, install python, followed by Wing 101.
 
 Please note there are known issues with OS X, Python's Tkinter module and the third-party Tcl/Tk GUI toolkit on which it depends (these issues are documented at python.org). This should, however, not be an issue for this project.
 
-## Running the tests
+## Running tests
 
-Explain how to run the automated tests for this system
+No automated tests available due to the nature of this project. 
+
+However, we recommend testing out the project with various different text entries and taking advantage of the scrollbars to facilitate entries.
+
+Example:
+  Inserting the following information should generate the preview shown below.
+  Stimuli: ips, abor, allo, help, noop.
+  Agent Name: R
+  Behaviour:  SINCE1 ; SINCE2 ; SINCE3; SINCE4 ; READ ; ((AVG1 ; RESET1) + (AVG2 ; RESET2) + (AVG3 ; RESET3) + (AVG4 ; RESET4))
+  Table values:
+    circle table: 
+---------------------------------------------------------------------    
+       |   ips    |    abor   |   allo   |   help  |   noop  |    
+---------------------------------------------------------------------       
+SINCE1 |  SINCE1  |   SINCE1  |  SINCE 1 |  SINCE1 |  SINCE1 |   
+---------------------------------------------------------------------       
+SINCE2 |  SINCE2  |   SINCE2  |  SINCE2  |  SINCE2 |  SINCE2 | 
+---------------------------------------------------------------------       
+SINCE3 |  SINCE3  |   SINCE3  |  SINCE3  |  SINCE3 |  SINCE3 | 
+---------------------------------------------------------------------       
+SINCE4 |  SINCE4  |   SINCE4  |  SINCE4  |  SINCE4 |  SINCE4 | 
+---------------------------------------------------------------------       
+READ   |   READ   |    READ   |   READ   |   READ  |   READ  | 
+---------------------------------------------------------------------       
+AVG1   |   AVG1   |    AVG1   |   AVG1   |   AVG1  |   AVG1  | 
+---------------------------------------------------------------------       
+AVG2   |   AVG2   |    AVG2   |   AVG2   |   AVG2  |   AVG2  | 
+---------------------------------------------------------------------       
+AVG3   |   AVG3   |    AVG3   |   AVG3   |   AVG3  |   AVG3  | 
+---------------------------------------------------------------------       
+AVG4   |   AVG4   |    AVG4   |   AVG4   |   AVG4  |   AVG4  | 
+---------------------------------------------------------------------       
+RESET1 |  RESET1  |   RESET1  |  RESET1  |  RESET1 |  RESET1 | 
+---------------------------------------------------------------------       
+RESET2 |  RESET2  |   RESET2  |  RESET2  |  RESET2 |  RESET2 | 
+---------------------------------------------------------------------       
+RESET3 |  RESET3  |   RESET3  |  RESET3  |  RESET3 | RESET3  | 
+---------------------------------------------------------------------       
+RESET4 |  RESET4  |   RESET4  |  RESET4  |  RESET4 | RESET4  | 
+---------------------------------------------------------------------
+
+    
+
+Do note that there is no guarantee that the program won't crash if uncommon characters are inputted in the entry boxes. Characters which are found on the standard English keyboard should work fine and are usually .
 
 ### Break down into end to end tests
 
