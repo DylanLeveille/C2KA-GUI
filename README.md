@@ -9,7 +9,7 @@ This project consists of a graphical user interface (GUI) to assist the C2KA too
 
 Note: Steps 2 and 3 may be skipped by starting the executable found in the project folder (Not yet implemented). 
 
-### Prerequisites *(ideas borrowed from Dr. Bailey's course outline for SYSC 1005)
+### Prerequisites *(ideas borrowed from Dr. Bailey's course outline for SYSC 1005, Carleton University)
 
 All the software used in this project is free. Here's what you need to install this software on your own computer:
 
