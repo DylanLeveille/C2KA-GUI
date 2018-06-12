@@ -32,18 +32,18 @@ No automated tests available due to the nature of this project.
 
 However, we recommend testing out the project with various different text entries and taking advantage of the scrollbars to facilitate entries.
 
-Example:
+### Example:
 
 Inserting the following information should generate the preview shown below.
 
-Stimuli: ips, abor, allo, help, noop.
+#### Stimuli: ips, abor, allo, help, noop.
 
-Agent Name: R
+#### Agent Name: R
 
-Behaviour:  
+#### Behaviour:  
     SINCE1 ; SINCE2 ; SINCE3; SINCE4 ; READ ; ((AVG1 ; RESET1) + (AVG2 ; RESET2) + (AVG3 ; RESET3) + (AVG4 ; RESET4))
 
-Concrete behaviour (with text radio button active): 
+#### Concrete behaviour (with text radio button active): 
 
     since1 := since1 + delta;
     since2 := since2 + delta;
@@ -56,13 +56,13 @@ Concrete behaviour (with text radio button active):
      | n = 4 -> avg4 := since4 / num4; since4 := 0
     fi
 
-Table values:
+#### Table values:
 
 For circle table, please insert each row (behaviour) name along the row.
 
 For lambda Table, fill with Neutral stimuli (N), except bottom right corner, in which is entered the deactivation stimulus (D).
 
-RESULT:
+#### RESULT:
 
 begin AGENT where
 
