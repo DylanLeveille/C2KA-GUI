@@ -78,15 +78,24 @@ def create_text(agentName, agentBehaviour, concreteBehaviours, textBoxCBS,
         
   else: ##User used the text box for the concrete behaviours
     ##Write agent name.
-    file.write("    %s => [%s\n" %(agentName,textBoxCBS.get("1.0", "1.0 lineend")))
-    whitespace = 9+len(agentName)
-      ##Write text Box entry.
-    textBoxList = textBoxCBS.get("2.0",'end-1c').split()  
-    for lineNum in range(len(textBoxList)):
-      if lineNum <len(textBoxList)-1:
-        file.write("%s%s\n" %(' '*whitespace, textBoxList[lineNum]))
-      else:
-        file.write("%s%s ]\n" %(' '*(whitespace), textBoxList[lineNum]))
+    file.write("    %s => [" %(agentName))
+    whitespace = 9 + len(agentName) ##Used to align text.
+    
+    ##Write text Box entry.
+    textBoxList = textBoxCBS.get("1.0", END).splitlines() ##Split each line in the text box.
+    
+    for word in textBoxList[0].split(): ##Write first line.
+        file.write(" %s" %(word)) 
+    
+    for line in range(1, len(textBoxList)):##Iterate beginning from line 2 (index 1) to write other lines.
+        file.write("\n%s" %(' ' * whitespace)) ##Allows alignment.
+        for word in textBoxList[line].split():
+          if word == '|': ##Means we must add a whitespace.
+            file.write(" ")
+            
+          file.write(" %s" %(word)) ##Write the word.
+      
+    file.write(" ]\n") ##End with a closing bracket.
     
   ##END.
   file.write("end")    

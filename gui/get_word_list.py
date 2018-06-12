@@ -128,7 +128,7 @@ def build_bev_dict(line):
           return None
       
       ##Make sure the entry isn't the enmpty string.
-      if word not in hist and word != '':
+      if word not in hist.values() and word != '':
         hist[i] = word 
         i += 1
       
