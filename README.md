@@ -347,7 +347,7 @@ begin CONCRETE BEHAVIOUR where
             | n = 2 -> avg2 := since2 / num2; since2 := 0
             | n = 3 -> avg3 := since3 / num3; since3 := 0
             | n = 4 -> avg4 := since4 / num4; since4 := 0
-           fi  ]
+           fi ]
 end
 
 ### Things to be aware of
