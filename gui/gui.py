@@ -508,6 +508,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   """Code to load initial data/widgets in the main window.""" 
   ##Initializing the page number variable and the stimuli list.
   stimList = []
+  stimFrameDict = {}
   pageNum = 1
   
   ##No concrete behaviours generated yet.
@@ -529,6 +530,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   check_mark = PhotoImage(file = "check_mark.png")
   right_arrow = PhotoImage(file="right_arrow.png")
   left_arrow = PhotoImage(file="left_arrow.png")
+  remove_x = PhotoImage(file = "remove_x.png")
   entry_font = ('Comic Sans MS', 11)
   
   
@@ -562,13 +564,13 @@ if __name__ == '__main__': ##only start program when running gui.py
   enterStimBox.pack(in_=stimFrame, side = TOP)
   
   ##Delete previous entry Button (for the stimuli).
-  delButton = Button(stimScrollingArea, text = 'Delete Previous', command = lambda: remove_stim(main, stimList, stimScrollingArea), 
+  delButton = Button(main, text = 'Delete Previous', command = lambda: remove_stim(main, stimList, stimScrollingArea), 
                      width = 23)
   delButton.pack(in_=buttonsFrame, side = LEFT)
   
   ##Add stimulus entry Button.
   addStim = Button(main, text = 'Add new stimulus', 
-                   command = lambda: add_stim(main, stimList, stimScrollingArea), 
+                   command = lambda: add_stim(main, stimList, stimFrameDict, stimScrollingArea, remove_x), 
                    width = 23)
   
   addStim.pack(in_=buttonsFrame, side = TOP)
