@@ -83,7 +83,7 @@ def next_page():
       
       ##Pack new buttons and configure an appropriate size.
       prevButton.pack(in_=buttonsFrame, side = LEFT)
-      nextButton.config(width = 35)
+      #nextButton.config(width = 35)
       
       ##Pack new labels/entries for the agent and its behaviours.
       agentLabel.pack(side = TOP, anchor = W)
@@ -226,8 +226,8 @@ def next_page():
       formatCBS.pack_forget()
       
       ##Configure the buttons' new size.
-      nextButton.config(width = 23)
-      prevButton.config(width = 23)
+      #nextButton.config(width = 23)
+      #prevButton.config(width = 23)
       
       ##Pack the fillN button which fills the lambda table with the 
       ##neutral stimulus.
@@ -343,7 +343,7 @@ def next_page():
       nextButton.pack_forget()
     
       ##Configure previous button to a new size.
-      prevButton.config(width = 35)
+      #prevButton.config(width = 35)
     
       ##Call create_text() to create the agentspec.txt file.
       create_text(agentName, agentBehaviour, concreteBehaviours, textBoxCBS, 
@@ -398,10 +398,10 @@ def prev_page():
     ##Unpack the previous button since it it not necessary on page 1.
     prevButton.pack_forget()
     ##configure the next button to a new size.
-    nextButton.config(width = 23)
+    #nextButton.config(width = 23)
     
     ##Pack buttons for stimuli and frame to specify number of stimuli.
-    stimFrame.pack(side = BOTTOM, anchor = S, expand = True)
+    stimFrame.pack(side = BOTTOM, anchor = S, expand = True, pady = 50)
     delButton.pack(in_=buttonsFrame, side = LEFT)
     addStim.pack(in_=buttonsFrame, side = TOP)
 
@@ -441,8 +441,8 @@ def prev_page():
     fillN.pack_forget()
   
     ##Configure buttons to a new size.
-    nextButton.config(width = 35)
-    prevButton.config(width = 35)  
+    #nextButton.config(width = 35)
+    #prevButton.config(width = 35)  
   
     ##Pack widgets related to CBS page.
     titleCBS.pack(side = TOP)
@@ -465,7 +465,7 @@ def prev_page():
     saveButton.pack_forget()
     
     ##Configure previous button to a new size.
-    prevButton.config(width = 23) 
+    #prevButton.config(width = 23) 
   
     ##Repack table scrolling areas.
     circleScrollingArea.pack(expand=1, fill = BOTH)   
@@ -488,6 +488,8 @@ if __name__ == '__main__': ##only start program when running gui.py
   main = Tk() ##The main window for the program.
   main.title("C2KA GUI") ##Title for the main window.
   main.resizable(width = False, height = False) ##The main window is not resizeable.
+  mainStyle = ttk.Style()
+  mainStyle.theme_use("clam")
   
   windowSize = 500 ##500 is the dimension that will be used for the window (500 x 500).
   
@@ -516,20 +518,27 @@ if __name__ == '__main__': ##only start program when running gui.py
   
   ##Frame to hold the main buttons
   buttonsFrame = Frame(main)
-  buttonsFrame.pack(side = BOTTOM, anchor = S, expand = True)
+  buttonsFrame.pack(side = BOTTOM, anchor = S, fill = X)
   
   ##Frame for the stim number Label, button and entry box (to specify
   ##a number of stimuli to be generated).
   stimFrame = Frame(main)
-  stimFrame.pack(side = BOTTOM, anchor = S, expand = True)
+  stimFrame.pack(side = BOTTOM, anchor = S, expand = True, pady = 50)
+  
+  """Pictures and Fonts used for Buttons and Entries"""
+  check_mark = PhotoImage(file = "check_mark.png")
+  right_arrow = PhotoImage(file="right_arrow.png")
+  left_arrow = PhotoImage(file="left_arrow.png")
+  entry_font = ('Comic Sans MS', 11)
+  
   
   """Defining Buttons available on each page.""" 
   ##Next Button (will not be availible on page 5).
-  nextButton = Button(main, text = 'Next', command = next_page, width = 23)
-  nextButton.pack(in_=buttonsFrame, side = RIGHT)
-  
+  nextButton = Button(main, command = next_page, image = right_arrow, width = "25", height = "25", border = 0)
+  nextButton.pack(in_=buttonsFrame, side = RIGHT, anchor = SE)
+
   ##Prev Button (will not be availible on page 1).
-  prevButton = Button(main, text = 'Prev', command = prev_page, width = 35)
+  prevButton = Button(main, command = prev_page, image = left_arrow, width = "25", height = "25", border = 0)
   
   """Label and Buttons exclusive to page 1."""  
   ##The scrolling area is at index zero of the stimScrollingArea list, this way, 
@@ -545,14 +554,15 @@ if __name__ == '__main__': ##only start program when running gui.py
   enterStimLabel = Label(main, text = 'enter # of stims')
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
-  enterStimButton = Button(main, text = 'OK', command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea))
-  enterStimButton.pack(in_=stimFrame, side = RIGHT)
+
+  enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea))
+  enterStimButton.pack(in_=stimFrame, side = RIGHT, anchor = N)
   
-  enterStimBox = Entry(main)
+  enterStimBox = ttk.Entry(main, font = entry_font)
   enterStimBox.pack(in_=stimFrame, side = TOP)
   
   ##Delete previous entry Button (for the stimuli).
-  delButton = Button(main, text = 'Delete Previous', command = lambda: remove_stim(main, stimList, stimScrollingArea), 
+  delButton = Button(stimScrollingArea, text = 'Delete Previous', command = lambda: remove_stim(main, stimList, stimScrollingArea), 
                      width = 23)
   delButton.pack(in_=buttonsFrame, side = LEFT)
   
