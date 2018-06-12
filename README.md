@@ -321,8 +321,7 @@ begin NEXT_STIMULUS where
     
     (noop, AVG1)   = N
     
-
-(noop, RESET1) = N
+    (noop, RESET1) = N
     
     (noop, AVG2)   = N
     
