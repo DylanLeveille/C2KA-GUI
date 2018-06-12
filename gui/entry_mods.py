@@ -61,6 +61,7 @@ def remove_stim(main, stimList, stimFrameDict, stimScrollingArea, arg, remove_x)
     and updates the scrolling area.  
   
   """  
+
   ##We need at least one entry to be able to remove a stimulus.
   if len(stimList) > 0:
     ##Make a new frame capable of scrolling to the new entry box.
