@@ -17,8 +17,6 @@ def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, rem
   ##Test to see if there is more than one word in the entry box
   ##and test to see if it is a number only.
   if len(numStims.split()) > 1 or numStims.replace(' ', '').isdigit() != True:    
-    ##Removes main window.  
-    main.withdraw()          
     
     ##Call a function to pop up.
     incorrect_stim_num(main) 
@@ -46,7 +44,9 @@ def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, rem
     warningStims.resizable(width = False, height = False) ##The window is not resizeable.
   
     warningStims.wm_title("WARNING")
-    warningStims.overrideredirect(1) ##Removes task bar.
+
+    ##Disable main window until pop up is closed
+    warningStims.grab_set()
     
     Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
     
@@ -59,9 +59,7 @@ def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, rem
     pressToContinue.pack(side = BOTTOM)
     
     pressToClose.pack(side = BOTTOM)
-    
-    ##Removes main window.  
-    main.withdraw()      
+        
 
 ##Function to warn the user that the specified number of stims is invalid.
 def incorrect_stim_num(main):
@@ -94,15 +92,16 @@ def incorrect_stim_num(main):
   wrongStimNum.resizable(width = False, height = False) ##The window is not resizeable.
 
   wrongStimNum.wm_title("Incorrect stimuli number")
-  wrongStimNum.overrideredirect(1) ##Removes task bar.
+  
+  ##Disable main window until pop up is closed
+  wrongStimNum.grab_set()
   
   Label(wrongStimNum, text = 'Please enter a valid number of stimuli').pack(side = TOP)
   
   pressToClose = Button(wrongStimNum, text = "Return", 
                         command = lambda: return_to_stim_num(main))
   pressToClose.pack(side = BOTTOM)
-  ##Removes main window.  
-  main.withdraw()    
+   
 
 ##Function is called when an incorrect stimuli is entered.
 def incorrect_stims(main):
@@ -135,7 +134,8 @@ def incorrect_stims(main):
   wrongStims.resizable(width = False, height = False) ##The window is not resizeable.
 
   wrongStims.wm_title("Incorrect stimuli")
-  wrongStims.overrideredirect(1) ##Removes task bar.
+  ##Disable main window until pop up is closed
+  wrongStims.grab_set()
   
   Label(wrongStims, text = 'Please enter at least one valid stimulus').pack(side = TOP)
   Label(wrongStims, text = 'or remove invalid stimuli').pack(side = TOP)
@@ -143,8 +143,7 @@ def incorrect_stims(main):
   pressToClose = Button(wrongStims, text = "Return", 
                         command = lambda: return_to_stims(main))
   pressToClose.pack(side = BOTTOM)
-  ##Removes main window.  
-  main.withdraw()    
+   
 
 ##Function is called when an incorrect agent is entered.
 def incorrect_agent(main):
@@ -177,7 +176,9 @@ def incorrect_agent(main):
   wrongAgent.resizable(width = False, height = False) ##The window is not resizeable.
 
   wrongAgent.wm_title("Incorrect behaviour(s)")
-  wrongAgent.overrideredirect(1) ##Removes task bar.
+
+  ##Disable main window until pop up is closed
+  wrongAgent.grab_set()
     
   Label(wrongAgent, text = 'Please enter one valid agent').pack(side = TOP)
     
@@ -185,8 +186,6 @@ def incorrect_agent(main):
                         command = lambda: return_to_bevs_agent(main))
   pressToClose.pack(side = BOTTOM)
   
-  ##Removes main window.   
-  main.withdraw()    
 
 ##Function is called when an incorrect behaviour is entered.
 def incorrect_bevs(main):
@@ -219,7 +218,9 @@ def incorrect_bevs(main):
   wrongBevs.resizable(width = False, height = False) ##The window is not resizeable.
 
   wrongBevs.wm_title("Incorrect behaviour(s)")
-  wrongBevs.overrideredirect(1) ##Removes task bar.
+  
+  ##Disable main window until pop up is closed
+  wrongBevs.grab_set()
     
   Label(wrongBevs, text = 'Please enter at least one valid behaviour').pack(side = TOP)
   Label(wrongBevs, text = 'or remove invalid behaviours').pack(side = TOP)
@@ -228,8 +229,6 @@ def incorrect_bevs(main):
                         command = lambda: return_to_bevs_bevs(main))
   pressToClose.pack(side = BOTTOM)
   
-  ##Removes main window.  
-  main.withdraw()    
 
 ##Function is called when an incorrect concrete behaviour is entered.
 
@@ -265,7 +264,8 @@ def incorrect_CBS(main):
 
   wrongCBS.wm_title("Incorrect Concrete Behaviour")
 
-  wrongCBS.overrideredirect(1) ##Removes task bar. 
+  ##Disable main window until pop up is closed
+  wrongCBS.grab_set()
 
   Label(wrongCBS, text = 'Please enter at least one valid concrete behaviour').pack(side = TOP)
 
@@ -276,8 +276,6 @@ def incorrect_CBS(main):
 
   pressToClose.pack(side = BOTTOM)
 
-  ##Removes main window.  
-  main.withdraw()
 
 def check_if_good_CBS(main, entriesCBS, whichRadio, textBoxCBS):
   """ (tkinter.Tk, dict) -> (Bool)
@@ -391,7 +389,9 @@ def incorrect_table(main, numInvalid):
   invalidEntryPop.resizable(width = False, height = False) ##The window is not resizeable.
 
   invalidEntryPop.wm_title("INVALID ENTRIES!")
-  invalidEntryPop.overrideredirect(1) ##Removes task bar.
+  
+  ##Disable main window until pop up is closed
+  invalidEntryPop.grab_set()
   
   Label(invalidEntryPop, text = 'Invalid Entries:').pack(side = TOP)
   invalidEntriesLabel = Label(invalidEntryPop, text = str(numInvalid) + 
@@ -402,8 +402,6 @@ def incorrect_table(main, numInvalid):
                         command = lambda: return_to_tables(main))
   pressToClose.pack(side = BOTTOM)
   
-  ##Removes main window.  
-  main.withdraw()  
 
 """Functions which get rid of the pop-up window."""
 
