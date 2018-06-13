@@ -354,7 +354,7 @@ end
 Do note that there is no guarantee that the program won't crash if uncommon characters are inputted in the entry boxes. Characters which are found on the standard English keyboard work fine and are usually what is used for this application.
 
 ## Notes
-● The parsing implemented in the program allows the program extra whitespace in the entries. Therefore, the user does not need to worry about putting too much whitespace in their entries.
+● The parsing implemented in the program allows the program to ignore extra whitespace in the entries. Therefore, the user does not need to worry about putting too much whitespace in their entries.
 
 ● Empty entries in the stimuli page are ignored. However, at least one stimuli must be entered to proceed to the next page.
 
