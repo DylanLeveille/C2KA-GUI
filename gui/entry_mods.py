@@ -86,9 +86,10 @@ def remove_stim(main, stimList, stimFrameDict, stimScrollingArea, arg, remove_x)
       stimDeleteButton = Button(stimEntryFrame, image = remove_x, border = 0, command = lambda arg=j: remove_stim(main, stimList, stimFrameDict, stimScrollingArea, arg, remove_x))
       stimEntry.insert(0, stimList[j].get())    
       stimList[j] = stimEntry
+      stimEntryFrame.pack(side = TOP, pady = 10)
       stimEntry.pack(side = LEFT)
       stimDeleteButton.pack(side = RIGHT)
-      stimEntryFrame.pack(side = TOP, pady = 10)
+
     
     ##Remove last entry in list. 
     del stimList[len(stimList) - 1]

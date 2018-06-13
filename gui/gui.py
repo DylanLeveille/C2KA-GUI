@@ -8,7 +8,6 @@ from tkinter import * ##Import the tkinter module to allow construction of the G
 from check_if_good import * ##Functions which validate most of the data in the program.
 from entry_mods import * ##Functions which modify entry boxes.
 from get_word_list import * ##Functions which parse an entry box and returns lists of words.
-from fix_bev_dict import * ##Function to create a more logical/natural order in the behaviours.
 from CBS_radio import * ##Functions that set the CBS page depending on which radio button is clicked.
 from CBS_mods import * ##Functions which modify the concrete behaviours page.
 from create_table import * ##Functions which create/recreate the tables.
@@ -122,14 +121,9 @@ def next_page():
       agentEntry.config(bg = 'white')      
       agentBevEntry.config(bg = 'white') 
       
-      ##Change the order described in the behaviour dictionary to match a
-      ##more logical (natural order). For example, bev4, bev2, bev1, bev3 would
-      ##get sorted as bev1, bev2, bev3, bev4.
-      bevDict = fix_bev_dict(bevDict)
-      
       ##Before going to the next page, extract the full text describing 
       ##the agent behaviour (used when create the text file).
-      agentBehaviour = extract_full_behaviour(agentBevEntry.get())        
+      agentBehaviour = agentBevEntry.get()        
       
       ##Set new page by unpacking entries/labels on page 2.
       agentLabel.pack_forget()
@@ -519,7 +513,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   right_arrow = PhotoImage(file="right_arrow.png")
   left_arrow = PhotoImage(file="left_arrow.png")
   remove_x = PhotoImage(file = "remove_x.png")
-  save_icon = PhotoImage(file = "download_icon.png")
+  save_icon = PhotoImage(file = "save_icon.png")
   entry_font = ('Comic Sans MS', 11)
   
   
