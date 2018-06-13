@@ -366,8 +366,8 @@ Do note that there is no guarantee that the program won't crash if uncommon char
 
 ## Built With
 
-* [Python](https://www.python.org/) - The programming language used
-* [Tkinter](https://wiki.python.org/moin/TkInter) - Python's de-facto standard GUI package
+* [Python](https://www.python.org/) - The programming language used.
+* [Tkinter](https://wiki.python.org/moin/TkInter) - Python's de-facto standard GUI package.
 
 ## Contributing
 
