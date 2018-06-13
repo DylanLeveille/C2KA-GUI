@@ -1,11 +1,11 @@
 """Imported modules."""
 from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
 import vertSuperscroll ##Module containing the widget allowing a vertical scrollbar.
-
+from entry_mods import remove_stim
 """Functions which validate entries/create pop-ups."""
 
 ##Function to warn user that current stims will be deleted.
-def specify_stim(main, stimList, numStims, stimScrollingArea):
+def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, remove_x):
   """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
     
     Pop-up when the user specifies a number of
@@ -51,7 +51,7 @@ def specify_stim(main, stimList, numStims, stimScrollingArea):
     Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
     
     pressToContinue = Button(warningStims, text = "Continue", 
-                          command = lambda: return_to_stims_deletion(main, stimList, numStims, stimScrollingArea))
+                          command = lambda: return_to_stims_deletion(main, stimList, stimFrameDict, numStims, stimScrollingArea, remove_x))
     
     pressToClose = Button(warningStims, text = "Return", 
                           command = lambda: return_to_stims_cancellation(main))
@@ -408,7 +408,7 @@ def incorrect_table(main, numInvalid):
 """Functions which get rid of the pop-up window."""
 
 ##Generate the specified stim entries. 
-def return_to_stims_deletion(main, stimList, numStims, stimScrollingArea):
+def return_to_stims_deletion(main, stimList, stimFrameDict, numStims, stimScrollingArea, remove_x):
   """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
     
     After confirming with the user that the stimuli entries
@@ -425,7 +425,8 @@ def return_to_stims_deletion(main, stimList, numStims, stimScrollingArea):
   stimScrollingArea[0].destroy()
 
   ##Clear list for specified entries.
-  stimList.clear()   
+  stimList.clear()
+  stimFrameDict.clear()
   
   ##Make a new frame capable of scrolling to the new entry boxes specified
   ##by the user.
@@ -436,9 +437,14 @@ def return_to_stims_deletion(main, stimList, numStims, stimScrollingArea):
   stimTitle.pack(side = TOP) 
       
   for i in range(numStims):
-    stimEntry = Entry(stimScrollingArea[0].innerframe)   
+    stimEntryFrame = Frame(stimScrollingArea[0].innerframe)
+    stimEntry = Entry(stimEntryFrame)
+    stimDeleteButton = Button(stimEntryFrame, image = remove_x, border = 0, command = lambda arg=i: remove_stim(main, stimList, stimFrameDict, stimScrollingArea, arg, remove_x))
     stimList.append(stimEntry)
-    stimEntry.pack(side = TOP, pady = 10)    
+    stimFrameDict[i] = stimEntryFrame
+    stimEntry.pack(side = LEFT)
+    stimDeleteButton.pack(side = RIGHT)
+    stimEntryFrame.pack(side = TOP, pady = 10)  
 
   main.update()
   main.deiconify()  
