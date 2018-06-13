@@ -17,7 +17,6 @@ All the software used in this project is free. Here's what you need to install t
 
 ● Wing 101 v. 6.0.7-1 can be downloaded from: wingware.com. Please ensure that you download and install Wing 101, not Wing Professional. The latter IDE has a free 30-day trial license, after which a license must be purchased. Wing 101 is free, and does not require you to purchase a license. For Windows platforms, download the 32-bit/64-bit installer (wingide-101-6.0.7-1.exe). 
 
-
 Note: as of Version 6.0, Wing Personal is free. This IDE has more features than Wing 101, but fewer than Wing Professional.
 
 ### Installing
@@ -352,9 +351,7 @@ end
 
 ### Things to be aware of
 
-Do note that there is no guarantee that the program won't crash if uncommon characters are inputted in the entry boxes. Characters which are found on the standard English keyboard should work fine and are usually.
-
-Also, since we decided that the behaviours would be stored based on the order they appeared, the stimulis-behaiour order in the text file is somewhat disorganized to maintain that order. This will NOT disrupt the functionality of the text file.
+Do note that there is no guarantee that the program won't crash if uncommon characters are inputted in the entry boxes. Characters which are found on the standard English keyboard work fine and are usually what is used for this application.
 
 ## Built With
 
