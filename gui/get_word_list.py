@@ -149,9 +149,9 @@ def extract_full_behaviour(agentBehaviour):
   
   for i in range(len(bevWords)): ## Coreectly append each word to the string.
     if i == len(bevWords) - 1: ##No whitespace if True.
-      agentBehaviour += bevWords[i]
+      agentBehaviour += bevWords[i].upper()
     else:  
-      agentBehaviour += bevWords[i] + " " ##Add a whitespace to the end of each word for spacing.
+      agentBehaviour += bevWords[i].upper() + " " ##Add a whitespace to the end of each word for spacing.
   
   return agentBehaviour
     
