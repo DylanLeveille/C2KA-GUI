@@ -353,6 +353,13 @@ end
 
 Do note that there is no guarantee that the program won't crash if uncommon characters are inputted in the entry boxes. Characters which are found on the standard English keyboard work fine and are usually what is used for this application.
 
+## Notes
+
+● The Neutral stimulis is represented by the capital N, and the Deactivation stimulus is represented by the capital D.
+● In the circle table, entries don't need to be capitalized (the program will do this automatically once you submit the data).
+● The parsing implemented in the program allows the program extra whitespace in the entries. Therefore, the user does not need to worry about putting too much whitespace in their entries.
+● Entered behaviours are automatically capitalized.
+
 ## Built With
 
 * [Python](https://www.python.org/) - The programming language used
