@@ -5,7 +5,7 @@ from entry_mods import remove_stim
 """Functions which validate entries/create pop-ups."""
 
 ##Function to warn user that current stims will be deleted.
-def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, remove_x):
+def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, remove_x, return_arrow):
   """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
     
     Pop-up when the user specifies a number of
@@ -19,7 +19,7 @@ def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, rem
   if len(numStims.split()) > 1 or numStims.replace(' ', '').isdigit() != True:    
     
     ##Call a function to pop up.
-    incorrect_stim_num(main) 
+    incorrect_stim_num(main, return_arrow) 
     
   else: ##True if entry is valid.  
     ##Create pop-up window.
@@ -38,7 +38,7 @@ def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, rem
     positionDown = screenHeight/2 - windowSize/2
     
     ##Set the window size using the geometry() method.
-    warningStims.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+    warningStims.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
                                       positionRight, positionDown)) 
     
     warningStims.resizable(width = False, height = False) ##The window is not resizeable.
@@ -53,16 +53,16 @@ def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, rem
     pressToContinue = Button(warningStims, text = "Continue", 
                           command = lambda: return_to_stims_deletion(main, stimList, stimFrameDict, numStims, stimScrollingArea, remove_x))
     
-    pressToClose = Button(warningStims, text = "Return", 
+    pressToClose = Button(warningStims, image = return_arrow, border = 0, 
                           command = lambda: return_to_stims_cancellation(main))
     
     pressToContinue.pack(side = BOTTOM)
     
-    pressToClose.pack(side = BOTTOM)
+    pressToClose.pack(side = BOTTOM, anchor = E)
         
 
 ##Function to warn the user that the specified number of stims is invalid.
-def incorrect_stim_num(main):
+def incorrect_stim_num(main, return_arrow):
   """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
     
     Pop-up when the user specifies a wrong number of
@@ -86,7 +86,7 @@ def incorrect_stim_num(main):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.
-  wrongStimNum.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+  wrongStimNum.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
                                     positionRight, positionDown)) 
   
   wrongStimNum.resizable(width = False, height = False) ##The window is not resizeable.
@@ -98,13 +98,13 @@ def incorrect_stim_num(main):
   
   Label(wrongStimNum, text = 'Please enter a valid number of stimuli').pack(side = TOP)
   
-  pressToClose = Button(wrongStimNum, text = "Return", 
+  pressToClose = Button(wrongStimNum, image = return_arrow, border = 0, 
                         command = lambda: return_to_stim_num(main))
-  pressToClose.pack(side = BOTTOM)
+  pressToClose.pack(side = BOTTOM, anchor = E)
    
 
 ##Function is called when an incorrect stimuli is entered.
-def incorrect_stims(main):
+def incorrect_stims(main, return_arrow):
   """ (tkinter.Tk) -> (none)
     
     Pop-up to tell user that a stimulis (or stimuli) 
@@ -128,7 +128,7 @@ def incorrect_stims(main):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.
-  wrongStims.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+  wrongStims.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
                                     positionRight, positionDown)) 
   
   wrongStims.resizable(width = False, height = False) ##The window is not resizeable.
@@ -140,13 +140,13 @@ def incorrect_stims(main):
   Label(wrongStims, text = 'Please enter at least one valid stimulus').pack(side = TOP)
   Label(wrongStims, text = 'or remove invalid stimuli').pack(side = TOP)
   
-  pressToClose = Button(wrongStims, text = "Return", 
+  pressToClose = Button(wrongStims, image = return_arrow, border = 0,
                         command = lambda: return_to_stims(main))
-  pressToClose.pack(side = BOTTOM)
+  pressToClose.pack(side = BOTTOM, anchor = E)
    
 
 ##Function is called when an incorrect agent is entered.
-def incorrect_agent(main):
+def incorrect_agent(main, return_arrow):
   """ (tkinter.Tk) -> (none)
     
     Pop-up to tell the user that the agent entry
@@ -170,7 +170,7 @@ def incorrect_agent(main):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.  
-  wrongAgent.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+  wrongAgent.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
                                       positionRight, positionDown)) 
     
   wrongAgent.resizable(width = False, height = False) ##The window is not resizeable.
@@ -182,13 +182,13 @@ def incorrect_agent(main):
     
   Label(wrongAgent, text = 'Please enter one valid agent').pack(side = TOP)
     
-  pressToClose = Button(wrongAgent, text = "Return", 
+  pressToClose = Button(wrongAgent, image = return_arrow, border = 0, 
                         command = lambda: return_to_bevs_agent(main))
-  pressToClose.pack(side = BOTTOM)
+  pressToClose.pack(side = BOTTOM, anchor = E)
   
 
 ##Function is called when an incorrect behaviour is entered.
-def incorrect_bevs(main):
+def incorrect_bevs(main, return_arrow):
   """ (tkinter.Tk) -> (none)
     
     Pop-up to tell the user that the agent behaviour entry
@@ -212,7 +212,7 @@ def incorrect_bevs(main):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.  
-  wrongBevs.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+  wrongBevs.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
                                       positionRight, positionDown)) 
     
   wrongBevs.resizable(width = False, height = False) ##The window is not resizeable.
@@ -225,14 +225,14 @@ def incorrect_bevs(main):
   Label(wrongBevs, text = 'Please enter at least one valid behaviour').pack(side = TOP)
   Label(wrongBevs, text = 'or remove invalid behaviours').pack(side = TOP)
     
-  pressToClose = Button(wrongBevs, text = "Return", 
+  pressToClose = Button(wrongBevs, image = return_arrow, border = 0, 
                         command = lambda: return_to_bevs_bevs(main))
-  pressToClose.pack(side = BOTTOM)
+  pressToClose.pack(side = BOTTOM, anchor = E)
   
 
 ##Function is called when an incorrect concrete behaviour is entered.
 
-def incorrect_CBS(main):
+def incorrect_CBS(main, return_arrow):
   """ (tkinter.Tk) -> (none)
     
     Pop-up to tell the user that the concrete behaviour entries
@@ -257,7 +257,7 @@ def incorrect_CBS(main):
   positionDown = screenHeight/2 - windowSize/2
 
   ##Set the window size using the geometry() method.
-  wrongCBS.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+  wrongCBS.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
                                     positionRight, positionDown)) 
 
   wrongCBS.resizable(width = False, height = False) ##The window is not resizeable.
@@ -271,10 +271,10 @@ def incorrect_CBS(main):
 
   Label(wrongCBS, text = 'or remove invalid concrete behaviour').pack(side = TOP) 
 
-  pressToClose = Button(wrongCBS, text = "Return", 
+  pressToClose = Button(wrongCBS, image = return_arrow, border = 0, 
                         command = lambda: return_to_CBS(main))
 
-  pressToClose.pack(side = BOTTOM)
+  pressToClose.pack(side = BOTTOM, anchor = E)
 
 
 def check_if_good_CBS(main, entriesCBS, whichRadio, textBoxCBS):
@@ -359,7 +359,7 @@ def check_if_good_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
   else:
     return False, invalidEntries 
 
-def incorrect_table(main, numInvalid):
+def incorrect_table(main, numInvalid, return_arrow):
   """ (tkinter.Tk, int) -> (none)
     
     Pop-up to tell the user that some entries are inccorect
@@ -383,7 +383,7 @@ def incorrect_table(main, numInvalid):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.
-  invalidEntryPop.geometry('%dx%d+%d+%d' % (windowSize, windowSize, 
+  invalidEntryPop.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
                                             positionRight, positionDown))    
   
   invalidEntryPop.resizable(width = False, height = False) ##The window is not resizeable.
@@ -398,9 +398,9 @@ def incorrect_table(main, numInvalid):
                               ' entries to fix')
   invalidEntriesLabel.pack(side = TOP)
   
-  pressToClose = Button(invalidEntryPop, text = "Return", 
+  pressToClose = Button(invalidEntryPop, image = return_arrow, border = 0, 
                         command = lambda: return_to_tables(main))
-  pressToClose.pack(side = BOTTOM)
+  pressToClose.pack(side = BOTTOM, anchor = E)
   
 
 """Functions which get rid of the pop-up window."""
@@ -530,3 +530,6 @@ def return_to_tables(main):
   main.update()
   main.deiconify()
   invalidEntryPop.destroy()
+  
+  
+  
