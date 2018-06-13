@@ -83,17 +83,17 @@ begin NEXT_BEHAVIOUR where
     
     (ips, AVG1)    = AVG1
     
-    (ips, RESET1)  = RESET1
-    
     (ips, AVG2)    = AVG2
-    
-    (ips, RESET2)  = RESET2
     
     (ips, AVG3)    = AVG3
     
-    (ips, RESET3)  = RESET3
-    
     (ips, AVG4)    = AVG4
+    
+    (ips, RESET1)  = RESET1
+    
+    (ips, RESET2)  = RESET2
+    
+    (ips, RESET3)  = RESET3
     
     (ips, RESET4)  = RESET4
     
@@ -109,17 +109,17 @@ begin NEXT_BEHAVIOUR where
     
     (abor, AVG1)   = AVG1
     
-    (abor, RESET1) = RESET1
-    
     (abor, AVG2)   = AVG2
-    
-    (abor, RESET2) = RESET2
     
     (abor, AVG3)   = AVG3
     
-    (abor, RESET3) = RESET3
-    
     (abor, AVG4)   = AVG4
+    
+    (abor, RESET1) = RESET1
+    
+    (abor, RESET2) = RESET2
+    
+    (abor, RESET3) = RESET3
     
     (abor, RESET4) = RESET4
     
@@ -135,17 +135,17 @@ begin NEXT_BEHAVIOUR where
     
     (allo, AVG1)   = AVG1
     
-    (allo, RESET1) = RESET1
-    
     (allo, AVG2)   = AVG2
-    
-    (allo, RESET2) = RESET2
     
     (allo, AVG3)   = AVG3
     
-    (allo, RESET3) = RESET3
-    
     (allo, AVG4)   = AVG4
+    
+    (allo, RESET1) = RESET1
+    
+    (allo, RESET2) = RESET2
+    
+    (allo, RESET3) = RESET3
     
     (allo, RESET4) = RESET4
     
@@ -161,17 +161,17 @@ begin NEXT_BEHAVIOUR where
     
     (help, AVG1)   = AVG1
     
-    (help, RESET1) = RESET1
-    
     (help, AVG2)   = AVG2
-    
-    (help, RESET2) = RESET2
     
     (help, AVG3)   = AVG3
     
-    (help, RESET3) = RESET3
-    
     (help, AVG4)   = AVG4
+    
+    (help, RESET1) = RESET1
+    
+    (help, RESET2) = RESET2
+    
+    (help, RESET3) = RESET3
     
     (help, RESET4) = RESET4
     
@@ -187,17 +187,17 @@ begin NEXT_BEHAVIOUR where
     
     (noop, AVG1)   = AVG1
     
-    (noop, RESET1) = RESET1
-    
     (noop, AVG2)   = AVG2
-    
-    (noop, RESET2) = RESET2
     
     (noop, AVG3)   = AVG3
     
-    (noop, RESET3) = RESET3
-    
     (noop, AVG4)   = AVG4
+    
+    (noop, RESET1) = RESET1
+    
+    (noop, RESET2) = RESET2
+    
+    (noop, RESET3) = RESET3
     
     (noop, RESET4) = RESET4
 end
@@ -216,17 +216,17 @@ begin NEXT_STIMULUS where
     
     (ips, AVG1)    = N
     
-    (ips, RESET1)  = N
-    
     (ips, AVG2)    = N
-    
-    (ips, RESET2)  = N
     
     (ips, AVG3)    = N
     
-    (ips, RESET3)  = N
-    
     (ips, AVG4)    = N
+    
+    (ips, RESET1)  = N
+    
+    (ips, RESET2)  = N
+    
+    (ips, RESET3)  = N
     
     (ips, RESET4)  = N
     
@@ -242,17 +242,17 @@ begin NEXT_STIMULUS where
     
     (abor, AVG1)   = N
     
-    (abor, RESET1) = N
-    
     (abor, AVG2)   = N
-    
-    (abor, RESET2) = N
     
     (abor, AVG3)   = N
     
-    (abor, RESET3) = N
-    
     (abor, AVG4)   = N
+    
+    (abor, RESET1) = N
+    
+    (abor, RESET2) = N
+    
+    (abor, RESET3) = N
     
     (abor, RESET4) = N
     
@@ -268,17 +268,17 @@ begin NEXT_STIMULUS where
     
     (allo, AVG1)   = N
     
-    (allo, RESET1) = N
-    
     (allo, AVG2)   = N
-    
-    (allo, RESET2) = N
     
     (allo, AVG3)   = N
     
-    (allo, RESET3) = N
-    
     (allo, AVG4)   = N
+    
+    (allo, RESET1) = N
+    
+    (allo, RESET2) = N
+    
+    (allo, RESET3) = N
     
     (allo, RESET4) = N
     
@@ -294,17 +294,17 @@ begin NEXT_STIMULUS where
     
     (help, AVG1)   = N
     
-    (help, RESET1) = N
-    
     (help, AVG2)   = N
-    
-    (help, RESET2) = N
     
     (help, AVG3)   = N
     
-    (help, RESET3) = N
-    
     (help, AVG4)   = N
+    
+    (help, RESET1) = N
+    
+    (help, RESET2) = N
+    
+    (help, RESET3) = N
     
     (help, RESET4) = N
     
@@ -320,17 +320,17 @@ begin NEXT_STIMULUS where
     
     (noop, AVG1)   = N
     
-    (noop, RESET1) = N
-    
     (noop, AVG2)   = N
-    
-    (noop, RESET2) = N
     
     (noop, AVG3)   = N
     
-    (noop, RESET3) = N
-    
     (noop, AVG4)   = N
+    
+    (noop, RESET1) = N
+    
+    (noop, RESET2) = N
+    
+    (noop, RESET3) = N
     
     (noop, RESET4) = D
 end
