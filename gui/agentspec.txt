@@ -1,26 +1,23 @@
 begin AGENT where
-    j := k l
+    p := p y
 end
 
 begin NEXT_BEHAVIOUR where
-    (i, K) = K
-    (i, L) = K
-    (o, K) = L
-    (o, L) = L
+    (i, P) = P
+    (i, Y) = P
+    (j, P) = P
+    (j, Y) = P
 end
 
 begin NEXT_STIMULUS where
-    (i, K) = N
-    (i, L) = N
-    (o, K) = N
-    (o, L) = N
+    (i, P) = N
+    (i, Y) = N
+    (j, P) = N
+    (j, Y) = N
 end
 
 begin CONCRETE BEHAVIOUR where
-    j => [ if true -> x := ABOR
-            | true -> x := ALLO
-            | true -> x := HELP
-            | true -> x := NOOP
-           fi;
-           send x ]
+    p => [ ffffffffff
+           f
+           ff ]
 end
