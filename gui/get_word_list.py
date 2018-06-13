@@ -135,6 +135,27 @@ def build_bev_dict(line):
   ##Will only return a histogram if tests are passed.    
   return hist  
 
+##Function to correctly extract the agent behaviour.
+def extract_full_behaviour(agentBehaviour):
+  """ (str) -> (str)
+    
+    Takes the agent behaviour entry, and extracts the 
+    behaviour into a string that contains the right amount
+    of spacing.
+  
+  """   
+  bevWords = agentBehaviour.split() ##Get every word in the entry, igoring whitespace.
+  agentBehaviour = '' ##Set agent behaviour to the empty string.
+  
+  for i in range(len(bevWords)): ## Coreectly append each word to the string.
+    if i == len(bevWords) - 1: ##No whitespace if True.
+      agentBehaviour += bevWords[i].upper()
+    else:  
+      agentBehaviour += bevWords[i].upper() + " " ##Add a whitespace to the end of each word for spacing.
+  
+  return agentBehaviour
+    
+
 ##Function to get concrete behaviour entry.
 def get_concrete_behaviours(entriesCBS):
   """ (dict) -> (dict)
@@ -158,7 +179,7 @@ def get_concrete_behaviours(entriesCBS):
     
     line = "" ##Set line to an empty string in order to store the correct concrete behaviour.
     
-    ##Correctly append each word to the list.
+    ##Correctly append each word to the string.
     for i in range(len(wordList)): 
       if i == len(wordList) - 1: ##No whitespace if True.
         line += wordList[i]

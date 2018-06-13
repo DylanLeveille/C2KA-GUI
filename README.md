@@ -17,7 +17,6 @@ All the software used in this project is free. Here's what you need to install t
 
 ● Wing 101 v. 6.0.7-1 can be downloaded from: wingware.com. Please ensure that you download and install Wing 101, not Wing Professional. The latter IDE has a free 30-day trial license, after which a license must be purchased. Wing 101 is free, and does not require you to purchase a license. For Windows platforms, download the 32-bit/64-bit installer (wingide-101-6.0.7-1.exe). 
 
-
 Note: as of Version 6.0, Wing Personal is free. This IDE has more features than Wing 101, but fewer than Wing Professional.
 
 ### Installing
@@ -84,17 +83,17 @@ begin NEXT_BEHAVIOUR where
     
     (ips, AVG1)    = AVG1
     
-    (ips, RESET1)  = RESET1
-    
     (ips, AVG2)    = AVG2
-    
-    (ips, RESET2)  = RESET2
     
     (ips, AVG3)    = AVG3
     
-    (ips, RESET3)  = RESET3
-    
     (ips, AVG4)    = AVG4
+    
+    (ips, RESET1)  = RESET1
+    
+    (ips, RESET2)  = RESET2
+    
+    (ips, RESET3)  = RESET3
     
     (ips, RESET4)  = RESET4
     
@@ -110,17 +109,17 @@ begin NEXT_BEHAVIOUR where
     
     (abor, AVG1)   = AVG1
     
-    (abor, RESET1) = RESET1
-    
     (abor, AVG2)   = AVG2
-    
-    (abor, RESET2) = RESET2
     
     (abor, AVG3)   = AVG3
     
-    (abor, RESET3) = RESET3
-    
     (abor, AVG4)   = AVG4
+    
+    (abor, RESET1) = RESET1
+    
+    (abor, RESET2) = RESET2
+    
+    (abor, RESET3) = RESET3
     
     (abor, RESET4) = RESET4
     
@@ -136,17 +135,17 @@ begin NEXT_BEHAVIOUR where
     
     (allo, AVG1)   = AVG1
     
-    (allo, RESET1) = RESET1
-    
     (allo, AVG2)   = AVG2
-    
-    (allo, RESET2) = RESET2
     
     (allo, AVG3)   = AVG3
     
-    (allo, RESET3) = RESET3
-    
     (allo, AVG4)   = AVG4
+    
+    (allo, RESET1) = RESET1
+    
+    (allo, RESET2) = RESET2
+    
+    (allo, RESET3) = RESET3
     
     (allo, RESET4) = RESET4
     
@@ -162,17 +161,17 @@ begin NEXT_BEHAVIOUR where
     
     (help, AVG1)   = AVG1
     
-    (help, RESET1) = RESET1
-    
     (help, AVG2)   = AVG2
-    
-    (help, RESET2) = RESET2
     
     (help, AVG3)   = AVG3
     
-    (help, RESET3) = RESET3
-    
     (help, AVG4)   = AVG4
+    
+    (help, RESET1) = RESET1
+    
+    (help, RESET2) = RESET2
+    
+    (help, RESET3) = RESET3
     
     (help, RESET4) = RESET4
     
@@ -188,17 +187,17 @@ begin NEXT_BEHAVIOUR where
     
     (noop, AVG1)   = AVG1
     
-    (noop, RESET1) = RESET1
-    
     (noop, AVG2)   = AVG2
-    
-    (noop, RESET2) = RESET2
     
     (noop, AVG3)   = AVG3
     
-    (noop, RESET3) = RESET3
-    
     (noop, AVG4)   = AVG4
+    
+    (noop, RESET1) = RESET1
+    
+    (noop, RESET2) = RESET2
+    
+    (noop, RESET3) = RESET3
     
     (noop, RESET4) = RESET4
 end
@@ -217,17 +216,17 @@ begin NEXT_STIMULUS where
     
     (ips, AVG1)    = N
     
-    (ips, RESET1)  = N
-    
     (ips, AVG2)    = N
-    
-    (ips, RESET2)  = N
     
     (ips, AVG3)    = N
     
-    (ips, RESET3)  = N
-    
     (ips, AVG4)    = N
+    
+    (ips, RESET1)  = N
+    
+    (ips, RESET2)  = N
+    
+    (ips, RESET3)  = N
     
     (ips, RESET4)  = N
     
@@ -243,17 +242,17 @@ begin NEXT_STIMULUS where
     
     (abor, AVG1)   = N
     
-    (abor, RESET1) = N
-    
     (abor, AVG2)   = N
-    
-    (abor, RESET2) = N
     
     (abor, AVG3)   = N
     
-    (abor, RESET3) = N
-    
     (abor, AVG4)   = N
+    
+    (abor, RESET1) = N
+    
+    (abor, RESET2) = N
+    
+    (abor, RESET3) = N
     
     (abor, RESET4) = N
     
@@ -269,17 +268,17 @@ begin NEXT_STIMULUS where
     
     (allo, AVG1)   = N
     
-    (allo, RESET1) = N
-    
     (allo, AVG2)   = N
-    
-    (allo, RESET2) = N
     
     (allo, AVG3)   = N
     
-    (allo, RESET3) = N
-    
     (allo, AVG4)   = N
+    
+    (allo, RESET1) = N
+    
+    (allo, RESET2) = N
+    
+    (allo, RESET3) = N
     
     (allo, RESET4) = N
     
@@ -295,17 +294,17 @@ begin NEXT_STIMULUS where
     
     (help, AVG1)   = N
     
-    (help, RESET1) = N
-    
     (help, AVG2)   = N
-    
-    (help, RESET2) = N
     
     (help, AVG3)   = N
     
-    (help, RESET3) = N
-    
     (help, AVG4)   = N
+    
+    (help, RESET1) = N
+    
+    (help, RESET2) = N
+    
+    (help, RESET3) = N
     
     (help, RESET4) = N
     
@@ -321,17 +320,17 @@ begin NEXT_STIMULUS where
     
     (noop, AVG1)   = N
     
-    (noop, RESET1) = N
-    
     (noop, AVG2)   = N
-    
-    (noop, RESET2) = N
     
     (noop, AVG3)   = N
     
-    (noop, RESET3) = N
-    
     (noop, AVG4)   = N
+    
+    (noop, RESET1) = N
+    
+    (noop, RESET2) = N
+    
+    (noop, RESET3) = N
     
     (noop, RESET4) = D
 end
@@ -352,14 +351,23 @@ end
 
 ### Things to be aware of
 
-Do note that there is no guarantee that the program won't crash if uncommon characters are inputted in the entry boxes. Characters which are found on the standard English keyboard should work fine and are usually.
+Do note that there is no guarantee that the program won't crash if uncommon characters are inputted in the entry boxes. Characters which are found on the standard English keyboard work fine and are usually what is used for this application.
 
-Also, since we decided that the behaviours would be stored based on the order they appeared, the stimulis-behaiour order in the text file is somewhat disorganized to maintain that order. This will NOT disrupt the functionality of the text file.
+## Notes
+● The parsing implemented in the program allows the program extra whitespace in the entries. Therefore, the user does not need to worry about putting too much whitespace in their entries.
+
+● Empty entries in the stimuli page are ignored. However, at least one stimuli must be entered to proceed to the next page.
+
+● Entered behaviours are automatically capitalized.
+
+● The Neutral stimulis is represented by the capital N, and the Deactivation stimulus is represented by the capital D.
+
+● In the circle table, entries don't need to be capitalized (the program will do this automatically once you submit the data).
 
 ## Built With
 
-* [Python](https://www.python.org/) - The programming language used
-* [Tkinter](https://wiki.python.org/moin/TkInter) - Python's de-facto standard GUI package
+* [Python](https://www.python.org/) - The programming language used.
+* [Tkinter](https://wiki.python.org/moin/TkInter) - Python's de-facto standard GUI package.
 
 ## Contributing
 
