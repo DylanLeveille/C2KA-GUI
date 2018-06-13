@@ -71,7 +71,7 @@ def next_page():
     
     if stimDict == None or len(stimDict) == 0: ##User must imput at least one valid stimulus.
       ##Stay on current page.
-      incorrect_stims(main) ##Calls function for pop-up.
+      incorrect_stims(main, return_arrow) ##Calls function for pop-up.
       pageNum -= 1 ##Decrease pageNum by one to stay on current page.    
      
     else: ##User inputted valid stimuli.
@@ -98,7 +98,7 @@ def next_page():
       ##Change background colour of the agent entry to red to warn user.
       agentEntry.config(bg = 'red')
       ##Stay on current page by warning the user with a pop-up.
-      incorrect_agent(main)
+      incorrect_agent(main, return_arrow)
       ##Decrease pageNum to stay on current page.
       pageNum -= 1    
    
@@ -110,7 +110,7 @@ def next_page():
       agentBevEntry.config(bg = 'red')      
       
       ##Stay on current page by warning the user with a pop-up.
-      incorrect_bevs(main)
+      incorrect_bevs(main, return_arrow)
       ##Decrease pageNum to stay on current page.
       pageNum -= 1  
 
@@ -203,7 +203,7 @@ def next_page():
 
     ##If there are invalid entries, create popup.
     if isGoodCBS == False:
-      incorrect_CBS(main) ##Calls function for pop-up.
+      incorrect_CBS(main, return_arrow) ##Calls function for pop-up.
 
       pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
 
@@ -357,7 +357,7 @@ def next_page():
     ##Table is not good.
     else:
       ##Deliver a pop-up to the user to warn of invalid entries in the table.
-      incorrect_table(main, numInvalid)
+      incorrect_table(main, numInvalid, return_arrow)
       ##Decrease pageNum to stay on current page.
       pageNum -= 1
   
@@ -512,6 +512,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   check_mark = PhotoImage(file = "check_mark.png")
   right_arrow = PhotoImage(file="right_arrow.png")
   left_arrow = PhotoImage(file="left_arrow.png")
+  return_arrow = PhotoImage(file = "return_arrow.png")
   remove_x = PhotoImage(file = "remove_x.png")
   save_icon = PhotoImage(file = "save_icon.png")
   entry_font = ('Comic Sans MS', 11)
@@ -540,7 +541,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
 
-  enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, stimFrameDict, enterStimBox.get(), stimScrollingArea, remove_x))
+  enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, stimFrameDict, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow))
   enterStimButton.pack(in_=stimFrame, side = RIGHT, anchor = N)
   
   enterStimBox = ttk.Entry(main, font = entry_font)
@@ -548,7 +549,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   
   ##Add stimulus entry Button.
   addStim = Button(main, text = 'Add new stimulus', 
-                   command = lambda: add_stim(main, stimList, stimFrameDict, stimScrollingArea, remove_x), 
+                   command = lambda: add_stim(main, stimList, stimFrameDict, stimScrollingArea, remove_x, return_arrow), 
                    width = 23)
   
   addStim.pack(in_=buttonsFrame, side = LEFT)
