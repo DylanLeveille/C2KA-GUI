@@ -102,7 +102,7 @@ class Mousewheel_Support(object):
         
         elif OS == 'Darwin':
             def onMouseWheel(event):        
-                view_command("scroll",event.delta, what)
+                view_command("scroll",(-1)*event.delta, what)
         
         return onMouseWheel
 
@@ -126,6 +126,7 @@ class Scrolling_Area(Frame, object):
             else:
                 self.yscrollbar = Scrollbar(self, orient=VERTICAL)
                 self.yscrollbar.grid(row=0, column=1,sticky=N+S)
+                self.yscrollbar
         
             self.canvas.configure(yscrollcommand=self.yscrollbar.set)
             self.yscrollbar['command']=self.canvas.yview

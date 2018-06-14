@@ -609,6 +609,11 @@ if __name__ == '__main__': ##only start program when running gui.py
   radioBoxCBS.pack(in_=formatCBS, side = RIGHT)
 
   """Labels and Entries exclusive for page 4."""
+  ##Button to fill circle table with beahviour in each row.
+  fillN = Button(main, text = 'Fill with neutral stimulus', 
+                 command = lambda: fill_n(bevDict, stimDict, 
+                                          circleTableBoxes, lambdaTableBoxes), width = 23)  
+  
   ##Button to fill lambda table with neutral stimulus.
   fillN = Button(main, text = 'Fill with neutral stimulus', 
                  command = lambda: fill_n(bevDict, stimDict, 

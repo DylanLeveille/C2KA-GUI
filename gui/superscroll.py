@@ -109,7 +109,7 @@ class Mousewheel_Support(object):
         
         elif OS == 'Darwin':
             def onMouseWheel(event):        
-                view_command("scroll",event.delta, what)
+                view_command("scroll",(-1)*event.delta, what)
         
         return onMouseWheel
 

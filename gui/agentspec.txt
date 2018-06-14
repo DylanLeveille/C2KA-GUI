@@ -1,23 +1,43 @@
 begin AGENT where
-    p := p y
+    p := o l m n o p  q r s t  u  v  w x y z
 end
 
 begin NEXT_BEHAVIOUR where
-    (i, P) = P
-    (i, Y) = P
-    (j, P) = P
-    (j, Y) = P
+    (ko, O) = O
+    (ko, L) = O
+    (ko, M) = O
+    (ko, N) = O
+    (ko, P) = O
+    (ko, Q) = O
+    (ko, R) = O
+    (ko, S) = O
+    (ko, T) = O
+    (ko, U) = O
+    (ko, V) = O
+    (ko, W) = O
+    (ko, X) = O
+    (ko, Y) = O
+    (ko, Z) = O
 end
 
 begin NEXT_STIMULUS where
-    (i, P) = N
-    (i, Y) = N
-    (j, P) = N
-    (j, Y) = N
+    (ko, O) = N
+    (ko, L) = N
+    (ko, M) = N
+    (ko, N) = N
+    (ko, P) = N
+    (ko, Q) = N
+    (ko, R) = N
+    (ko, S) = N
+    (ko, T) = N
+    (ko, U) = N
+    (ko, V) = N
+    (ko, W) = N
+    (ko, X) = N
+    (ko, Y) = N
+    (ko, Z) = N
 end
 
 begin CONCRETE BEHAVIOUR where
-    p => [ ffffffffff
-           f
-           ff ]
+    p => [ po ]
 end
