@@ -4,7 +4,7 @@ import vertSuperscroll ##Module containing the widget allowing a vertical scroll
 
 """Functions which modify entry boxes in the program."""
 ##Function to add a new stimuli. 
-def add_stim(main, stimList, stimFrameDict, stimScrollingArea, remove_x):
+def add_stim(main, stimList, stimFrameDict, stimScrollingArea, remove_x, return_arrow):
   """ (tkinter.Tk, dict, tkinter.Frame) -> (none)
     
     Adds a stimuli entry box to the addStim page,
@@ -24,7 +24,7 @@ def add_stim(main, stimList, stimFrameDict, stimScrollingArea, remove_x):
   
   ##Generate the boxes.    
   for i in range(len(stimList)):
-    stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe)
+    stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe, height = 27)
     stimEntry = Entry(stimEntryFrame)
     stimDeleteButton = Button(stimEntryFrame, image = remove_x, border = 0, command = lambda arg=i: remove_stim(main, stimList, stimFrameDict, stimScrollingArea, arg, remove_x))
     stimEntry.insert(0, stimList[i].get())    
@@ -35,7 +35,7 @@ def add_stim(main, stimList, stimFrameDict, stimScrollingArea, remove_x):
     stimEntryFrame.pack(side = TOP, pady = 10)
   
   ##Assign new entry box.
-  stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe)
+  stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe, height = 27)
   stimDeleteButton = Button(stimEntryFrame, image = remove_x, border = 0, command = lambda arg=len(stimList): remove_stim(main, stimList, stimFrameDict, stimScrollingArea, arg, remove_x))
   stimDeleteButton.pack(side = RIGHT)
   stimEntry = Entry(stimEntryFrame)    
@@ -81,7 +81,7 @@ def remove_stim(main, stimList, stimFrameDict, stimScrollingArea, arg, remove_x)
     
     ##Generate the boxes.       
     for j in range(len(stimList)-1):
-      stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe)
+      stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe, height = 27)
       stimEntry = Entry(stimEntryFrame)
       stimDeleteButton = Button(stimEntryFrame, image = remove_x, border = 0, command = lambda arg=j: remove_stim(main, stimList, stimFrameDict, stimScrollingArea, arg, remove_x))
       stimEntry.insert(0, stimList[j].get())    
