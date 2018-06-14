@@ -284,30 +284,36 @@ def check_if_good_CBS(main, entriesCBS, whichRadio, textBoxCBS):
     is incorrect.
   
   """    
-  ##Flag to check if there are any invalid entries
+  ##Flag to check if there are any invalid entries.
   global flagCBS
   flagCBS = True
   
-  ##Check which template is being used (either Rows or Box)
+  ##Check which template is being used (either Rows or Box).
   if whichRadio.get() == 'Rows':
-    for entry in range(1, entriesCBS[0,0]+1):
-      ##Check through CBS dictionary to find specific invalidities
-      if entriesCBS[entry, 1].get() == ' '*len(entriesCBS[entry, 1].get()):
-  
-        flagCBS = False
-        ##If entry is invalid, change the background to white
-        entriesCBS[entry, 1].config(background = 'red')
+    for entry in range(1, entriesCBS[0, 0] + 1):
+      ##Check through CBS dictionary to find specific invalidities.
+      if entriesCBS[entry, 1].get() == ' ' * len(entriesCBS[entry, 1].get()):
+        if flagCBS == True:
+          flagCBS = False
+          
+        ##If entry is invalid, change the background to white.
+        entriesCBS[entry, 1].config(background = 'tomato')
   
       else:
-        ##If entry is valid, change the backgound to white
+        ##If entry is valid, change the backgound to white.
         entriesCBS[entry, 1].config(background = 'white')
 
   else:
-    ##Create list of texbox lines, filters out empty lines
-    textBoxLines = textBoxCBS.get("1.0",'end-1c').split()
+    ##Create list of texbox lines, filters out empty lines.
+    textBoxWords = textBoxCBS.get("1.0", END).split()
     
-    ##Check if the textbox is empty
-    if len(textBoxLines) ==0:
+    ##Check if the textbox is empty.
+    if len(textBoxWords) == 0:
+      flagCBS = False
+    
+    ##Check to see if the number of 'if' equals to the number of 'fi' and check if there 
+    ##are any 'if' as well.  
+    if textBoxWords.count('if') != textBoxWords.count('fi') or textBoxWords.count('if') == 0:   
       flagCBS = False
       
   ##If there are no invalid entries, return True; else return False  
@@ -334,7 +340,7 @@ def check_if_good_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
       if found == False:
         firstFlag = False 
         found = True
-      circleTableBoxes[key].config(bg = 'red')
+      circleTableBoxes[key].config(bg = 'tomato')
       invalidEntries += 1
     ##Change background to white (normal) if the value is now valid.  
     else:
@@ -347,7 +353,7 @@ def check_if_good_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
       if found == False:
         secondFlag = False 
         found = True
-      lambdaTableBoxes[key].config(bg = 'red') 
+      lambdaTableBoxes[key].config(bg = 'tomato') 
       invalidEntries += 1
     ##Change background to white (normal) if the value is now valid.  
     else: 

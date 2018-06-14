@@ -51,12 +51,12 @@ def build_stim_dict(stimList):
           if isBad == False:
             isBad = True
   
-    ##Background configured to red since it is a bad entry.
+    ##Background configured to tomato-red since it is a bad entry.
     if isBad:
       if oneBad == False:
         oneBad = True
-      ##Change background to color red to indicate error.
-      stimList[i].config(bg = 'red')
+      ##Change background to color tomato-red to indicate error.
+      stimList[i].config(bg = 'tomato')
     
     else:  
       ##Background configured to white since it is a good entry.

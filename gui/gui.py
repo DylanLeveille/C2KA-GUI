@@ -96,8 +96,8 @@ def next_page():
     bevDict = build_bev_dict(agentBevEntry.get()) ##Behaviour dictionary for the agent.
    
     if agentName == None: ##User must input one valid agent to proceed.
-      ##Change background colour of the agent entry to red to warn user.
-      agentEntry.config(bg = 'red')
+      ##Change background colour of the agent entry to tomato-red to warn user.
+      agentEntry.config(bg = 'tomato')
       ##Stay on current page by warning the user with a pop-up.
       incorrect_agent(main, return_arrow)
       ##Decrease pageNum to stay on current page.
@@ -107,8 +107,8 @@ def next_page():
       ##We can confirm that the agent entry is good since it passed the first if statement,
       ##therefore we set the background of the agent entry back to white. 
       agentEntry.config(bg = 'white')
-      ##Change background colour of behaviour to red to warn user.
-      agentBevEntry.config(bg = 'red')      
+      ##Change background colour of behaviour to tomato-red to warn user.
+      agentBevEntry.config(bg = 'tomato')      
       
       ##Stay on current page by warning the user with a pop-up.
       incorrect_bevs(main, return_arrow)
@@ -418,6 +418,7 @@ def prev_page():
     else:##Radio button was on boxCBS.
       ##Forget the text box frame.
       textBoxCBSFrame.pack_forget()
+      
     ##Forget the title and radio button frame regardless of which radio button was pressed.  
     titleCBS.pack_forget()
     agentCBS.pack_forget()      

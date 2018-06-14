@@ -84,7 +84,7 @@ def create_text(agentName, agentBehaviour, concreteBehaviours, textBoxCBS,
     ##Write text Box entry.
     textBoxList = textBoxCBS.get("1.0", END).splitlines() ##Split each line in the text box.
     
-    firstLineFound = False ##Bollean value to check if the first line has been found.
+    firstLineFound = False ##Boolean value to check if the first line has been found.
     
     for line in range(len(textBoxList)):##Iterate through each line.
       if len(textBoxList[line].split()) > 0: ##The line cannot be blank.
