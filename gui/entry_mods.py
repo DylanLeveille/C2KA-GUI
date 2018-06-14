@@ -108,10 +108,26 @@ def remove_stim(main, stimList, stimFrameList, stimScrollingArea, boxIndex, remo
   
   ##Assign new frame
   stimScrollingArea[0] = stimScrollingAreaTemp 
+
+##Button function to fill circle table with each row's behaviour.
+def fill_bev(bevDict, stimDict, circleTableBoxes):
+  """ (dict, dict, dict) -> (none)
+    
+    Fills the circle tables entry boxes with each row's 
+    behaviour if that box is empty.  
+  
+  """    
+  for i in range(1, len(bevDict) + 1): ##Rows
+    for j in range(1, len(stimDict) + 1): ##Columns
+      ##Checking if empty in circle table.
+      if circleTableBoxes[i, j].get() == ' ' * len(circleTableBoxes[i, j].get()):
+        ##If empty, put behaviour name from the row.
+        circleTableBoxes[i, j].delete(0, END) 
+        circleTableBoxes[i, j].insert(0, circleTableBoxes[i, 0].cget("text"))
     
 ##Button function to fill lambda table with neutral stimulus.
-def fill_n(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes):
-  """ (dict, dict, dict, dict) -> (none)
+def fill_n(bevDict, stimDict, lambdaTableBoxes):
+  """ (dict, dict, dict) -> (none)
     
     Fills the lambda tables entry boxes with the neutral 
     stimulus if that box is empty.  

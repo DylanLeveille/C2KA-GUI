@@ -42,6 +42,8 @@ def next_page():
   global frameCBS ##Frame to hold concrete behaviours.
   global agentCBS ##Label for the agent name on the concrete behaviours page.
   
+  global concreteScrollingArea ##Scrolling area for the concrete behaviours (CBS).
+  
   global entriesCBS ##Dict to hold concrete behaviour labels and entries.
   global concreteBehaviours ##Dict to hold parsed concrete behaviours
   
@@ -53,7 +55,6 @@ def next_page():
   
   global circleScrollingArea ##Scrolling area for circle table.
   global lambdaScrollingArea ##Scrolling area for lambda table.
-  global concreteScrollingArea ##Scrolling area for the concrete behaviours (CBS).
   
   global circleGridFrame ##Global frame for the circle table.
   global lambdaGridFrame ##Global frame for the lambda table.
@@ -218,14 +219,19 @@ def next_page():
         
       else: ##User was using boxCBS.
         textBoxCBSFrame.pack_forget()
-        
+      
+      ##Unpack widgets available to both radio buttons.  
       titleCBS.pack_forget()
       agentCBS.pack_forget()
       formatCBS.pack_forget()
       
+      ##Pack the fillBev button which fills the circle table with the 
+      ##behaviour found on each row.
+      fillBev.pack(in_=buttonsFrame, side = LEFT)         
+      
       ##Pack the fillN button which fills the lambda table with the 
       ##neutral stimulus.
-      fillN.pack(in_=buttonsFrame, side = BOTTOM)
+      fillN.pack(in_=buttonsFrame, side = RIGHT)   
      
       ##If no tables were yet generated, we create a new one.
       if generatedTable == False:
@@ -331,8 +337,9 @@ def next_page():
       circleGridFrame.pack_forget()
       lambdaGridFrame.pack_forget()
     
-      ##Forget next button and fillN button, since they are not
+      ##Forget next button, fillBev button and fillN button, since they are not
       ##needed on the last page of the program.
+      fillBev.pack_forget()
       fillN.pack_forget()
       nextButton.pack_forget()
     
@@ -426,7 +433,8 @@ def prev_page():
     circleGridFrame.pack_forget()
     lambdaGridFrame.pack_forget()
   
-    ##Forget the fillN button.
+    ##Forget the fillBev and fillN button.
+    fillBev.pack_forget()
     fillN.pack_forget()
  
     ##Pack widgets related to CBS page.
@@ -457,9 +465,10 @@ def prev_page():
     circleGridFrame.pack(side=TOP, anchor = NW) 
     lambdaGridFrame.pack(side=TOP, anchor = SW) 
   
-    ##Repack the next button and fillN button.
+    ##Repack the next button, fillBev button and fillN button.
     nextButton.pack(in_=buttonsFrame, side = RIGHT)
-    fillN.pack(in_=buttonsFrame, side = BOTTOM)
+    fillBev.pack(in_=buttonsFrame, side = LEFT)
+    fillN.pack(in_=buttonsFrame, side = RIGHT)
   
   ##Decrease pageNum every time the previous button is clicked.
   pageNum -= 1
@@ -610,14 +619,14 @@ if __name__ == '__main__': ##only start program when running gui.py
 
   """Labels and Entries exclusive for page 4."""
   ##Button to fill circle table with beahviour in each row.
-  fillN = Button(main, text = 'Fill with neutral stimulus', 
-                 command = lambda: fill_n(bevDict, stimDict, 
-                                          circleTableBoxes, lambdaTableBoxes), width = 23)  
+  fillBev = Button(main, text = 'Fill with Behaviours', 
+                 command = lambda: fill_bev(bevDict, stimDict, circleTableBoxes), 
+                 width = 31)  
   
   ##Button to fill lambda table with neutral stimulus.
   fillN = Button(main, text = 'Fill with neutral stimulus', 
-                 command = lambda: fill_n(bevDict, stimDict, 
-                                          circleTableBoxes, lambdaTableBoxes), width = 23)
+                 command = lambda: fill_n(bevDict, stimDict, lambdaTableBoxes), 
+                 width = 31)
   
   """Labels and Entries exclusive for page 5."""
   ##Text entry to give the user a preview of the text file.
