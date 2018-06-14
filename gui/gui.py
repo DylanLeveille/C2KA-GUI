@@ -490,7 +490,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   """Code to load initial data/widgets in the main window.""" 
   ##Initializing the page number variable and the stimuli list.
   stimList = []
-  stimFrameDict = {}
+  stimFrameList = []
   pageNum = 1
   
   ##No concrete behaviours generated yet.
@@ -517,7 +517,6 @@ if __name__ == '__main__': ##only start program when running gui.py
   save_icon = PhotoImage(file = "save_icon.png")
   entry_font = ('Comic Sans MS', 11)
   
-  
   """Defining Buttons available on each page.""" 
   ##Next Button (will not be availible on page 5).
   nextButton = Button(main, command = next_page, image = right_arrow, width = "25", height = "25", border = 0)
@@ -541,7 +540,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
 
-  enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, stimFrameDict, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow))
+  enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, stimFrameList, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow))
   enterStimButton.pack(in_=stimFrame, side = RIGHT, anchor = N)
   
   enterStimBox = ttk.Entry(main, font = entry_font)
@@ -549,7 +548,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   
   ##Add stimulus entry Button.
   addStim = Button(main, text = 'Add new stimulus', 
-                   command = lambda: add_stim(main, stimList, stimFrameDict, stimScrollingArea, remove_x, return_arrow), 
+                   command = lambda: add_stim(main, stimList, stimFrameList, stimScrollingArea, remove_x, return_arrow), 
                    width = 23)
   
   addStim.pack(in_=buttonsFrame, side = LEFT)

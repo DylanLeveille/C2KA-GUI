@@ -1,11 +1,11 @@
 """Imported modules."""
 from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
 import vertSuperscroll ##Module containing the widget allowing a vertical scrollbar.
-from entry_mods import remove_stim
-"""Functions which validate entries/create pop-ups."""
+from entry_mods import remove_stim ##Import the remove_stim() function to bind to each delete stim entry button.
 
+"""Functions which validate entries/create pop-ups."""
 ##Function to warn user that current stims will be deleted.
-def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, remove_x, return_arrow):
+def specify_stim(main, stimList, stimFrameList, numStims, stimScrollingArea, remove_x, return_arrow):
   """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
     
     Pop-up when the user specifies a number of
@@ -51,7 +51,7 @@ def specify_stim(main, stimList, stimFrameDict, numStims, stimScrollingArea, rem
     Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
     
     pressToContinue = Button(warningStims, text = "Continue", 
-                          command = lambda: return_to_stims_deletion(main, stimList, stimFrameDict, numStims, stimScrollingArea, remove_x))
+                          command = lambda: return_to_stims_deletion(main, stimList, stimFrameList, numStims, stimScrollingArea, remove_x))
     
     pressToClose = Button(warningStims, image = return_arrow, border = 0, 
                           command = lambda: return_to_stims_cancellation(main))
@@ -406,7 +406,7 @@ def incorrect_table(main, numInvalid, return_arrow):
 """Functions which get rid of the pop-up window."""
 
 ##Generate the specified stim entries. 
-def return_to_stims_deletion(main, stimList, stimFrameDict, numStims, stimScrollingArea, remove_x):
+def return_to_stims_deletion(main, stimList, stimFrameList, numStims, stimScrollingArea, remove_x):
   """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
     
     After confirming with the user that the stimuli entries
@@ -424,7 +424,7 @@ def return_to_stims_deletion(main, stimList, stimFrameDict, numStims, stimScroll
 
   ##Clear list for specified entries.
   stimList.clear()
-  stimFrameDict.clear()
+  stimFrameList.clear()
   
   ##Make a new frame capable of scrolling to the new entry boxes specified
   ##by the user.
@@ -437,15 +437,13 @@ def return_to_stims_deletion(main, stimList, stimFrameDict, numStims, stimScroll
   for i in range(numStims):
     stimEntryFrame = Frame(stimScrollingArea[0].innerframe)
     stimEntry = Entry(stimEntryFrame)
-    stimDeleteButton = Button(stimEntryFrame, image = remove_x, border = 0, command = lambda arg=i: remove_stim(main, stimList, stimFrameDict, stimScrollingArea, arg, remove_x))
+    stimDeleteButton = Button(stimEntryFrame, image = remove_x, border = 0, 
+                              command = lambda boxIndex=i: remove_stim(main, stimList, stimFrameList, stimScrollingArea, boxIndex, remove_x))
     stimList.append(stimEntry)
-    stimFrameDict[i] = stimEntryFrame
+    stimFrameList.append(stimEntryFrame)
     stimEntry.pack(side = LEFT)
     stimDeleteButton.pack(side = RIGHT)
-    stimEntryFrame.pack(side = TOP, pady = 10)  
-
-  main.update()
-  main.deiconify()  
+    stimEntryFrame.pack(side = TOP, pady = 10)   
 
 ##Function to return to main when user wishes to cancel inputting the stimuli.   
 def return_to_stims_cancellation(main):
@@ -455,8 +453,6 @@ def return_to_stims_cancellation(main):
     the main window.
   
   """       
-  main.update()
-  main.deiconify()
   warningStims.destroy()
 
 ##Function to return to main when invalid number is enetred for the stimuli.  
@@ -467,8 +463,6 @@ def return_to_stim_num(main):
     the main window.
   
   """   
-  main.update()
-  main.deiconify()
   wrongStimNum.destroy()  
 
 ##Function to return to the stimuli entry page after the pop-up. 
@@ -479,8 +473,6 @@ def return_to_stims(main):
     the main window.
   
   """   
-  main.update()
-  main.deiconify()
   wrongStims.destroy() 
 
 ##Function to return to the behaviour entry page after the pop-up. 
@@ -491,8 +483,6 @@ def return_to_bevs_agent(main):
     the main window.
   
   """   
-  main.update()
-  main.deiconify()
   wrongAgent.destroy() 
 
 ##Function to return to the behaviour entry page after the pop-up. 
@@ -503,8 +493,6 @@ def return_to_bevs_bevs(main):
     the main window.
   
   """   
-  main.update()
-  main.deiconify()
   wrongBevs.destroy() 
   
 ##Function to return to the concrete behaviour page after the pop-up
@@ -515,8 +503,6 @@ def return_to_CBS(main):
     the main window.
   
   """     
-  main.update()
-  main.deiconify()
   wrongCBS.destroy()    
   
 ##Function to return to the tables after the pop-up. 
@@ -527,9 +513,4 @@ def return_to_tables(main):
     the main window.
   
   """   
-  main.update()
-  main.deiconify()
   invalidEntryPop.destroy()
-  
-  
-  
