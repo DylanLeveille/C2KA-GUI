@@ -84,16 +84,25 @@ def create_text(agentName, agentBehaviour, concreteBehaviours, textBoxCBS,
     ##Write text Box entry.
     textBoxList = textBoxCBS.get("1.0", END).splitlines() ##Split each line in the text box.
     
-    for word in textBoxList[0].split(): ##Write first line.
-        file.write(" %s" %(word)) 
+    firstLineFound = False ##Bollean value to check if the first line has been found.
     
-    for line in range(1, len(textBoxList)):##Iterate beginning from line 2 (index 1) to write other lines.
-        file.write("\n%s" %(' ' * whitespace)) ##Allows alignment.
-        for word in textBoxList[line].split():
-          if word == '|': ##Means we must add a whitespace.
-            file.write(" ")
+    for line in range(len(textBoxList)):##Iterate through each line.
+      if len(textBoxList[line].split()) > 0: ##The line cannot be blank.
+        
+        if firstLineFound == False: ##Special syntax on first line.
+          for word in textBoxList[line].split():
+              file.write(" %s" %(word)) ##Write the word.
+              
+          firstLineFound = True ##First line is found.    
+          
+        else: ##Not the first line.  
+          for word in textBoxList[line].split():
+            file.write("\n%s" %(' ' * whitespace)) ##Allows alignment.
             
-          file.write(" %s" %(word)) ##Write the word.
+            if word == '|': ##Means we must add a whitespace.
+                file.write(" ")
+                
+            file.write(" %s" %(word)) ##Write the word.
       
     file.write(" ]\n") ##End with a closing bracket.
     
