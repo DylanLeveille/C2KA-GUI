@@ -29,7 +29,7 @@ Please note there are known issues with OS X, Python's Tkinter module and the th
 
 No automated tests available due to the nature of this project. 
 
-However, we recommend testing out the project with various different text entries and taking advantage of the scrollbars to facilitate entries.
+However, we recommend testing out the project with various different text entries and to attempt producing the result shown in the example below.
 
 ### Example:
 
