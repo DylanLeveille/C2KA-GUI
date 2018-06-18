@@ -86,115 +86,127 @@ def next_page():
       
       ##Pack new scrolling area for the agent and its behaviours,
       ##and pack the button to add an agent.
-      agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 20))  
+      agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))  
       
       addAgent.pack(in_=buttonsFrame, side = TOP)
   
   """PAGE 2 to PAGE 3."""
-  if pageNum ==2: 
-    agentName = get_agent(agentEntry.get()) ##The agent name is extracted from the entry.
-    bevDict = build_bev_dict(agentBevEntry.get()) ##Behaviour dictionary for the agent.
+  if pageNum == 2: 
+    agentsGood = True 
+    
+    agentNames = get_agents(agentFrames['agentNames']) ##The agent names are extracted from the entries in a list.
+    allBevs = build_bev_dict(agentFrames['agentBev']) ##Creates a behaviour dictionary for each agent.
+    
+    for i in range(len(agentNames)):
+      if agentNames[i] == None or agentNames[i] == '': ##User must input one valid agent to proceed.
+        ##Change background colour of the agent entry to tomato-red to warn user.
+        agentFrames['agentNames'][i].config(bg = 'tomato')
+        ##Stay on current page by warning the user with a pop-up.
+        
+        if pageNum == 2: ##Only decrease pageNum once.
+          ##Decrease pageNum to stay on current page.
+          agentsGood = False
+          incorrect_agent(main, return_arrow)        
+          pageNum -= 1    
+       
+      else: ##Entry is good.
+        agentFrames['agentNames'][i].config(bg = 'white')
+        
+    for i in range(len(allBevs)):
+      if allBevs[i + 1] == None or len(allBevs[i + 1]) == 0: ##User must input one valid agent to proceed.
+        ##Change background colour of the agent entry to tomato-red to warn user.
+        agentFrames['agentBev'][i].config(bg = 'tomato')
+        ##Stay on current page by warning the user with a pop-up.
+        
+        if pageNum == 2: ##Only decrease pageNum once.
+          ##Decrease pageNum to stay on current page.
+          agentsGood = False
+          incorrect_bevs(main, return_arrow)        
+          pageNum -= 1    
+       
+      else: ##Entry is good.
+        agentFrames['agentBev'][i].config(bg = 'white')
    
-    if agentName == None: ##User must input one valid agent to proceed.
-      ##Change background colour of the agent entry to tomato-red to warn user.
-      agentEntry.config(bg = 'tomato')
-      ##Stay on current page by warning the user with a pop-up.
-      incorrect_agent(main, return_arrow)
-      ##Decrease pageNum to stay on current page.
-      pageNum -= 1    
-   
-    elif bevDict == None or len(bevDict) == 0: ##User must imput at least one valid behaviour
-      ##We can confirm that the agent entry is good since it passed the first if statement,
-      ##therefore we set the background of the agent entry back to white. 
-      agentEntry.config(bg = 'white')
-      ##Change background colour of behaviour to tomato-red to warn user.
-      agentBevEntry.config(bg = 'tomato')      
-      
-      ##Stay on current page by warning the user with a pop-up.
-      incorrect_bevs(main, return_arrow)
-      ##Decrease pageNum to stay on current page.
-      pageNum -= 1  
-
-    else: ##All good. 
+   # else: ##All good. 
       ##We can confirm that the agent entry and behaviour entry are good since 
       ##they passed the two first if statement,
       ##therefore we set the background back to white. 
-      agentEntry.config(bg = 'white')      
-      agentBevEntry.config(bg = 'white') 
+     #agentEntry.config(bg = 'white')      
+     # agentBevEntry.config(bg = 'white') 
       
       ##Before going to the next page, extract the full text describing 
       ##the agent behaviour (used when create the text file).
-      agentBehaviour = agentBevEntry.get()        
+      #agentBehaviour = agentBevEntry.get()        
       
       ##Set new page by unpacking entries/labels on page 2.
-      agentLabel.pack_forget()
-      agentEntry.pack_forget()
-      agentBevLabel.pack_forget()
-      agentBevEntry.pack_forget()
+     # agentLabel.pack_forget()
+      #agentEntry.pack_forget()
+     # agentBevLabel.pack_forget()
+     # agentBevEntry.pack_forget()
     
       ##Pack new labels for CBS.
-      agentCBS = Label(main, text = agentName + ' =>')
-      titleCBS.pack(side = TOP)
-      agentCBS.pack(side = TOP, anchor = W)
+     # agentCBS = Label(main, text = agentName + ' =>')
+     # titleCBS.pack(side = TOP)
+     # agentCBS.pack(side = TOP, anchor = W)
 
       ##If no concrete behaviours were yet generated for the behaviours,
       ##then we generate the rows for the CBS.
-      if generatedCBS == False:   
+     # if generatedCBS == False:   
         ##Create a vertical scrolling area for the rows.
-        concreteScrollingArea = vertSuperscroll.Scrolling_Area(main, width=1, height=1)
-        concreteScrollingArea.pack(expand=1, fill = BOTH)   
+      #  concreteScrollingArea = vertSuperscroll.Scrolling_Area(main, width=1, height=1)
+      #  concreteScrollingArea.pack(expand=1, fill = BOTH)   
         ##create a frame for the rows within the scrolling area.
-        frameCBS = Frame(concreteScrollingArea.innerframe)
-        frameCBS.pack(anchor = W)
+      #  frameCBS = Frame(concreteScrollingArea.innerframe)
+       # frameCBS.pack(anchor = W)
         
         ##Call create_CBS_entries() to create the rows in the CBS frame.
-        entriesCBS= create_CBS_entries(bevDict, frameCBS)
+       # entriesCBS= create_CBS_entries(bevDict, frameCBS)
         
         ##Save the number of CBS in the bevDict dictionary at key (0, 0) since
         ##that coordinate is unused.
-        entriesCBS[0, 0] = len(bevDict)
+       # entriesCBS[0, 0] = len(bevDict)
         
         ##Set generatedCBS to True.
-        generatedCBS = True
+       # generatedCBS = True
  
       ##If concrete behaviours page was already generated, it must be modified 
       ##if necessary to adapt to changes made on previous pages.
-      else:
+    #  else:
         ##fix_CBS() function will modify the data scructures related to CBS.
-        entriesCBS= fix_CBS(bevDict, frameCBS, entriesCBS)
+     #   entriesCBS= fix_CBS(bevDict, frameCBS, entriesCBS)
         
         ##Create a temporary scrolling area that will be later used as the main scrolling
         ##area. This is done in order to destroy the previous scrolling area
         ##at the end of the else statement once all the necessary widgets were
         ##saved from the old frame.
-        concreteScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main, width = 1, height = 1)
+      #  concreteScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main, width = 1, height = 1)
         
         ##Create a temporary frame to hold CBS (for the same reason described 
         ##in the temporary scrolling area).
-        frameCBSTemp = Frame(concreteScrollingAreaTemp.innerframe)
+       # frameCBSTemp = Frame(concreteScrollingAreaTemp.innerframe)
         
         ##calling recreate_CBS_entries() to recreate the CBS rows in the new 
         ##temporary frame.
-        entriesCBS = recreate_CBS_entries(bevDict, entriesCBS, frameCBSTemp)
+       # entriesCBS = recreate_CBS_entries(bevDict, entriesCBS, frameCBSTemp)
         
         ##Destroy the old scrolling area and the old frame for the CBS.
-        concreteScrollingArea.destroy()
-        frameCBS.destroy()        
+       # concreteScrollingArea.destroy()
+       # frameCBS.destroy()        
         
         ##Assing the old scrolling area and the old frame to the new ones.
-        concreteScrollingArea = concreteScrollingAreaTemp
-        frameCBS = frameCBSTemp         
+       # concreteScrollingArea = concreteScrollingAreaTemp
+       # frameCBS = frameCBSTemp         
         
-        if whichRadio.get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
+       # if whichRadio.get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
           ##Pack the new scrolling area and the new frame for the CBS.
-          concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
-          frameCBSTemp.pack(anchor =  W)
+         # concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
+         # frameCBSTemp.pack(anchor =  W)
         
-        else: ##Repack the text box. 
-          textBoxCBSFrame.pack()
+        #else: ##Repack the text box. 
+        #  textBoxCBSFrame.pack()
         
       ##Pack frame for the radio Buttons
-      formatCBS.pack(side = BOTTOM, anchor = S, expand = True)      
+     # formatCBS.pack(side = BOTTOM, anchor = S, expand = True)      
   
   """PAGE 3 to PAGE 4."""
   if pageNum == 3:
@@ -387,11 +399,9 @@ def prev_page():
     ##Repack the scrolling area for the stimuli.
     stimScrollingArea[0].pack(expand=1, fill=BOTH)     
    
-    ##Set new page by unpacking agent related labels/entries.
-    agentLabel.pack_forget()
-    agentEntry.pack_forget()
-    agentBevLabel.pack_forget()
-    agentBevEntry.pack_forget()
+    ##Set new page by unpacking addAgent button and the scrolling area for the agents.
+    agentScrollingArea[0].pack_forget()
+    addAgent.pack_forget()
     
     ##Unpack the previous button since it it not necessary on page 1.
     prevButton.pack_forget()
@@ -553,7 +563,6 @@ if __name__ == '__main__': ##only start program when running gui.py
   enterStimLabel = Label(main, text = 'Enter # of stimuli : ')
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
-
   enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow))
   enterStimButton.pack(in_=stimFrame, side = RIGHT, anchor = N)
   
