@@ -48,8 +48,7 @@ def build_stim_dict(stimList):
       ##Return if there is an invalid symbol inside the word.
       for character in stimList[i].get():
         if character.upper() not in symbolsList:
-          if isBad == False:
-            isBad = True
+          isBad = True
   
     ##Background configured to tomato-red since it is a bad entry.
     if isBad:
@@ -73,67 +72,93 @@ def build_stim_dict(stimList):
     return hist
 
 ##Function to extract the agent name.
-def get_agent(agentEntry):
-  """ (str) -> (str)
+def get_agents(agentNames):
+  """ (list) -> (list)
     
-    Takes the agent entry and extracts the agent name out of
-    it. The function also checks if the entry is invalid.
+    Takes the agent entries and extracts the agent names out of
+    them. The function also checks if an entry is invalid.
   
   """  
-  ##Test to see if more than one word in the entry box.
-  if len(agentEntry.split()) > 1:
-    return None
-  ##Test to see if it is a number only.
-  try:
-      float(agentEntry)
-      return None
-  ##If not only a number, check to see if characters are valid.  
-  except ValueError:   
-    ##Return if there is an invalid symbol inside the word.
-    for character in agentEntry:
-      if character.upper() not in symbolsList:
-        return None
-    ##Return agent without any whitespace.
-    if agentEntry != ' ' * len(agentEntry):
-      return agentEntry.replace(' ', '')
-
-def build_bev_dict(line):
-  """ (str) -> (dict)
+  agentNames = agentNames.copy() ##Make a copy to prevent modifying the original list (due to it being passed by reference).
+  
+  for i in range(len(agentNames)):
+    agentEntry = agentNames[i].get() ##Get the entry.
+    badEntry = False ##Assume it is not a bad entry.
     
-    Takes the agent behaviour entry, and extracts all
-    behaviours into a dictionary. The function also validates
-    the entry.
-  
-  """  
-  hist = {}
-  i = 1 ##Index.
-  
-  ##Split each line into a list of words.
-  ##The split method removes the whitespace from around each word.
-  wordList = line.split()
+    ##Test to see if more than one word in the entry box.
+    if len(agentEntry.split()) > 1:
+      badEntry = True
 
-  ##For each word, remove any punctuation marks immediately
-  ##before and after the word.
-  for word in wordList:
-    word = word.upper().strip(string.punctuation)
     ##Test to see if it is a number only.
     try:
-        float(word)
-        return None
+        float(agentEntry)
+        
+        if badEntry == False:
+          badEntry = True
+
     ##If not only a number, check to see if characters are valid.  
     except ValueError:   
       ##Return if there is an invalid symbol inside the word.
-      for character in word:
-        if character not in symbolsList:
-          return None
+      for character in agentEntry:
+        if character.upper() not in symbolsList:
+          badEntry = True
+          
+      ##Save agent without any whitespace.
+      agentNames[i] = agentEntry.replace(' ', '')
+    
+    if badEntry:
+      agentNames[i] = None
+  
+  return agentNames    
+
+def build_bev_dict(agentBevs):
+  """ (list) -> (dict)
+    
+    Takes the agent behaviour entries, and extracts all
+    behaviours into a dictionary for each agent. The function also validates
+    the entry.
+  
+  """  
+  allBevs = {}
+  
+  for i in range(len(agentBevs)):
+    isBad = False ##Assume entry is good.
+    bevEntry = agentBevs[i]
+    line = bevEntry.get() ##Get the line in each entry.
+    
+    hist = {}
+    index = 1 ##Index.
+    
+    ##Split each line into a list of words.
+    ##The split method removes the whitespace from around each word.
+    wordList = line.split()
+  
+    ##For each word, remove any punctuation marks immediately
+    ##before and after the word.
+    for word in wordList:
+      word = word.upper().strip(string.punctuation)
+      ##Test to see if it is a number only.
+      try:
+        float(word)
+        isBad = True
+      ##If not only a number, check to see if characters are valid.  
+      except ValueError:   
+        ##Return if there is an invalid symbol inside the word.
+        for character in word:
+          if character not in symbolsList:
+            isBad = True
+        
+        ##Make sure the entry isn't already in the dictionary.
+        if word not in hist.values():
+          hist[index] = word 
+          index += 1
+    
+    if isBad:
+      allBevs[i + 1] = None
+    else: ##Only keep dictionary if good.
+      allBevs[i + 1] = hist
       
-      ##Make sure the entry isn't the enmpty string.
-      if word not in hist.values() and word != '':
-        hist[i] = word 
-        i += 1
-      
-  ##Will only return a histogram if tests are passed.    
-  return hist  
+  return allBevs  
 
 ##Function to correctly extract the agent behaviour.
 def extract_full_behaviour(agentBehaviour):
