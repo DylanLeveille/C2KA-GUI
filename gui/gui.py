@@ -86,7 +86,7 @@ def next_page():
       
       ##Pack new scrolling area for the agent and its behaviours,
       ##and pack the button to add an agent.
-      agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))  
+      agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 20))  
       
       addAgent.pack(in_=buttonsFrame, side = TOP)
   
@@ -387,9 +387,11 @@ def prev_page():
     ##Repack the scrolling area for the stimuli.
     stimScrollingArea[0].pack(expand=1, fill=BOTH)     
    
-    ##Set new page by unpacking addAgent button and the scrolling area for the agents.
-    agentScrollingArea[0].pack_forget()
-    addAgent.pack_forget()
+    ##Set new page by unpacking agent related labels/entries.
+    agentLabel.pack_forget()
+    agentEntry.pack_forget()
+    agentBevLabel.pack_forget()
+    agentBevEntry.pack_forget()
     
     ##Unpack the previous button since it it not necessary on page 1.
     prevButton.pack_forget()
@@ -551,6 +553,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   enterStimLabel = Label(main, text = 'Enter # of stimuli : ')
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
+
   enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow))
   enterStimButton.pack(in_=stimFrame, side = RIGHT, anchor = N)
   
