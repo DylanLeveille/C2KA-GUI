@@ -351,7 +351,7 @@ def next_page():
       textEntry.config(state = 'normal')
       ##Remove the previous text to insert new one.
       textEntry.delete(1.0, END)
-      textEntry.insert(INSERT, open("agentspec.txt", "r").read())
+      textEntry.insert(INSERT, open("agent_text_backup./agentspec.txt", "r").read())
       ##Configure the text entry so that it cannot be modified.
       textEntry.config(state="disabled")
       ##Pack the text entry frame to give a preview to the user.
@@ -519,12 +519,12 @@ if __name__ == '__main__': ##only start program when running gui.py
   stimFrame.pack(side = BOTTOM, anchor = S, expand = True, pady = 50)
   
   """Pictures and Fonts used for Buttons and Entries"""
-  check_mark = PhotoImage(file = "check_mark.png")
-  right_arrow = PhotoImage(file="right_arrow.png")
-  left_arrow = PhotoImage(file="left_arrow.png")
-  return_arrow = PhotoImage(file = "return_arrow.png")
-  remove_x = PhotoImage(file = "remove_x.png")
-  save_icon = PhotoImage(file = "save_icon.png")
+  check_mark = PhotoImage(file = "images./check_mark.png")
+  right_arrow = PhotoImage(file="images./right_arrow.png")
+  left_arrow = PhotoImage(file="images./left_arrow.png")
+  return_arrow = PhotoImage(file = "images./return_arrow.png")
+  remove_x = PhotoImage(file = "images./remove_x.png")
+  save_icon = PhotoImage(file = "images./save_icon.png")
   entry_font = ('Comic Sans MS', 11)
   
   """Defining Buttons available on each page.""" 

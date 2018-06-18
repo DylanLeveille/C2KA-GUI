@@ -1,0 +1,15 @@
+begin AGENT where
+    P := D
+end
+
+begin NEXT_BEHAVIOUR where
+    (a, D) = D
+end
+
+begin NEXT_STIMULUS where
+    (a, D) = N
+end
+
+begin CONCRETE BEHAVIOUR where
+    P => [ fgj ]
+end

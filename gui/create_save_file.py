@@ -15,7 +15,7 @@ def create_save_file():
   if pathName!= '': ##PathName is '' when user closes file explorer (no selection).
       
       dst = open(pathName, "w+")
-      src = open("agentspec.txt", "r")
+      src = open("agent_text_backup./agentspec.txt", "r")
       dst.write(src.read()) ##Copies text from the source to the destination.
       
       ##Close each file.
