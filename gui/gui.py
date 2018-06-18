@@ -81,14 +81,14 @@ def next_page():
       addStim.pack_forget()
       stimFrame.pack_forget()
       
-      ##Pack new buttons and configure an appropriate size.
+      ##Pack the new previous button.
       prevButton.pack(in_=buttonsFrame, side = LEFT, anchor = S)
       
-      ##Pack new labels/entries for the agent and its behaviours.
-      agentLabel.pack(side = TOP, anchor = W)
-      agentEntry.pack(side = TOP, anchor = W)
-      agentBevLabel.pack(side = TOP, anchor = W)
-      agentBevEntry.pack(side = TOP, anchor = W)   
+      ##Pack new scrolling area for the agent and its behaviours,
+      ##and pack the button to add an agent.
+      agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 20))  
+      
+      addAgent.pack(in_=buttonsFrame, side = TOP)
   
   """PAGE 2 to PAGE 3."""
   if pageNum ==2: 
@@ -500,8 +500,12 @@ if __name__ == '__main__': ##only start program when running gui.py
   """Code to load initial data/widgets in the main window.""" 
   ##Initializing the page number variable and the stimuli list.
   stimList = []
-  stimFrameList = []
   pageNum = 1
+  
+  ##Initializing the lists to hold the data for each agent.
+  agentFrames = {} ##Stores the entry boxes for each agent name and the entry boxes for each agent behaviour.
+  agentFrames['agentNames'] = []
+  agentFrames['agentBev'] = []
   
   ##No concrete behaviours generated yet.
   generatedCBS = False
@@ -526,11 +530,11 @@ if __name__ == '__main__': ##only start program when running gui.py
   remove_x = PhotoImage(file = "images./remove_x.png")
   save_icon = PhotoImage(file = "images./save_icon.png")
   entry_font = ('Comic Sans MS', 11)
-  
+
   """Defining Buttons available on each page.""" 
   ##Next Button (will not be available on page 5).
   nextButton = Button(main, command = next_page, image = right_arrow, width = "25", height = "25", border = 0)
-  nextButton.pack(in_=buttonsFrame, side = RIGHT, anchor = SE)
+  nextButton.pack(in_=buttonsFrame, side = RIGHT, anchor = E)
 
   ##Prev Button (will not be availible on page 1).
   prevButton = Button(main, command = prev_page, image = left_arrow, width = "25", height = "25", border = 0)
@@ -550,7 +554,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
 
-  enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, stimFrameList, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow))
+  enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow))
   enterStimButton.pack(in_=stimFrame, side = RIGHT, anchor = N)
   
   enterStimBox = ttk.Entry(main, font = entry_font)
@@ -558,19 +562,21 @@ if __name__ == '__main__': ##only start program when running gui.py
   
   ##Add stimulus entry Button.
   addStim = Button(main, text = 'Add new stimulus', 
-                   command = lambda: add_stim(main, stimList, stimFrameList, stimScrollingArea, remove_x, return_arrow), 
+                   command = lambda: add_stim(main, stimList, stimScrollingArea, remove_x), 
                    width = 23)
   
   addStim.pack(in_=buttonsFrame, side = LEFT)
   
   """Labels and Entries exclusive for page 2.""" 
-  ##Agent Name Label and Entry.
-  agentLabel = Label(main, text = 'Enter Agent Name:')
-  agentEntry = Entry(main, width = 50)
+  ##The scrolling area is at index zero of the bevScrollingArea list, this way, 
+  ##the scrolling area can be passed by reference and be modified by other functions.
+  agentScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
   
-  ##Agent Behaviour Label and Entry.
-  agentBevLabel = Label(main, text = 'Enter Agent Behaviour:')
-  agentBevEntry = Entry(main, width = 50)
+  ##Add agent entry Button.
+  addAgent = Button(main, text = 'Add new agent', 
+                   command = lambda: add_agent(main, agentFrames, agentScrollingArea, remove_x), 
+                   width = 23)  
+
   
   """Labels and Entries exclusive for page 3."""
   ##Title for the concrete behaviours.

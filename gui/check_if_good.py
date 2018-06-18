@@ -5,7 +5,7 @@ from entry_mods import remove_stim ##Import the remove_stim() function to bind t
 
 """Functions which validate entries/create pop-ups."""
 ##Function to warn user that current stims will be deleted.
-def specify_stim(main, stimList, stimFrameList, numStims, stimScrollingArea, remove_x, return_arrow):
+def specify_stim(main, stimList, numStims, stimScrollingArea, remove_x, return_arrow):
   """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
     
     Pop-up when the user specifies a number of
@@ -51,7 +51,7 @@ def specify_stim(main, stimList, stimFrameList, numStims, stimScrollingArea, rem
     Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
     
     pressToContinue = Button(warningStims, text = "Continue", 
-                          command = lambda: return_to_stims_deletion(main, stimList, stimFrameList, numStims, stimScrollingArea, remove_x))
+                          command = lambda: return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove_x))
     
     pressToClose = Button(warningStims, image = return_arrow, border = 0, 
                           command = lambda: return_to_stims_cancellation(main))
@@ -412,7 +412,7 @@ def incorrect_table(main, numInvalid, return_arrow):
 """Functions which get rid of the pop-up window."""
 
 ##Generate the specified stim entries. 
-def return_to_stims_deletion(main, stimList, stimFrameList, numStims, stimScrollingArea, remove_x):
+def return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove_x):
   """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
     
     After confirming with the user that the stimuli entries
@@ -430,7 +430,6 @@ def return_to_stims_deletion(main, stimList, stimFrameList, numStims, stimScroll
 
   ##Clear list for specified entries.
   stimList.clear()
-  stimFrameList.clear()
   
   ##Make a new frame capable of scrolling to the new entry boxes specified
   ##by the user.
@@ -444,9 +443,8 @@ def return_to_stims_deletion(main, stimList, stimFrameList, numStims, stimScroll
     stimEntryFrame = Frame(stimScrollingArea[0].innerframe)
     stimEntry = Entry(stimEntryFrame)
     stimDeleteButton = Button(stimEntryFrame, image = remove_x, border = 0, 
-                              command = lambda boxIndex=i: remove_stim(main, stimList, stimFrameList, stimScrollingArea, boxIndex, remove_x))
+                              command = lambda boxIndex=i: remove_stim(main, stimList, stimScrollingArea, boxIndex, remove_x))
     stimList.append(stimEntry)
-    stimFrameList.append(stimEntryFrame)
     stimEntry.pack(side = LEFT)
     stimDeleteButton.pack(side = RIGHT)
     stimEntryFrame.pack(side = TOP, pady = 10)   
