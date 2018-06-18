@@ -32,7 +32,7 @@ def add_stim(main, stimList, stimFrameList, stimScrollingArea, remove_x, return_
     ##Insert frame/widgets in their respective data structures.
     stimEntry.insert(0, stimList[i].get()) ##Get previous text.    
     stimList[i] = stimEntry
-    stimFrameList[i] = stimEntryFrame
+    #stimFrameList[i] = stimEntryFrame
     
     ##Pack new frame/widgets.
     stimEntryFrame.pack(side = TOP, pady = 10)
@@ -54,7 +54,7 @@ def add_stim(main, stimList, stimFrameList, stimScrollingArea, remove_x, return_
   
   ##Add the new entry and the frame to their respective list.
   stimList.append(stimEntry)
-  stimFrameList.append(stimEntryFrame)  
+  #stimFrameList.append(stimEntryFrame)  
   
   ##Destroy old frame.
   stimScrollingArea[0].destroy()
@@ -81,7 +81,7 @@ def remove_stim(main, stimList, stimFrameList, stimScrollingArea, boxIndex, remo
    
   ##Delete entry at specified index in the frame lsit and stimuli list. 
   del stimList[boxIndex]
-  del stimFrameList[boxIndex]           
+  #del stimFrameList[boxIndex]           
   
   ##Generate the boxes.       
   for i in range(len(stimList)):
@@ -96,7 +96,7 @@ def remove_stim(main, stimList, stimFrameList, stimScrollingArea, boxIndex, remo
     ##Insert frame/widgets in their respective data structures.
     stimEntry.insert(0, stimList[i].get()) ##Get previous text.    
     stimList[i] = stimEntry
-    stimFrameList[i] = stimEntryFrame
+    #stimFrameList[i] = stimEntryFrame
     
     ##Pack new frame/widgets.
     stimEntryFrame.pack(side = TOP, pady = 10)
