@@ -528,7 +528,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   entry_font = ('Comic Sans MS', 11)
   
   """Defining Buttons available on each page.""" 
-  ##Next Button (will not be availible on page 5).
+  ##Next Button (will not be available on page 5).
   nextButton = Button(main, command = next_page, image = right_arrow, width = "25", height = "25", border = 0)
   nextButton.pack(in_=buttonsFrame, side = RIGHT, anchor = SE)
 
