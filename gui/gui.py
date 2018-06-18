@@ -86,7 +86,7 @@ def next_page():
       
       ##Pack new scrolling area for the agent and its behaviours,
       ##and pack the button to add an agent.
-      agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 20))  
+      agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))  
       
       addAgent.pack(in_=buttonsFrame, side = TOP)
   

@@ -115,7 +115,7 @@ def add_agent(main, agentFrames, agentScrollingArea, remove_x):
   """ 
   ##Make a new frame capable of scrolling to the new agent frames.
   agentScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
-  agentScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 20))
+  agentScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 80))
   
   ##Make a new title for the frame.
   agentTitle = Label(agentScrollingAreaTemp.innerframe, text='Please Enter The Agents')
@@ -190,7 +190,7 @@ def remove_agent(main, agentFrames, agentScrollingArea, boxIndex, remove_x):
   """  
   ##Make a new frame capable of scrolling to the new entry box.
   agentScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
-  agentScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 20))
+  agentScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 80))
   
   ##Make a new title for the frame.
   agentTitle = Label(agentScrollingAreaTemp.innerframe, text='Please Enter The Agents')
