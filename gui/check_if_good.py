@@ -313,7 +313,7 @@ def check_if_good_CBS(main, entriesCBS, whichRadio, textBoxCBS):
     
     ##Check to see if the number of 'if' equals to the number of 'fi' and check if there 
     ##are any 'if' as well.  
-    if textBoxWords.count('if') != textBoxWords.count('fi') or textBoxWords.count('if') == 0:   
+    if textBoxWords.count('if') != textBoxWords.count('fi'):   
       flagCBS = False
       
   ##If there are no invalid entries, return True; else return False  
