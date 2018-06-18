@@ -364,6 +364,8 @@ Do note that there is no guarantee that the program won't crash if uncommon char
 
 ● In the circle table, entries don't need to be capitalized (the program will do this automatically once you submit the data).
 
+● A backup copy of the agent specification can be found in the agent_text_backup folder in the main program's folder (next to the executable) in case the user forgets to save the file.
+
 ## Built With
 
 * [Python](https://www.python.org/) - The programming language used.
