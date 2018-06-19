@@ -8,40 +8,29 @@ from CBS_mods import *
 from CBS_radio import *
 
 
-def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS):
+def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes):
     editScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
     editScrollingAreaTemp.pack(expand = 1, fill=BOTH)
-    global allFrames
-    global allButtons
-    allFrames = {} ##Dictionary for all the pop-ups
-    allButtons = {} ##Dictionary for all the edit buttons
     
     for i in range(len(agentNames)):
         editFrame = Frame(editScrollingAreaTemp.innerframe)
         editLabel = Label(editFrame, text = agentNames[i])
         #completeLabel = Label(editFrame, image = complete_icon)
         editButton = Button(editFrame, text = 'Edit', border = 1, 
-                                  command = lambda boxIndex=i: edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, False, False, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS)) #generated booleans will always be false first time...
+                                  command = lambda boxIndex=i: edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, False, False, allCircleTableBoxes, allLambdaTableBoxes)) #generated booleans will always be false first time...
 
-        allButtons[i] = editButton
         editLabel.pack(side = LEFT, anchor = N)
         editButton.pack(anchor = N)
         #completeLabel.pack(side = RIGHT, anchor = N)
         editFrame.pack(anchor = W)
 
 
-def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generatedTable, generatedCBS, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS):
-    global editAgent
+def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generatedTable, generatedCBS, allCircleTableBoxes, allLambdaTableBoxes):
     editAgent = Toplevel() ##Creating new window to edit agent specs
     editAgent.geometry('500x500')
     
-    
-    allFrames[boxIndex] = editAgent ##Store specific frame according to index
-    
-    allButtons[boxIndex].config(state = DISABLED)
-    
     editButtonsFrame = Frame(editAgent) ##Making the save and cancel buttons
-    saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(main, boxIndex))
+    saveButton = Button(editButtonsFrame, text = "Done", command = close_edit)
     saveButton.pack(side = RIGHT, anchor = S)
     cancelButton = Button(editButtonsFrame, text = "Clear")
     cancelButton.pack(side = LEFT, anchor = S)
@@ -191,11 +180,11 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
         frameCBS.pack(anchor = W)
       
         ##Call create_CBS_entries() to create the rows in the CBS frame.
-        allEntriesCBS[boxIndex + 1]= create_CBS_entries(allBevDict[boxIndex + 1], frameCBS)
+        entriesCBS= create_CBS_entries(allBevDict[boxIndex + 1], frameCBS)
       
         ##Save the number of CBS in the bevDict dictionary at key (0, 0) since
         ##that coordinate is unused.
-        allEntriesCBS[boxIndex + 1][0, 0] = len(allBevDict[boxIndex + 1])
+        entriesCBS[0, 0] = len(allBevDict[boxIndex + 1])
       
         ##Set generatedCBS to True.
         generatedCBS = True
@@ -204,7 +193,7 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
         ##if necessary to adapt to changes made on previous pages.
     else:
         ##fix_CBS() function will modify the data scructures related to CBS.
-        allEntriesCBS[boxIndex + 1]= fix_CBS(allBevDict[boxIndex + 1], frameCBS, allEntriesCBS[boxIndex + 1])
+        entriesCBS= fix_CBS(allBevDict[boxIndex + 1], frameCBS, entriesCBS)
       
         ##Create a temporary scrolling area that will be later used as the main scrolling
         ##area. This is done in order to destroy the previous scrolling area
@@ -218,7 +207,7 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
       
         ##calling recreate_CBS_entries() to recreate the CBS rows in the new 
         ##temporary frame.
-        allEntriesCBS[boxIndex + 1] = recreate_CBS_entries(allBevDict[boxIndex + 1], allEntriesCBS[boxIndex + 1], frameCBSTemp)
+        entriesCBS = recreate_CBS_entries(allBevDict[boxIndex + 1], entriesCBS, frameCBSTemp)
       
         ##Destroy the old scrolling area and the old frame for the CBS.
         concreteScrollingArea.destroy()
@@ -239,13 +228,10 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
     ##Pack frame for the radio Buttons
     formatCBS.pack(side = BOTTOM, anchor = S, expand = True)
     
-def close_edit(main, boxIndex):
+def close_edit(main):
     """ (tkinter.Tk) -> (none)
       
       Destroys the editAgent window 
     
     """     
-    allFrames[boxIndex].destroy()
-    del allFrames[boxIndex]
-    
-    allButtons[boxIndex].config(state = NORMAL)
+    editAgent.destroy()     

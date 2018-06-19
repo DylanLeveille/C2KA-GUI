@@ -1,19 +1,19 @@
 begin AGENT where
-    p := K
+    k := J
 end
 
 begin NEXT_BEHAVIOUR where
-    (i, K) = K
-    (j, K) = K
-    (k, K) = K
+    (i, J) = J
+    (j, J) = J
+    (k, J) = J
 end
 
 begin NEXT_STIMULUS where
-    (i, K) = N
-    (j, K) = N
-    (k, K) = N
+    (i, J) = i
+    (j, J) = i
+    (k, J) = i
 end
 
 begin CONCRETE BEHAVIOUR where
-    p => [ iuk ]
+    k => [ j ]
 end

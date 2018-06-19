@@ -9,6 +9,7 @@ from check_if_good import * ##Functions which validate most of the data in the p
 from entry_mods import * ##Functions which modify entry boxes.
 from get_word_list import * ##Functions which parse an entry box and returns lists of words.
 from create_agent_page import *
+from set_data import *
 from CBS_radio import * ##Functions that set the CBS page depending on which radio button is clicked.
 from CBS_mods import * ##Functions which modify the concrete behaviours page.
 from create_table import * ##Functions which create/recreate the tables.
@@ -51,14 +52,14 @@ def next_page():
   global allCircleTableBoxes ##Dict to hold entry boxes and labels of circle table for all agents.
   global allLambdaTableBoxes ##Dict to hold entry boxes and labels of lambda table for all agents.
   
-  global circleTableValues ##Dict to hold values from circle table.
-  global lambdaTableValues ##Dict to hold values from lambda table.   
+ # global circleTableValues ##Dict to hold values from circle table.   #Might not need this...
+ # global lambdaTableValues ##Dict to hold values from lambda table.   #Might not need this...
   
   global circleScrollingArea ##Scrolling area for circle table.
   global lambdaScrollingArea ##Scrolling area for lambda table.
   
-  global circleGridFrame ##Global frame for the circle table.
-  global lambdaGridFrame ##Global frame for the lambda table.
+  global allCircleGridFrame ##Global frame for the circle table.
+  global allLambdaGridFrame ##Global frame for the lambda table.
   
   global moreThanOneAgent
   global generatedTable ##Bool variable to check if tables were generated.
@@ -246,109 +247,36 @@ def next_page():
       ##neutral stimulus.
       fillN.pack(in_=buttonsFrame, side = RIGHT)   
      
-      ##If no tables were yet generated, we create a new one.
-      if generatedTable == False:
-        ##Creating ccrolling areas and frames for both the circle and lambda tables.
-        ##Also creating the labels in the upper corner of each table.
-        circleScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
-        circleScrollingArea.pack(expand=1, fill = BOTH)   
-  
-      
-        circleGridFrame = Frame(circleScrollingArea.innerframe) 
-        circleTableLabel = Label(circleGridFrame, text = 'o')   
-        circleTableLabel.grid(row = 0, column = 0)
-      
-        lambdaScrollingArea = superscroll.Scrolling_Area(main, width=1, height=1)
-        lambdaScrollingArea.pack(expand=1, fill = BOTH)      
-      
-        lambdaGridFrame = Frame(lambdaScrollingArea.innerframe) 
-        lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.  
-        lambdaTableLabel.grid(row = 0, column = 0)   
-      
-        ##Create the data structures to hold the table entries and
-        ##create the boxes within the frames.
-        circleTableBoxes, lambdaTableBoxes = create_table(allBevDict[1], stimDict,
-                                                        circleGridFrame, 
-                                                        lambdaGridFrame)
-        ##pack the new table frames.   
-        circleGridFrame.pack(side=TOP, anchor = NW) 
-        lambdaGridFrame.pack(side=TOP, anchor = SW) 
-      
-        generatedTable = True ##Table is now generated.
-  
-      
-        ##Keep track of table's current lenght and width
-        ##in one of the dictionaries at coordinate (0, 0),
-        ##since that key is not in use.
-        circleTableBoxes[0, 0] = len(allBevDict[1]), len(stimDict)
-      
-      else: ##Table was already generated.
-        ##Calling fix_grids() to check if modifications are necessary to the grids.
-        fix_grids(allBevDict[1], stimDict, circleTableBoxes, lambdaTableBoxes,
-                  circleGridFrame, lambdaGridFrame) 
-      
-        ##Recreating the table by using a technique similar to the one described
-        ##on the CBS page (see PAGE 2 to PAGE 3).
-        circleScrollingAreaTemp = superscroll.Scrolling_Area(main, width=1, height=1)
-        circleScrollingAreaTemp.pack(expand=1, fill = BOTH)   
-      
-        circleGridFrameTemp = Frame(circleScrollingAreaTemp.innerframe) 
-        circleTableLabel = Label(circleGridFrameTemp, text = 'o')   
-        circleTableLabel.grid(row = 0, column = 0)
-      
-        lambdaScrollingAreaTemp = superscroll.Scrolling_Area(main, width=1, height=1)
-        lambdaScrollingAreaTemp.pack(expand=1, fill = BOTH)      
-      
-        lambdaGridFrameTemp = Frame(lambdaScrollingAreaTemp.innerframe) 
-        lambdaTableLabel = Label(lambdaGridFrameTemp, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.     
-        lambdaTableLabel.grid(row = 0, column = 0) 
-        
-        ##Recreate the tables with the new data structures, and assing the data scructures
-        ##to the newly created entry boxes.
-        circleTableBoxes, lambdaTableBoxes = recreate_table(allBevDict[1], stimDict, circleTableBoxes, 
-                                                            lambdaTableBoxes, circleGridFrameTemp, 
-                                                            lambdaGridFrameTemp)     
-        ##Destroy old scrolling areas and frames.
-        circleScrollingArea.destroy()
-        circleGridFrame.destroy()
-        lambdaScrollingArea.destroy()
-        lambdaGridFrame.destroy()
-             
-        ##Pack the new scrolling areas and frames.
-        circleScrollingAreaTemp.pack(side=TOP, anchor = NW)
-        circleGridFrameTemp.pack(side=TOP, anchor = NW)
-        lambdaScrollingAreaTemp.pack(side=TOP, anchor = SW)
-        lambdaGridFrameTemp.pack(side=TOP, anchor = SW)
-        
-        ##Assign the old scrolling areas and frames to the new ones.
-        circleScrollingArea = circleScrollingAreaTemp
-        circleGridFrame = circleGridFrameTemp
-        lambdaScrollingArea = lambdaScrollingAreaTemp
-        lambdaGridFrame = lambdaGridFrameTemp        
-      
+      allCircleTableBoxes, allLambdaTableBoxes, circleScrollingArea, lambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame = set_table_data(main, allBevDict, stimDict, allCircleTableBoxes, 
+                                                                                                        allLambdaTableBoxes, circleScrollingArea, 
+                                                                                                        lambdaScrollingArea, allCircleGridFrame, 
+                                                                                                        allLambdaGridFrame, generatedTable,  0)
+      generatedTable = True
+     
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
     ##Create dictionaries to hold the values from tables.
-    circleTableValues = get_empty_dict()
-    lambdaTableValues = get_empty_dict()
+    allCircleTableValues = get_empty_dict()
+    allLambdaTableValues = get_empty_dict()
    
-    ##Extract circle table values and lambda table values.
-    circleTableValues, lambdaTableValues = get_table_values(circleTableBoxes, 
-                                                         lambdaTableBoxes) 
-   
-    ##Calling check_if_good() to assure all the inputs are valid.
-    isGood, numInvalid = check_if_good_table(allBevDict[1], stimDict, circleTableBoxes, 
-                                       lambdaTableBoxes, circleTableValues, 
-                                       lambdaTableValues)
+    ##Extract circle table values and lambda table values for each agent.
+    for i in range(len(agentNames)):
+      allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
+                                                                                  allLambdaTableBoxes[i + 1]) 
+     
+      ##Calling check_if_good() to assure all the inputs are valid.
+      isGood, numInvalid = check_if_good_table(allBevDict[i + 1], stimDict, allCircleTableBoxes[i + 1], 
+                                         allLambdaTableBoxes[i + 1], allCircleTableValues[i + 1], 
+                                         allLambdaTableValues[i + 1])
     ##If the table is good, proceed.
     if isGood:
       ##Forget table scrolling areas.
-      circleScrollingArea.pack_forget()
-      lambdaScrollingArea.pack_forget()
+      circleScrollingArea[0].pack_forget()
+      lambdaScrollingArea[0].pack_forget()
     
       ##Forget table frames.
-      circleGridFrame.pack_forget()
-      lambdaGridFrame.pack_forget()
+      allCircleGridFrame[0].pack_forget()
+      allLambdaGridFrame[0].pack_forget()
     
       ##Forget next button, fillBev button and fillN button, since they are not
       ##needed on the last page of the program.
@@ -358,7 +286,7 @@ def next_page():
     
       ##Call create_text() to create the agentspec.txt file.
       create_text(agentNames[0], agentBehaviours[1], concreteBehaviours, textBoxCBS, 
-                  circleTableValues, lambdaTableValues, stimDict, allBevDict[1], whichRadio)
+                  allCircleTableValues[1], allLambdaTableValues[1], stimDict, allBevDict[1], whichRadio)
       
       ##Configure the text entry to be modifiable.
       textEntry.config(state = 'normal')
@@ -516,7 +444,13 @@ if __name__ == '__main__': ##only start program when running gui.py
   agentFrames['agentNames'] = []
   agentFrames['agentBev'] = []
   
-  ##Dictionary to hold all circle table boxes and lambda table boxes
+  circleScrollingArea, lambdaScrollingArea = [], [] ##Bind these to empty lists to allow them to be passed as arguments.
+  
+  ##Dictionaries to hold all circle grid frames and lambda grid frames
+  allCircleGridFrame = []
+  allLambdaGridFrame = []
+  
+  ##Dictionaries to hold all circle table boxes and lambda table boxes
   allCircleTableBoxes = {}
   allLambdaTableBoxes = {}
   
