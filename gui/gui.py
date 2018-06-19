@@ -48,8 +48,8 @@ def next_page():
   global entriesCBS ##Dict to hold concrete behaviour labels and entries.
   global concreteBehaviours ##Dict to hold parsed concrete behaviours
   
-  global circleTableBoxes ##Dict to hold entry boxes and labels of circle table.
-  global lambdaTableBoxes ##Dict to hold entry boxes and labels of lambda table.
+  global allCircleTableBoxes ##Dict to hold entry boxes and labels of circle table for all agents.
+  global allLambdaTableBoxes ##Dict to hold entry boxes and labels of lambda table for all agents.
   
   global circleTableValues ##Dict to hold values from circle table.
   global lambdaTableValues ##Dict to hold values from lambda table.   
@@ -515,6 +515,10 @@ if __name__ == '__main__': ##only start program when running gui.py
   agentFrames = {} ##Stores the entry boxes for each agent name and the entry boxes for each agent behaviour.
   agentFrames['agentNames'] = []
   agentFrames['agentBev'] = []
+  
+  ##Dictionary to hold all circle table boxes and lambda table boxes
+  allCircleTableBoxes = {}
+  allLambdaTableBoxes = {}
   
   ##Assuming there will be only one agent.
   moreThanOneAgent = False
