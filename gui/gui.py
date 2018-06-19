@@ -140,7 +140,7 @@ def next_page():
       
       if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a diffrent layout.
         moreThanOneAgent = True
-        create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames)
+        create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes)
         pageNum += 1 ##Add one to pageNum because we are skipping page 4.
       
       else: ##Only one agent.            
