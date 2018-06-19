@@ -46,7 +46,9 @@ def next_page():
   
   global concreteScrollingArea ##Scrolling area for the concrete behaviours (CBS).
   
-  global entriesCBS ##Dict to hold concrete behaviour labels and entries.
+  global allEntriesCBS ##Dict to hold concrete behaviour labels and entries.
+  global allRadioButtons
+  global allTextCBS
   global concreteBehaviours ##Dict to hold parsed concrete behaviours
   
   global allCircleTableBoxes ##Dict to hold entry boxes and labels of circle table for all agents.
@@ -99,7 +101,7 @@ def next_page():
     
     agentNames = get_agents(agentFrames['agentNames']) ##The agent names are extracted from the entries in a list.
     allBevDict = build_bev_dict(agentFrames['agentBev']) ##Creates a behaviour dictionary for each agent.
-    
+    allEntriesCBS = {}
     for i in range(len(agentNames)):
       if agentNames[i] == None or agentNames[i] == '': ##User must input one valid agent to proceed.
         ##Change background colour of the agent entry to tomato-red to warn user.
@@ -141,7 +143,7 @@ def next_page():
       
       if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a diffrent layout.
         moreThanOneAgent = True
-        create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes)
+        create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS)
         pageNum += 1 ##Add one to pageNum because we are skipping page 4.
       
       else: ##Only one agent.            

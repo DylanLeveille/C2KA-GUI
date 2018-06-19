@@ -8,7 +8,7 @@ from CBS_mods import *
 from CBS_radio import *
 
 
-def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS):
+def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS, allTextCBS, allRadioButtons):
     editScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
     editScrollingAreaTemp.pack(expand = 1, fill=BOTH)
     global allFrames
@@ -21,7 +21,7 @@ def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames,
         editLabel = Label(editFrame, text = agentNames[i])
         #completeLabel = Label(editFrame, image = complete_icon)
         editButton = Button(editFrame, text = 'Edit', border = 1, 
-                                  command = lambda boxIndex=i: edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, False, False, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS)) #generated booleans will always be false first time...
+                                  command = lambda boxIndex=i: edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, False, False, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS, allTextCBS, allRadioButtons)) #generated booleans will always be false first time...
 
         allButtons[i] = editButton
         editLabel.pack(side = LEFT, anchor = N)
@@ -30,7 +30,7 @@ def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames,
         editFrame.pack(anchor = W)
 
 
-def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generatedTable, generatedCBS, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS):
+def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generatedTable, generatedCBS, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS, allTextCBS, allRadioButtons):
     global editAgent
     editAgent = Toplevel() ##Creating new window to edit agent specs
     editAgent.geometry('500x500')
@@ -41,7 +41,7 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
     allButtons[boxIndex].config(state = DISABLED)
     
     editButtonsFrame = Frame(editAgent) ##Making the save and cancel buttons
-    saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(main, boxIndex))
+    saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(main, boxIndex, allEntriesCBS))
     saveButton.pack(side = RIGHT, anchor = S)
     cancelButton = Button(editButtonsFrame, text = "Clear")
     cancelButton.pack(side = LEFT, anchor = S)
@@ -146,8 +146,8 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
     
     ##Set a variable that the radio Buttons share to determine what happens when 
     ##one of them is pressed.
-    whichRadio = StringVar()
-    whichRadio.set('Rows')  
+    allRadioButtons[boxIndex + 1] = StringVar()
+    allRadioButtons[boxIndex + 1].set('Rows')  
     
     ##Create a frame for the text box.
     textBoxCBSFrame = Frame(CBSTab)
@@ -161,27 +161,29 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
   
     content = StringVar()
     ##Create the text box widget for the CBS page.
-    textBoxCBS = Text(textBoxCBSFrame, wrap=NONE,
+    allTextCBS[boxIndex + 1] = Text(textBoxCBSFrame, wrap=NONE,
                 xscrollcommand=xscrollbarCBS.set,
                 yscrollcommand=yscrollbarCBS.set,
                 width = 60)
     
-    textBoxCBS.grid(row=0, column=0)
+    allTextCBS[boxIndex + 1].grid(row=0, column=0)
   
-    xscrollbarCBS.config(command=textBoxCBS.xview)
-    yscrollbarCBS.config(command=textBoxCBS.yview)    
+    xscrollbarCBS.config(command=allTextCBS[boxIndex + 1].xview)
+    yscrollbarCBS.config(command=allTextCBS[boxIndex + 1].yview)    
     
     ##Radio button for the default style of entering concrete behaviours.
-    radioRowsCBS = Radiobutton(CBSTab, text = 'CBS Rows', variable = whichRadio, value = 'Rows', 
+    radioRowsCBS = Radiobutton(CBSTab, text = 'CBS Rows', variable = allRadioButtons[boxIndex + 1], value = 'Rows', 
                                state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
-                               radioBoxCBS, concreteScrollingArea, frameCBS, textBoxCBSFrame, whichRadio))
+                               radioBoxCBS, concreteScrollingArea, frameCBS, textBoxCBSFrame, allRadioButtons[boxIndex + 1]))
     radioRowsCBS.pack(in_=formatCBS, side = LEFT)
     
     ##Radio button for the alternate style of entering concrete behaviours.
-    radioBoxCBS = Radiobutton(CBSTab, text = 'CBS Box', variable = whichRadio, value = 'Box', 
+    radioBoxCBS = Radiobutton(CBSTab, text = 'CBS Box', variable = allRadioButtons[boxIndex + 1], value = 'Box', 
                               command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
-                              concreteScrollingArea, frameCBS, textBoxCBSFrame, whichRadio))
+                              concreteScrollingArea, frameCBS, textBoxCBSFrame, allRadioButtons[boxIndex + 1]))
     radioBoxCBS.pack(in_=formatCBS, side = RIGHT)            
+    
+    
     if generatedCBS == False:   
         ##Create a vertical scrolling area for the rows.
         concreteScrollingArea = vertSuperscroll.Scrolling_Area(CBSTab, width=1, height=1)
@@ -228,7 +230,7 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
         concreteScrollingArea = concreteScrollingAreaTemp
         frameCBS = frameCBSTemp             
           
-        if whichRadio.get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
+        if allRadioButtons[boxIndex + 1].get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
             ##Pack the new scrolling area and the new frame for the CBS.
             concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
             frameCBSTemp.pack(anchor =  W)
@@ -239,7 +241,7 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
     ##Pack frame for the radio Buttons
     formatCBS.pack(side = BOTTOM, anchor = S, expand = True)
     
-def close_edit(main, boxIndex):
+def close_edit(main, boxIndex, allEntriesCBS):
     """ (tkinter.Tk) -> (none)
       
       Destroys the editAgent window 
@@ -249,3 +251,4 @@ def close_edit(main, boxIndex):
     del allFrames[boxIndex]
     
     allButtons[boxIndex].config(state = NORMAL)
+    print(allEntriesCBS)
