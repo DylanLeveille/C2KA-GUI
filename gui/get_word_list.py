@@ -119,7 +119,7 @@ def build_bev_dict(agentBevs):
     the entry.
   
   """  
-  allBevs = {}
+  allBevDict = {}
   
   for i in range(len(agentBevs)):
     isBad = False ##Assume entry is good.
@@ -149,36 +149,43 @@ def build_bev_dict(agentBevs):
             isBad = True
         
         ##Make sure the entry isn't already in the dictionary.
-        if word not in hist.values():
+        if word not in hist.values() and word != '':
           hist[index] = word 
           index += 1
     
     if isBad:
-      allBevs[i + 1] = None
+      allBevDict[i + 1] = None
     else: ##Only keep dictionary if good.
-      allBevs[i + 1] = hist
+      allBevDict[i + 1] = hist
       
-  return allBevs  
+  return allBevDict  
 
 ##Function to correctly extract the agent behaviour.
-def extract_full_behaviour(agentBehaviour):
-  """ (str) -> (str)
+def extract_full_behaviour(agentBevs): #Must be used -> not yet in gui.py
+  """ (list) -> (dict)
     
-    Takes the agent behaviour entry, and extracts the 
+    Takes the agent behaviour entries, and extracts the 
     behaviour into a string that contains the right amount
     of spacing.
   
   """   
-  bevWords = agentBehaviour.split() ##Get every word in the entry, igoring whitespace.
-  agentBehaviour = '' ##Set agent behaviour to the empty string.
+  agentBehaviours = {} ##Dictionary to hold the full text describing the behaviour of each agent.
+  index = 1 ##The index to keep track of the diffrent agents.
   
-  for i in range(len(bevWords)): ## Coreectly append each word to the string.
-    if i == len(bevWords) - 1: ##No whitespace if True.
-      agentBehaviour += bevWords[i].upper()
-    else:  
-      agentBehaviour += bevWords[i].upper() + " " ##Add a whitespace to the end of each word for spacing.
-  
-  return agentBehaviour
+  for bevWords in agentBevs:
+    bevWords = bevWords.get().split() ##Get every word in the entry, igoring whitespace.
+    agentBehaviour = '' ##Set agent behaviour to the empty string.
+    
+    for i in range(len(bevWords)): ## Correctly append each word to the string.
+      if i == len(bevWords) - 1: ##No whitespace if True.
+        agentBehaviour += bevWords[i].upper()
+      else:  
+        agentBehaviour += bevWords[i].upper() + " " ##Add a whitespace to the end of each word for spacing.
+    
+    agentBehaviours[index] = agentBehaviour ##Put the behaviour text in the dictionary.
+    index += 1
+
+  return agentBehaviours  
     
 
 ##Function to get concrete behaviour entry.
