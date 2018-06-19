@@ -8,7 +8,7 @@ from CBS_mods import *
 from CBS_radio import *
 
 
-def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames):
+def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes):
     editScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
     editScrollingAreaTemp.pack(expand = 1, fill=BOTH)
     
@@ -17,7 +17,7 @@ def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames)
         editLabel = Label(editFrame, text = agentNames[i])
         #completeLabel = Label(editFrame, image = complete_icon)
         editButton = Button(editFrame, text = 'Edit', border = 1, 
-                                  command = lambda boxIndex=i: edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, False, False)) #generated booleans will always be false first time...
+                                  command = lambda boxIndex=i: edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, False, False, allCircleTableBoxes, allLambdaTableBoxes)) #generated booleans will always be false first time...
 
         editLabel.pack(side = LEFT, anchor = N)
         editButton.pack(anchor = N)
@@ -25,9 +25,16 @@ def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames)
         editFrame.pack(anchor = W)
 
 
-def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generatedTable, generatedCBS):
+def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generatedTable, generatedCBS, allCircleTableBoxes, allLambdaTableBoxes):
     editAgent = Toplevel() ##Creating new window to edit agent specs
     editAgent.geometry('500x500')
+    
+    editButtonsFrame = Frame(editAgent) ##Making the save and cancel buttons
+    saveButton = Button(editButtonsFrame, text = "Done", command = close_edit)
+    saveButton.pack(side = RIGHT, anchor = S)
+    cancelButton = Button(editButtonsFrame, text = "Clear")
+    cancelButton.pack(side = LEFT, anchor = S)
+    editButtonsFrame.pack(side = BOTTOM, fill = X)
     
     editTabs = ttk.Notebook(editAgent) ##Create Tabs to switch from tables to CBS
     tableTab = Frame(editTabs)
@@ -43,14 +50,14 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
     
     ##Button to fill circle table with beahviour in each row.
     fillBev = Button(tableTab, text = 'Fill with Behaviours', 
-                   command = lambda: fill_bev(bevDict, stimDict, circleTableBoxes), 
+                   command = lambda: fill_bev(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1]), 
                    width = 31)  
     fillBev.pack(in_=buttonsFrame, side = LEFT) 
 
 
     ##Button to fill lambda table with neutral stimulus.
     fillN = Button(tableTab, text = 'Fill with neutral stimulus', 
-                   command = lambda: fill_n(bevDict, stimDict, lambdaTableBoxes), 
+                   command = lambda: fill_n(allBevDict[boxIndex + 1], stimDict, allLambdaTableBoxes[boxIndex + 1]), 
                    width = 31)
     fillN.pack(in_=buttonsFrame, side = RIGHT)    
     
@@ -74,7 +81,7 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
       
         ##Create the data structures to hold the table entries and
         ##create the boxes within the frames.
-        circleTableBoxes, lambdaTableBoxes = create_table(allBevDict[boxIndex + 1], stimDict,
+        allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1] = create_table(allBevDict[boxIndex + 1], stimDict,
                                                         circleGridFrame, 
                                                         lambdaGridFrame)
         ##pack the new table frames.   
@@ -87,11 +94,11 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
         ##Keep track of table's current lenght and width
         ##in one of the dictionaries at coordinate (0, 0),
         ##since that key is not in use.
-        circleTableBoxes[0, 0] = len(allBevDict[1]), len(stimDict)
+        allCircleTableBoxes[boxIndex + 1][0, 0] = len(allBevDict[1]), len(stimDict)
       
     else: ##Table was already generated.
         ##Calling fix_grids() to check if modifications are necessary to the grids.
-        fix_grids(allBevDict[boxIndex], stimDict, circleTableBoxes, lambdaTableBoxes,
+        fix_grids(allBevDict[boxIndex], stimDict, allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1],
                   circleGridFrame, lambdaGridFrame) 
       
         ##Recreating the table by using a technique similar to the one described
@@ -112,8 +119,8 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
         
         ##Recreate the tables with the new data structures, and assing the data scructures
         ##to the newly created entry boxes.
-        circleTableBoxes, lambdaTableBoxes = recreate_table(allBevDict[boxIndex], stimDict, circleTableBoxes, 
-                                                            lambdaTableBoxes, circleGridFrameTemp, 
+        allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1] = recreate_table(allBevDict[boxIndex], stimDict, allCircleTableBoxes[boxIndex + 1], 
+                                                            allLambdaTableBoxes[boxIndex + 1], circleGridFrameTemp, 
                                                             lambdaGridFrameTemp)
         
         
@@ -221,4 +228,10 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
     ##Pack frame for the radio Buttons
     formatCBS.pack(side = BOTTOM, anchor = S, expand = True)
     
-   
+def close_edit(main):
+    """ (tkinter.Tk) -> (none)
+      
+      Destroys the editAgent window 
+    
+    """     
+    editAgent.destroy()     
