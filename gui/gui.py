@@ -167,12 +167,15 @@ def next_page():
         moreThanOneAgent = True
         
         ##Dictionary containing the values of each radio button for CBS
-        allRadioButtons = [1]
-        allRadioButtons*=len(agentNames)
+        allRadioButtons = [None]*len(agentNames)
         
-        ##Dictionary containing the values of each radio button for CBS
-        allTextBoxCBS = [1]
-        allTextBoxCBS*=len(agentNames)        
+        ##Dictionary containing the text boxes for CBS
+        allTextBoxCBS = [None]*len(agentNames) 
+        
+        
+        ##Dictionary containing the values of agents for CBS
+        allAgentCBS = [None]*len(agentNames)                
+        
         
         create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allEntriesCBS, allAgentCBS, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS) ##Special UI when more than one agent is entered.
         
