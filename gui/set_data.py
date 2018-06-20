@@ -43,7 +43,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, titleCBS,
     ##area. This is done in order to destroy the previous scrolling area
     ##at the end of the else statement once all the necessary widgets were
     ##saved from the old frame.
-    concreteScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main, width = 1, height = 1)
+    concreteScrollingAreaTemp = vertSuperscroll.Scrolling_Area(window, width = 1, height = 1)
     
     ##calling recreate_CBS_entries() to recreate the CBS rows in the new 
     ##temporary frame.
