@@ -1,12 +1,65 @@
 from tkinter import *
 from CBS_mods import * ##Functions which modify the concrete behaviours page.
+from CBS_radio import *
 from create_table import * ##Functions which modify the table page.
 from fix_grids import * ##Functions which modifies the data currently stored in memory for the tables to match the data modified by the user.
 import vertSuperscroll
 import superscroll ##Module containing the widget allowing a vertical and horizontal scrollbar.
 
-def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, titleCBS, 
-                 allConcreteScrollingArea, allEntriesCBS, generatedCBS, boxIndex):
+def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allRadioButtons, 
+                 allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, boxIndex):
+    
+  """Labels and Entries exclusive for CBS"""
+  ##Title for the concrete behaviours.
+  titleCBS = Label(window, text='Concrete Behaviours')
+  
+  ##Frame for the two radio buttons.
+  formatCBS = Frame(window)
+  
+  ##Set a variable that the radio Buttons share to determine what happens when 
+  ##one of them is pressed.
+  allRadioButtons[boxIndex] = StringVar()
+  allRadioButtons[boxIndex].set('Rows')  
+  
+  ##Create a frame for the text box.
+  textBoxCBSFrame = Frame(window)
+  
+  ##Declaring x and y scrollbars for the CBS text box.
+  xscrollbarCBS = Scrollbar(textBoxCBSFrame, orient=HORIZONTAL)
+  xscrollbarCBS.grid(row=1, column=0, sticky=N+S+E+W)
+  
+  yscrollbarCBS = Scrollbar(textBoxCBSFrame)
+  yscrollbarCBS.grid(row=0, column=1, sticky=N+S+E+W)
+  
+  content = StringVar()
+  ##Create the text box widget for the CBS page.
+  allTextBoxCBS[boxIndex] = Text(textBoxCBSFrame, wrap=NONE,
+              xscrollcommand=xscrollbarCBS.set,
+              yscrollcommand=yscrollbarCBS.set,
+              width = 60)
+  
+  allTextBoxCBS[boxIndex].grid(row=0, column=0)
+  
+  xscrollbarCBS.config(command=allTextBoxCBS[boxIndex].xview)
+  yscrollbarCBS.config(command=allTextBoxCBS[boxIndex].yview)    
+
+  ##Radio button for the default style of entering concrete behaviours.
+  radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = allRadioButtons[boxIndex], value = 'Rows', 
+                             state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
+                             radioBoxCBS, allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
+  radioRowsCBS.pack(in_=formatCBS, side = LEFT)
+  
+  ##Radio button for the alternate style of entering concrete behaviours.
+  radioBoxCBS = Radiobutton(window, text = 'CBS Box', variable = allRadioButtons[boxIndex], value = 'Box', 
+                            command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
+                            allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
+  radioBoxCBS.pack(in_=formatCBS, side = RIGHT)            
+ 
+  ##Pack frame for the radio Buttons
+  formatCBS.pack(side = BOTTOM, anchor = S, expand = True)
+  
+  
+  """Editing CBS"""
   ##If no concrete behaviours were yet generated for the behaviours,
   ##then we generate the rows for the CBS.
   if generatedCBS[boxIndex] == False: 
@@ -66,6 +119,24 @@ def set_table_data(window, allBevDict, stimDict, allCircleTableBoxes,
                    allLambdaTableBoxes, allCircleScrollingArea, 
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
                    generatedTables, boxIndex):
+  
+  """Initialization of buttons"""
+  buttonsFrame = Frame(window) ##Create frame for Fill buttons
+  buttonsFrame.pack(side = BOTTOM, anchor = S, fill = X)
+  
+  ##Button to fill circle table with beahviour in each row.
+  fillBev = Button(window, text = 'Fill with Behaviours', 
+                 command = lambda: fill_bev(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1]), 
+                 width = 31)  
+  fillBev.pack(in_=buttonsFrame, side = LEFT) 
+
+
+  ##Button to fill lambda table with neutral stimulus.
+  fillN = Button(window, text = 'Fill with neutral stimulus', 
+                 command = lambda: fill_n(allBevDict[boxIndex + 1], stimDict, allLambdaTableBoxes[boxIndex + 1]), 
+                 width = 31)
+  fillN.pack(in_=buttonsFrame, side = RIGHT)   
+
 
   if generatedTables[boxIndex] == False: 
     ##Creating scrolling areas and frames for both the circle and lambda tables.
