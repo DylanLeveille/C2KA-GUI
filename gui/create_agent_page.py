@@ -79,8 +79,8 @@ def close_edit(main, boxIndex, allEntriesCBS):
       Destroys the editAgent window 
     
     """     
-    allFrames[boxIndex].destroy()
-    del allFrames[boxIndex]
+    allFrames[boxIndex].withdraw()
+
     
     allButtons[boxIndex].config(state = NORMAL)
     print(allEntriesCBS)

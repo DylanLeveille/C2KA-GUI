@@ -3,6 +3,8 @@ from CBS_mods import * ##Functions which modify the concrete behaviours page.
 from CBS_radio import *
 from create_table import * ##Functions which modify the table page.
 from fix_grids import * ##Functions which modifies the data currently stored in memory for the tables to match the data modified by the user.
+from check_if_good import *
+from entry_mods import *
 import vertSuperscroll
 import superscroll ##Module containing the widget allowing a vertical and horizontal scrollbar.
 
@@ -15,11 +17,6 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allRadioButtons,
   
   ##Frame for the two radio buttons.
   formatCBS = Frame(window)
-  
-  ##Set a variable that the radio Buttons share to determine what happens when 
-  ##one of them is pressed.
-  allRadioButtons[boxIndex] = StringVar()
-  allRadioButtons[boxIndex].set('Rows')  
   
   ##Create a frame for the text box.
   textBoxCBSFrame = Frame(window)
@@ -41,19 +38,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allRadioButtons,
   allTextBoxCBS[boxIndex].grid(row=0, column=0)
   
   xscrollbarCBS.config(command=allTextBoxCBS[boxIndex].xview)
-  yscrollbarCBS.config(command=allTextBoxCBS[boxIndex].yview)    
-
-  ##Radio button for the default style of entering concrete behaviours.
-  radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = allRadioButtons[boxIndex], value = 'Rows', 
-                             state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
-                             radioBoxCBS, allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
-  radioRowsCBS.pack(in_=formatCBS, side = LEFT)
-  
-  ##Radio button for the alternate style of entering concrete behaviours.
-  radioBoxCBS = Radiobutton(window, text = 'CBS Box', variable = allRadioButtons[boxIndex], value = 'Box', 
-                            command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
-                            allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
-  radioBoxCBS.pack(in_=formatCBS, side = RIGHT)            
+  yscrollbarCBS.config(command=allTextBoxCBS[boxIndex].yview)               
  
   ##Pack frame for the radio Buttons
   formatCBS.pack(side = BOTTOM, anchor = S, expand = True)
@@ -63,8 +48,26 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allRadioButtons,
   ##If no concrete behaviours were yet generated for the behaviours,
   ##then we generate the rows for the CBS.
   if generatedCBS[boxIndex] == False: 
+    
+    ##Set a variable that the radio Buttons share to determine what happens when 
+    ##one of them is pressed.
+    allRadioButtons[boxIndex] = StringVar()
+    allRadioButtons[boxIndex].set('Rows')
+    
+    ##Radio button for the default style of entering concrete behaviours.
+    radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = allRadioButtons[boxIndex], value = 'Rows', 
+                               state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
+                               radioBoxCBS, allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
+    radioRowsCBS.pack(in_=formatCBS, side = LEFT)
+    
+    ##Radio button for the alternate style of entering concrete behaviours.
+    radioBoxCBS = Radiobutton(window, text = 'CBS Box', variable = allRadioButtons[boxIndex], value = 'Box', 
+                              command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
+                              allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
+    radioBoxCBS.pack(in_=formatCBS, side = RIGHT)     
+    
     ##Pack new labels for CBS.
-    allAgentCBS.append(Label(window, text = agentNames[boxIndex] + ' =>'))
+    allAgentCBS[boxIndex] = Label(window, text = agentNames[boxIndex] + ' =>')
     titleCBS.pack(side = TOP) 
     allAgentCBS[boxIndex].pack(side = TOP, anchor = W)     
     
@@ -87,7 +90,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allRadioButtons,
   else:
     ##Re-pack labels.
     titleCBS.pack(side = TOP) 
-    allAgentCBS[boxIndex].pack(side = TOP, anchor = W)          
+    allAgentCBS[boxIndex].pack(side = TOP, anchor = W) 
     
     ##fix_CBS() function will modify the data scructures related to CBS.
     allEntriesCBS[boxIndex] = fix_CBS(allBevDict[boxIndex + 1], allConcreteScrollingArea[boxIndex][0].innerframe, allEntriesCBS[boxIndex]) 
@@ -108,12 +111,35 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allRadioButtons,
     ##Asign to the new scrolling area.
     allConcreteScrollingArea[boxIndex] = [concreteScrollingAreaTemp]
     
-    if whichRadio.get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
+    if allRadioButtons[boxIndex].get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
       ##Pack the new scrolling area and the new frame for the CBS.
       concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
+      ##Radio button for the default style of entering concrete behaviours.
+      radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = allRadioButtons[boxIndex], value = 'Rows', 
+                                 state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
+                                 radioBoxCBS, allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
+      radioRowsCBS.pack(in_=formatCBS, side = LEFT)
+      
+      ##Radio button for the alternate style of entering concrete behaviours.
+      radioBoxCBS = Radiobutton(window, text = 'CBS Box', variable = allRadioButtons[boxIndex], value = 'Box', 
+                                command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
+                                allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
+      radioBoxCBS.pack(in_=formatCBS, side = RIGHT)      
+    
     
     else: ##Repack the text box. 
-      textBoxCBSFrame.pack() 
+      textBoxCBSFrame.pack()
+      ##Radio button for the default style of entering concrete behaviours.
+      radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = allRadioButtons[boxIndex], value = 'Rows', 
+                                 command = lambda: change_CBS(radioRowsCBS, 
+                                 radioBoxCBS, allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
+      radioRowsCBS.pack(in_=formatCBS, side = LEFT)
+      
+      ##Radio button for the alternate style of entering concrete behaviours.
+      radioBoxCBS = Radiobutton(window, text = 'CBS Box', variable = allRadioButtons[boxIndex], value = 'Box', 
+                                state = 'disabled', command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
+                                allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
+      radioBoxCBS.pack(in_=formatCBS, side = RIGHT)        
 
 def set_table_data(window, allBevDict, stimDict, allCircleTableBoxes, 
                    allLambdaTableBoxes, allCircleScrollingArea, 
