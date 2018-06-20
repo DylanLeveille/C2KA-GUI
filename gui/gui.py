@@ -43,6 +43,8 @@ def next_page():
   global allConcreteScrollingArea ##Scrolling area for the concrete behaviours (CBS).
   
   global allEntriesCBS ##Dict to hold concrete behaviour labels and entries.
+  global allTextBoxCBS ##Dict to hold textbox text for concrete behaviours
+  global allRadioButtons
   global concreteBehaviours ##Dict to hold parsed concrete behaviours
   
   global allCircleTableBoxes ##Dict to hold entry boxes and labels of circle table for all agents.
@@ -164,7 +166,15 @@ def next_page():
       if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a different layout.
         moreThanOneAgent = True
         
-        create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes) ##Special UI when more than one agent is entered.
+        ##Dictionary containing the values of each radio button for CBS
+        allRadioButtons = [1]
+        allRadioButtons*=len(agentNames)
+        
+        ##Dictionary containing the values of each radio button for CBS
+        allTextBoxCBS = [1]
+        allTextBoxCBS*=len(agentNames)        
+        
+        create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allEntriesCBS, allAgentCBS, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS) ##Special UI when more than one agent is entered.
         
         pageNum += 1 ##Add one to pageNum because we are skipping page 4.
       
@@ -175,8 +185,7 @@ def next_page():
         set_CBS_data(main, agentNames, allBevDict, allAgentCBS, titleCBS, 
                      allConcreteScrollingArea, allEntriesCBS, generatedCBS, 0)
         
-        ##Pack frame for the radio Buttons
-        formatCBS.pack(side = BOTTOM, anchor = S, expand = True)       #should be in set_data instead.      
+                
   
   """PAGE 3 to PAGE 4."""
   if pageNum == 3 and moreThanOneAgent == False: #Only true when one agent only!
@@ -420,8 +429,13 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##List to keep track of all CBS scrolling areas.
   allConcreteScrollingArea = []
   
-  ##List containg the CBS entry boxes and labels.
+  ##List containing the CBS entry boxes and labels.
   allEntriesCBS = []
+  
+  ##List containing the CBS textboxes
+  allTextBoxCBS = []
+  
+
   
   ##Initializing the lists to hold the data for each agent.
   agentFrames = {} ##Stores the entry boxes for each agent name and the entry boxes for each agent behaviour.
