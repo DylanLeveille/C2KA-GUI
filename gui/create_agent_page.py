@@ -8,7 +8,7 @@ from CBS_mods import *
 from CBS_radio import *
 
 
-def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS, allTextCBS, allRadioButtons):
+def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS, allTextBoxCBS, allRadioButtons):
     editScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
     editScrollingAreaTemp.pack(expand = 1, fill=BOTH)
     global allFrames
@@ -21,7 +21,7 @@ def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames,
         editLabel = Label(editFrame, text = agentNames[i])
         #completeLabel = Label(editFrame, image = complete_icon)
         editButton = Button(editFrame, text = 'Edit', border = 1, 
-                                  command = lambda boxIndex=i: edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, False, False, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS, allTextCBS, allRadioButtons)) #generated booleans will always be false first time...
+                                  command = lambda boxIndex=i: edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, False, False, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS, allTextBoxCBS, allRadioButtons)) #generated booleans will always be false first time...use data structure and set them to false before calling.
 
         allButtons[i] = editButton
         editLabel.pack(side = LEFT, anchor = N)
@@ -30,7 +30,7 @@ def create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames,
         editFrame.pack(anchor = W)
 
 
-def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generatedTable, generatedCBS, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS, allTextCBS, allRadioButtons):
+def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generatedTable, generatedCBS, allCircleTableBoxes, allLambdaTableBoxes, allEntriesCBS, allTextBoxCBS, allRadioButtons):
     global editAgent
     editAgent = Toplevel() ##Creating new window to edit agent specs
     editAgent.geometry('500x500')
@@ -48,11 +48,13 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
     editButtonsFrame.pack(side = BOTTOM, fill = X)
     
     editTabs = ttk.Notebook(editAgent) ##Create Tabs to switch from tables to CBS
-    tableTab = Frame(editTabs)
     CBSTab = Frame(editTabs)
+    tableTab = Frame(editTabs)
     
-    editTabs.add(tableTab) ##Add tabs to frame
+    ##Add tabs to frame
     editTabs.add(CBSTab)
+    editTabs.add(tableTab) 
+    
     editTabs.pack(expand = 1, fill = BOTH)
     
     """Table Editing"""
@@ -161,15 +163,15 @@ def edit_agent_specs(main, allBevDict, stimDict, agentNames, boxIndex, generated
   
     content = StringVar()
     ##Create the text box widget for the CBS page.
-    allTextCBS[boxIndex + 1] = Text(textBoxCBSFrame, wrap=NONE,
+    allTextBoxCBS[boxIndex + 1] = Text(textBoxCBSFrame, wrap=NONE,
                 xscrollcommand=xscrollbarCBS.set,
                 yscrollcommand=yscrollbarCBS.set,
                 width = 60)
     
-    allTextCBS[boxIndex + 1].grid(row=0, column=0)
+    allTextBoxCBS[boxIndex + 1].grid(row=0, column=0)
   
-    xscrollbarCBS.config(command=allTextCBS[boxIndex + 1].xview)
-    yscrollbarCBS.config(command=allTextCBS[boxIndex + 1].yview)    
+    xscrollbarCBS.config(command=allTextBoxCBS[boxIndex + 1].xview)
+    yscrollbarCBS.config(command=allTextBoxCBS[boxIndex + 1].yview)    
     
     ##Radio button for the default style of entering concrete behaviours.
     radioRowsCBS = Radiobutton(CBSTab, text = 'CBS Rows', variable = allRadioButtons[boxIndex + 1], value = 'Rows', 
