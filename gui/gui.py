@@ -70,7 +70,8 @@ def next_page():
   global allLambdaGridFrame ##Global frame for the lambda table.
   
   global moreThanOneAgent ##Boolean to keep track of if there is more than one agent inputted.
-  
+  global allIsGoodCBS
+  global allIsGoodTable
   global generatedTables ##List to keep track of tables that were already generated for each agent.
   global generatedCBS ##List to keep track of Bool variables to check if CBS were generated.
   
@@ -172,7 +173,9 @@ def next_page():
           del allCircleScrollingArea[i] 
           del allCircleGridFrame[i]
           del allLambdaScrollingArea[i] 
-          del allLambdaGridFrame[i] 
+          del allLambdaGridFrame[i]
+          del allIsGoodCBS[i]
+          del allIsGoodTable[i]
           
           agentsDeleted += 1
 
@@ -192,6 +195,8 @@ def next_page():
         allEntriesCBS.append(None)        
         allCircleGridFrame.append(None) 
         allLambdaGridFrame.append(None) 
+        allIsGoodCBS.append(True)
+        allIsGoodTable.append(True)
 
       if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a different layout.
         moreThanOneAgent = True        
@@ -246,19 +251,24 @@ def next_page():
     
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
+    if moreThanOneAgent:
+      for boxIndex in range(len(agentNames)):
+        allIsGoodCBS[boxIndex] = check_if_good_CBS(main, allEntriesCBS[boxIndex], allRadioButtons[boxIndex], allTextBoxCBS[boxIndex])
+        
+    
     ##Create dictionaries to hold the values from tables.
     allCircleTableValues = get_empty_dict()
     allLambdaTableValues = get_empty_dict()
-   
+    
     ##Extract circle table values and lambda table values for each agent.
     for i in range(len(agentNames)):
       allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
-                                                                                  allLambdaTableBoxes[i + 1]) 
-     
+                                                                                   allLambdaTableBoxes[i + 1]) 
+      
       ##Calling check_if_good() to assure all the inputs are valid.
       isGood, numInvalid = check_if_good_table(allBevDict[i + 1], stimDict, allCircleTableBoxes[i + 1], 
-                                         allLambdaTableBoxes[i + 1], allCircleTableValues[i + 1], 
-                                         allLambdaTableValues[i + 1])
+                                          allLambdaTableBoxes[i + 1], allCircleTableValues[i + 1], 
+                                          allLambdaTableValues[i + 1])
     ##If the table is good, proceed.
     if isGood: #diffrernt stuff happens based on UI.
       ##Forget table scrolling areas.
@@ -268,20 +278,20 @@ def next_page():
       ##Forget table frames.
       allCircleGridFrame[0].pack_forget()
       allLambdaGridFrame[0].pack_forget()
-    
+     
       ##Forget next button, fillBev button and fillN button, since they are not
       ##needed on the last page of the program.
       allFillButtons[0][0].pack_forget()
       allFillButtons[0][1].pack_forget()
       nextButton.pack_forget()
-      
+       
       ##Extract concrete behaviour in a dictionary.
       concreteBehaviours = get_concrete_behaviours(allEntriesCBS[0])      
-
+ 
       ##Call create_text() to create the agentspec.txt file.
       create_text(agentNames[0], agentBehaviours[1], concreteBehaviours, allTextBoxCBS[0], 
                   allCircleTableValues[1], allLambdaTableValues[1], stimDict, allBevDict[1], allRadioButtons[0][2])
-      
+       
       ##Configure the text entry to be modifiable.
       textEntry.config(state = 'normal')
       ##Remove the previous text to insert new one.
@@ -291,7 +301,7 @@ def next_page():
       textEntry.config(state="disabled")
       ##Pack the text entry frame to give a preview to the user.
       textEntryFrame.pack(expand = True)
-      
+       
       ##Pack the button allowing the user to save the file if satisfied
       ##with the result.
       saveButton.pack(in_=buttonsFrame)
@@ -358,6 +368,12 @@ def prev_page():
   if pageNum == 4:
     if moreThanOneAgent: ##Back to page 2 if True, not page 3.
       print('well...do what you gotta do')
+      editScrollingArea[0].pack_forget()
+      ##Repack the agent scrolling area and the add agent button.
+      agentScrollingArea[0].pack(expand = 1, fill = BOTH)
+      addAgent.pack(in_=buttonsFrame, side = TOP)      
+      
+      
       pageNum -= 1
     
     else: ##One agent only.
@@ -496,6 +512,9 @@ if __name__ == '__main__': ##only start program when running gui.py
   
   ##List to check if the table was generated.
   generatedTables = []
+  
+  allIsGoodCBS = []
+  allIsGoodTable = []
   
   ##Frame to hold the main buttons
   buttonsFrame = Frame(main)
