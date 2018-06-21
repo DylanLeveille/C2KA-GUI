@@ -26,7 +26,8 @@ def create_agent_page(main, allButtons, allFrames, editScrollingArea, allBevDict
         editButton.pack(anchor = N)
         #completeLabel.pack(side = RIGHT, anchor = N)
         editFrame.pack(anchor = W)
-    editScrollingArea[0] = editScrollingAreaTemp
+        
+        editScrollingArea[0] = editScrollingAreaTemp         
 
 
 def edit_agent_specs(main, allButtons, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS,allEntriesCBS, allAgentCBS, allFrames, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, boxIndex, allCBSTabContents, allTableTabContents):
@@ -85,4 +86,6 @@ def close_edit(main, boxIndex, allButtons, allFrames, allCircleTableBoxes):
     """     
     allFrames[boxIndex].withdraw()
     
+    contents = allFrames[boxIndex].winfo_children()
+    print(contents[1].winfo_children())
     allButtons[boxIndex].config(state = NORMAL)

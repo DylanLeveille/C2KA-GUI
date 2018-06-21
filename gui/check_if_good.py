@@ -289,8 +289,8 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
   
   ##Flag to check if there are any invalid entries. Assumming everything is good.
   goodCBS = True
-  
   for boxIndex in range(numAgents):
+    
     ##Extract the radio button that was pressed for each window.
     whichRadio = allRadioButtons[boxIndex][2]
   

@@ -95,7 +95,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     ##Re-pack labels.
     if not moreThanOneAgent:
       
-      titleCBS.pack(side = TOP) 
+      allTitleCBS[boxIndex].pack(side = TOP) 
       allAgentCBS[boxIndex].pack(side = TOP, anchor = W) 
       
       ##fix_CBS() function will modify the data scructures related to CBS.
@@ -117,20 +117,20 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
       ##Asign to the new scrolling area.
       allConcreteScrollingArea[boxIndex] = [concreteScrollingAreaTemp]
 
-      if allRadioButtons[boxIndex].get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
+      if allRadioButtons[boxIndex][2].get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
         ##Pack the new scrolling area and the new frame for the CBS.
         concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
   
       
       else: ##Repack the text box. 
-        textBoxCBSFrame.pack()
+        allTextBoxCBSFrame[boxIndex].pack()
+      
+      allFormatCBS[boxIndex].pack(side = BOTTOM, anchor = S, expand = True)
       
     else:
       allFrames[boxIndex].deiconify()
       allFrames[boxIndex].iconify()
         
-      
-
 
 def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableBoxes, 
                    allLambdaTableBoxes, allCircleScrollingArea, 
@@ -199,6 +199,11 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
     allCircleTableBoxes[boxIndex + 1][0, 0] = len(allBevDict[1]), len(stimDict)  
       
   else: ##Table was already generated.
+    if not moreThanOneAgent:
+      ##Pack the fill buttons. Already packed when only one agent.
+      allFillButtons[boxIndex][0].pack(in_=allFillButtons[boxIndex][2], side = LEFT) 
+      allFillButtons[boxIndex][1].pack(in_=allFillButtons[boxIndex][2], side = RIGHT)
+    
     ##Calling fix_grids() to check if modifications are necessary to the grids.
     fix_grids(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1], 
               allCircleGridFrame[boxIndex], allLambdaGridFrame[boxIndex]) 
