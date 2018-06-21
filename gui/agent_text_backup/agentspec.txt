@@ -7,9 +7,9 @@ begin NEXT_BEHAVIOUR where
 end
 
 begin NEXT_STIMULUS where
-    (i, K) = i
+    (i, K) = N
 end
 
 begin CONCRETE BEHAVIOUR where
-    j => [ k ]
+    K => [ i ]
 end
