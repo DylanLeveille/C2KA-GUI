@@ -8,8 +8,8 @@ from entry_mods import *
 import vertSuperscroll
 import superscroll ##Module containing the widget allowing a vertical and horizontal scrollbar.
 
-def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, allRadioButtons, 
-                 allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, boxIndex):
+def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, allFrames, allTitleCBS, allFormatCBS, allRadioButtons, 
+                 allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, boxIndex, allCBSTabContents):
   
   """Editing CBS"""
   ##If no concrete behaviours were yet generated for the behaviours,
@@ -47,18 +47,11 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
    
     ##Pack frame for the radio Buttons
     allFormatCBS[boxIndex].pack(side = BOTTOM, anchor = S, expand = True)
-    
-    #old stuff starts here
-    
+       
     ##Set a variable that the radio Buttons share to determine what happens when 
     ##one of them is pressed.
     whichRadio = StringVar()
     whichRadio.set('Rows')      
-        
-    ##Set a variable that the radio Buttons share to determine what happens when 
-    ##one of them is pressed.
-    #allRadioButtons[boxIndex] = StringVar()
-    #allRadioButtons[boxIndex].set('Rows')
     
     
     radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = whichRadio, value = 'Rows', 
@@ -73,19 +66,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     radioBoxCBS.pack(in_=allFormatCBS[boxIndex], side = RIGHT)    
     
     ##Pack the two radio buttons in allRadioButtons as a tupple, including whichRadio.
-    allRadioButtons[boxIndex] = (radioRowsCBS, radioBoxCBS, whichRadio)
-    
-    ##Radio button for the default style of entering concrete behaviours.
-   # radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = allRadioButtons[boxIndex], value = 'Rows', 
-       #                        state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
-             #                  radioBoxCBS, allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
-   # radioRowsCBS.pack(in_=allFormatCBS[boxIndex], side = LEFT)
-    
-    ##Radio button for the alternate style of entering concrete behaviours.
-   # radioBoxCBS = Radiobutton(window, text = 'CBS Box', variable = allRadioButtons[boxIndex], value = 'Box', 
-            #                  command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
-             #                 allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
-   # radioBoxCBS.pack(in_=allFormatCBS[boxIndex], side = RIGHT)     
+    allRadioButtons[boxIndex] = (radioRowsCBS, radioBoxCBS, whichRadio)     
     
     ##Pack new labels for CBS.
     allAgentCBS[boxIndex] = Label(window, text = agentNames[boxIndex] + ' =>')
@@ -106,67 +87,55 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     ##Set generatedCBS to True.
     generatedCBS[boxIndex] = True 
     
+    allCBSTabContents[boxIndex] = window.winfo_children()      
   
   ##If concrete behaviours page was already generated, it must be modified 
   ##if necessary to adapt to changes made on previous pages.
   else: #No need to do all that repacking stuff
     ##Re-pack labels.
-    titleCBS.pack(side = TOP) 
-    allAgentCBS[boxIndex].pack(side = TOP, anchor = W) 
-    
-    ##fix_CBS() function will modify the data scructures related to CBS.
-    allEntriesCBS[boxIndex] = fix_CBS(allBevDict[boxIndex + 1], allConcreteScrollingArea[boxIndex][0].innerframe, allEntriesCBS[boxIndex]) 
-    
-    ##Create a temporary scrolling area that will be later used as the main scrolling
-    ##area. This is done in order to destroy the previous scrolling area
-    ##at the end of the else statement once all the necessary widgets were
-    ##saved from the old frame.
-    concreteScrollingAreaTemp = vertSuperscroll.Scrolling_Area(window, width = 1, height = 1)
-    
-    ##calling recreate_CBS_entries() to recreate the CBS rows in the new 
-    ##temporary frame.
-    allEntriesCBS[boxIndex] = recreate_CBS_entries(allBevDict[boxIndex + 1], allEntriesCBS[boxIndex], concreteScrollingAreaTemp.innerframe) 
-    
-    ##Destroy the old scrolling area for the CBS.
-    allConcreteScrollingArea[boxIndex][0].destroy() 
-    
-    ##Asign to the new scrolling area.
-    allConcreteScrollingArea[boxIndex] = [concreteScrollingAreaTemp]
-    
-    if allRadioButtons[boxIndex].get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
-      ##Pack the new scrolling area and the new frame for the CBS.
-      concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
-      ##Radio button for the default style of entering concrete behaviours.
-      radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = allRadioButtons[boxIndex], value = 'Rows', 
-                                 state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
-                                 radioBoxCBS, allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
-      radioRowsCBS.pack(in_=formatCBS, side = LEFT)
+    if not moreThanOneAgent:
       
-      ##Radio button for the alternate style of entering concrete behaviours.
-      radioBoxCBS = Radiobutton(window, text = 'CBS Box', variable = allRadioButtons[boxIndex], value = 'Box', 
-                                command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
-                                allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
-      radioBoxCBS.pack(in_=formatCBS, side = RIGHT)      
-    
-    
-    else: ##Repack the text box. 
-      textBoxCBSFrame.pack()
-      ##Radio button for the default style of entering concrete behaviours.
-      radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = allRadioButtons[boxIndex], value = 'Rows', 
-                                 command = lambda: change_CBS(radioRowsCBS, 
-                                 radioBoxCBS, allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
-      radioRowsCBS.pack(in_=formatCBS, side = LEFT)
+      titleCBS.pack(side = TOP) 
+      allAgentCBS[boxIndex].pack(side = TOP, anchor = W) 
       
-      ##Radio button for the alternate style of entering concrete behaviours.
-      radioBoxCBS = Radiobutton(window, text = 'CBS Box', variable = allRadioButtons[boxIndex], value = 'Box', 
-                                state = 'disabled', command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
-                                allConcreteScrollingArea[boxIndex], textBoxCBSFrame, allRadioButtons[boxIndex]))
-      radioBoxCBS.pack(in_=formatCBS, side = RIGHT)        
+      ##fix_CBS() function will modify the data scructures related to CBS.
+      allEntriesCBS[boxIndex] = fix_CBS(allBevDict[boxIndex + 1], allConcreteScrollingArea[boxIndex][0].innerframe, allEntriesCBS[boxIndex]) 
+      
+      ##Create a temporary scrolling area that will be later used as the main scrolling
+      ##area. This is done in order to destroy the previous scrolling area
+      ##at the end of the else statement once all the necessary widgets were
+      ##saved from the old frame.
+      concreteScrollingAreaTemp = vertSuperscroll.Scrolling_Area(window, width = 1, height = 1)
+      
+      ##calling recreate_CBS_entries() to recreate the CBS rows in the new 
+      ##temporary frame.
+      allEntriesCBS[boxIndex] = recreate_CBS_entries(allBevDict[boxIndex + 1], allEntriesCBS[boxIndex], concreteScrollingAreaTemp.innerframe) 
+      
+      ##Destroy the old scrolling area for the CBS.
+      allConcreteScrollingArea[boxIndex][0].destroy() 
+      
+      ##Asign to the new scrolling area.
+      allConcreteScrollingArea[boxIndex] = [concreteScrollingAreaTemp]
+
+      if allRadioButtons[boxIndex].get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
+        ##Pack the new scrolling area and the new frame for the CBS.
+        concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
+  
+      
+      else: ##Repack the text box. 
+        textBoxCBSFrame.pack()
+      
+    else:
+      allFrames[boxIndex].deiconify()
+      allFrames[boxIndex].iconify()
+        
+      
+
 
 def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableBoxes, 
                    allLambdaTableBoxes, allCircleScrollingArea, 
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
-                   generatedTables, moreThanOneAgent, boxIndex):
+                   generatedTables, moreThanOneAgent, boxIndex, allTableTabContents):
 
   if generatedTables[boxIndex] == True and boxIndex == 0 and moreThanOneAgent:
     generatedTables[boxIndex] == False   
@@ -220,8 +189,8 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
     circleGridFrame.pack(side=TOP, anchor = NW) 
     lambdaGridFrame.pack(side=TOP, anchor = SW) 
     
-    allCircleGridFrame.append(circleGridFrame)
-    allLambdaGridFrame.append(lambdaGridFrame)
+    allCircleGridFrame[boxIndex] = circleGridFrame
+    allLambdaGridFrame[boxIndex] = lambdaGridFrame
   
     generatedTables[boxIndex] = True ##Table is now generated.
     ##Keep track of table's current lenght and width

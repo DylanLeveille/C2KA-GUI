@@ -51,6 +51,11 @@ def next_page():
   
   global allFillButtons
   
+  global allFrames
+  global allCBSTabContents
+  global allTableTabContents
+  global allButtons
+  
   global allCircleTableBoxes ##Dict to hold entry boxes and labels of circle table for all agents.
   global allLambdaTableBoxes ##Dict to hold entry boxes and labels of lambda table for all agents.
   
@@ -187,19 +192,19 @@ def next_page():
         moreThanOneAgent = True        
         
         ##Special UI when more than one agent is entered.
-        create_agent_page(main, editScrollingArea, allBevDict, stimDict, agentNames, allCircleTableBoxes, 
-                          allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
-                          allEntriesCBS, allAgentCBS, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
-                          generatedTables, generatedCBS) 
+        create_agent_page(main, allButtons, allFrames, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
+                          allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
+                          allTitleCBS, allFormatCBS, allEntriesCBS, allAgentCBS, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
+                          generatedTables, generatedCBS, allCBSTabContents, allTableTabContents) 
         
         pageNum += 1 ##Add one to pageNum because we are skipping page 4.
       
       else: ##Only one agent.            
         moreThanOneAgent = False
         
-        set_CBS_data(main, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, 
+        set_CBS_data(main, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, allFrames,  
                      allTitleCBS, allFormatCBS, allRadioButtons, allConcreteScrollingArea, 
-                     allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, 0)
+                     allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, 0, allCBSTabContents)
         
   
   """PAGE 3 to PAGE 4."""
@@ -235,7 +240,7 @@ def next_page():
       set_table_data(main, allBevDict, stimDict, allFillButtons, allCircleTableBoxes,
                      allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 
                      allCircleGridFrame, allLambdaGridFrame, generatedTables, 
-                     moreThanOneAgent, 0)
+                     moreThanOneAgent, 0, allTableTabContents)
     
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
@@ -469,6 +474,11 @@ if __name__ == '__main__': ##only start program when running gui.py
   
   ##Initialize lists to hold the fill with behaviour and fill with neutral stimuli buttons and the frames for them.
   allFillButtons = []
+  
+  allFrames = {} ##Dictionary for all the pop-ups
+  allCBSTabContents = {} ##Dictionary for everything inside CBSTab
+  allTableTabContents = {}
+  allButtons = {} ##Dictionary for all the edit buttons    
   
   ##Bind these to empty lists to allow them to be passed as arguments.
   allCircleScrollingArea = []
