@@ -184,7 +184,9 @@ def next_page():
         allAgentCBS.append(None) 
         allFillButtons.append((None, None, buttonsFrame))
         allConcreteScrollingArea.append(None)   
-        allEntriesCBS.append(None)         
+        allEntriesCBS.append(None)        
+        allCircleGridFrame.append(None) 
+        allLambdaGridFrame.append(None) 
 
       if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a different layout.
         moreThanOneAgent = True        
