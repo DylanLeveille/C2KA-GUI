@@ -42,7 +42,7 @@ def edit_agent_specs(main, editScrollingArea, allBevDict, stimDict, agentNames, 
     allButtons[boxIndex].config(state = DISABLED)
     
     editButtonsFrame = Frame(editAgent) ##Making the save and cancel buttons
-    saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(main, boxIndex, allEntriesCBS))
+    saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(main, boxIndex, allTextBoxCBS))
     saveButton.pack(side = RIGHT, anchor = S)
     cancelButton = Button(editButtonsFrame, text = "Clear")
     cancelButton.pack(side = LEFT, anchor = S)
@@ -73,14 +73,13 @@ def edit_agent_specs(main, editScrollingArea, allBevDict, stimDict, agentNames, 
                    generatedTables, boxIndex)
         
              
-def close_edit(main, boxIndex, allEntriesCBS):
+def close_edit(main, boxIndex, allTextBoxCBS):
     """ (tkinter.Tk) -> (none)
       
       Destroys the editAgent window 
     
     """     
     allFrames[boxIndex].withdraw()
-
     
     allButtons[boxIndex].config(state = NORMAL)
-    print(allEntriesCBS)
+    print(allTextBoxCBS)

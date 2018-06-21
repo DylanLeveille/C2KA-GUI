@@ -277,47 +277,55 @@ def incorrect_CBS(main, return_arrow):
   pressToClose.pack(side = BOTTOM, anchor = E)
 
 
-def check_if_good_CBS(main, entriesCBS, whichRadio, textBoxCBS):
-  """ (tkinter.Tk, dict) -> (Bool)
+def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
+  """ (tkinter.Tk, dict, tupple) -> (Bool)
     
     Pop-up to tell the user that the agent behaviour entry
     is incorrect.
   
   """    
-  ##Flag to check if there are any invalid entries.
-  global flagCBS
-  flagCBS = True
+  ##Extract the number of agents.
+  numAgents = len(allEntriesCBS)
   
-  ##Check which template is being used (either Rows or Box).
-  if whichRadio.get() == 'Rows':
-    for entry in range(1, entriesCBS[0, 0] + 1):
-      ##Check through CBS dictionary to find specific invalidities.
-      if entriesCBS[entry, 1].get() == ' ' * len(entriesCBS[entry, 1].get()):
-        if flagCBS == True:
-          flagCBS = False
-          
-        ##If entry is invalid, change the background to white.
-        entriesCBS[entry, 1].config(background = 'tomato')
+  ##Flag to check if there are any invalid entries. Assumming everything is good.
+  goodCBS = True
   
-      else:
-        ##If entry is valid, change the backgound to white.
-        entriesCBS[entry, 1].config(background = 'white')
-
-  else:
-    ##Create list of texbox lines, filters out empty lines.
-    textBoxWords = textBoxCBS.get("1.0", END).split()
+  for boxIndex in range(numAgents):
+    ##Extract the radio button that was pressed for each window.
+    whichRadio = allRadioButtons[boxIndex][2]
+  
+    ##Check which template is being used (either Rows or Box).
+    if whichRadio.get() == 'Rows':
+      for entry in range(1, entriesCBS[boxIndex][0, 0] + 1):
+        ##Check through CBS dictionary to find specific invalidities.
+        if allEntriesCBS[boxIndex][entry, 1].get() == ' ' * len(allEntriesCBS[boxIndex][entry, 1].get()):
+          if goodCBS == True:
+            goodCBS = False
+            
+          ##If entry is invalid, change the background to white.
+          allEntriesCBS[boxIndex][entry, 1].config(background = 'tomato')
     
-    ##Check if the textbox is empty.
-    if len(textBoxWords) == 0:
-      flagCBS = False
-    
-    ##Check to see if the number of 'if' equals to the number of 'fi' and check if there 
-    ##are any 'if' as well.  
-    if textBoxWords.count('if') != textBoxWords.count('fi'):   
-      flagCBS = False
+        else:
+          ##If entry is valid, change the backgound to white.
+          allEntriesCBS[boxIndex][entry, 1].config(background = 'white')
+  
+    else:
+      ##Create list of texbox lines, filters out empty lines.
+      textBoxWords = allTextBoxCBS[boxIndex].get("1.0", END).split()
+      
+      ##Check if the textbox is empty.
+      if len(textBoxWords) == 0:
+        if goodCBS == True:
+          goodCBS = False 
+      
+      ##Check to see if the number of 'if' equals to the number of 'fi' and check if there 
+      ##are any 'if' as well.  
+      if textBoxWords.count('if') != textBoxWords.count('fi'):   
+        if goodCBS == True:
+          goodCBS = False
       
   ##If there are no invalid entries, return True; else return False  
-  return flagCBS
+  return goodCBS 
 
 ##Function is called to verify entries in tables.
 def check_if_good_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes, 
