@@ -35,6 +35,7 @@ def next_page():
   global stimDict ##Dictionary to hold final entries of entered stimuli.
   global allBevDict ##Dictionary to hold agent behaviours.
   
+  global oldAgentNames ##Record the names of the agents previously stored in the program.
   global agentNames ##Record entries for the name of the agents.
   global agentBehaviours ##Record entries for the behaviour of the agents.
   
@@ -95,12 +96,14 @@ def next_page():
       agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))  
       
       addAgent.pack(in_=buttonsFrame, side = TOP)
+      
+      ##Store a copy of the old agent ames to check if any are similar
+      ##before goinf to page 2.     
+      oldAgentNames = agentNames.copy() 
   
   """PAGE 2 to PAGE 3."""
   if pageNum == 2: 
     agentsGood = True ##Assuming the agent entries are good.
-    
-    oldAgentNames = agentNames.copy() ##Store a copy of the old agent ames to check if any are similar.
     
     agentNames = get_agents(agentFrames['agentNames']) ##The agent names are extracted from the entries in a list.
     allBevDict = build_bev_dict(agentFrames['agentBev']) ##Creates a behaviour dictionary for each agent.
@@ -228,9 +231,6 @@ def next_page():
       allTitleCBS[0].pack_forget()
       allAgentCBS[0].pack_forget()
       allFormatCBS[0].pack_forget()
-      
-      #if generatedTables[0] == False: ##Means we must put the buttons frame in the fill buttons data structure.
-        #allFillButtons = [None, None, buttonsFrame]
      
       set_table_data(main, allBevDict, stimDict, allFillButtons, allCircleTableBoxes,
                      allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 
@@ -270,10 +270,10 @@ def next_page():
       
       ##Extract concrete behaviour in a dictionary.
       concreteBehaviours = get_concrete_behaviours(allEntriesCBS[0])      
-    
+
       ##Call create_text() to create the agentspec.txt file.
-      create_text(agentNames[0], agentBehaviours[1], concreteBehaviours, textBoxCBS, 
-                  allCircleTableValues[1], allLambdaTableValues[1], stimDict, allBevDict[1], whichRadio)
+      create_text(agentNames[0], agentBehaviours[1], concreteBehaviours, allTextBoxCBS[0], 
+                  allCircleTableValues[1], allLambdaTableValues[1], stimDict, allBevDict[1], allRadioButtons[0][2])
       
       ##Configure the text entry to be modifiable.
       textEntry.config(state = 'normal')
@@ -334,18 +334,18 @@ def prev_page():
     addAgent.pack(in_=buttonsFrame, side = TOP)
     
     ##Checking which widgets to unpack from the window.
-    if (whichRadio.get() == 'Rows'): ##Radio button was on rowsCBS.
+    if (allRadioButtons[0][2].get() == 'Rows'): ##Radio button was on rowsCBS.
       ##Forget the scrolling area for the CBS.
       allConcreteScrollingArea[0][0].pack_forget()
       
     else:##Radio button was on boxCBS.
       ##Forget the text box frame.
-      textBoxCBSFrame.pack_forget()
+      allTextBoxCBSFrame[0].pack_forget()
       
     ##Forget the title and radio button frame regardless of which radio button was pressed.  
-    titleCBS.pack_forget()
+    allTitleCBS[0].pack_forget()
     allAgentCBS[0].pack_forget()      
-    formatCBS.pack_forget()
+    allFormatCBS[0].pack_forget()
   
   """PAGE 4 to PAGE 3."""
   if pageNum == 4:
@@ -362,21 +362,21 @@ def prev_page():
       allLambdaGridFrame[0].pack_forget()
     
       ##Forget the fillBev and fillN button.
-      fillBev.pack_forget()
-      fillN.pack_forget()
+      allFillButtons[0][0].pack_forget()
+      allFillButtons[0][1].pack_forget()
    
       ##Pack widgets related to CBS page.
-      titleCBS.pack(side = TOP)
+      allTitleCBS[0].pack(side = TOP)
       allAgentCBS[0].pack(side = TOP, anchor = W)  
-      
-      if whichRadio.get() == 'Rows': ##User was using rowsCBS.
-        allConcreteScrollingArea.pack(expand = 1, fill = BOTH)
+
+      if allRadioButtons[0][2].get() == 'Rows': ##User was using rowsCBS.
+        allConcreteScrollingArea[0][0].pack(expand = 1, fill = BOTH)
       
       else: ##User was using boxCBS.
-        textBoxCBSFrame.pack()  
+        allTextBoxCBSFrame[0].pack()  
       
       ##Pack frame for the radio Buttons
-      formatCBS.pack(side = BOTTOM, anchor = S, expand = True)    
+      allFormatCBS[0].pack(side = BOTTOM, anchor = S, expand = True)    
 
   """PAGE 5 to PAGE 4."""
   if pageNum == 5:
@@ -398,8 +398,8 @@ def prev_page():
     
       ##Repack the next button, fillBev button and fillN button.
       nextButton.pack(in_=buttonsFrame, side = RIGHT)
-      fillBev.pack(in_=buttonsFrame, side = LEFT)
-      fillN.pack(in_=buttonsFrame, side = RIGHT)
+      allFillButtons[0][0].pack(in_=buttonsFrame, side = LEFT)
+      allFillButtons[0][1].pack(in_=buttonsFrame, side = RIGHT)
   
   ##Decrease pageNum every time the previous button is clicked.
   pageNum -= 1
@@ -548,65 +548,9 @@ if __name__ == '__main__': ##only start program when running gui.py
                    command = lambda: add_agent(main, agentFrames, agentScrollingArea, remove_x), 
                    width = 23)  
   
-  """For edit page"""
+  """Scrolling area for the edit page of multiple agents."""
   editScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
   
-  """Labels and Entries exclusive for page 3."""
-  ##Title for the concrete behaviours.
-  #titleCBS = Label(main, text='Concrete Behaviours')
-  
-  ##Frame for the two radio buttons.
-  #formatCBS = Frame(main)
-  
-  ##Set a variable that the radio Buttons share to determine what happens when 
-  ##one of them is pressed.
-  #whichRadio = StringVar()
-  #whichRadio.set('Rows')  
-  
-  ##Create a frame for the text box.
-  #textBoxCBSFrame = Frame(main)
-  
-  ##Declaring x and y scrollbars for the CBS text box.
-  #xscrollbarCBS = Scrollbar(textBoxCBSFrame, orient=HORIZONTAL)
-  #xscrollbarCBS.grid(row=1, column=0, sticky=N+S+E+W)
-
-  #yscrollbarCBS = Scrollbar(textBoxCBSFrame)
-  #yscrollbarCBS.grid(row=0, column=1, sticky=N+S+E+W)
-
-  #content = StringVar()
-  ##Create the text box widget for the CBS page.
-  #textBoxCBS = Text(textBoxCBSFrame, wrap=NONE,
-    #          xscrollcommand=xscrollbarCBS.set,
-     #         yscrollcommand=yscrollbarCBS.set,
-       #       width = 60)
-  
- # textBoxCBS.grid(row=0, column=0)
-
-#  xscrollbarCBS.config(command=textBoxCBS.xview)
- # yscrollbarCBS.config(command=textBoxCBS.yview)    
-  
-  ##Radio button for the default style of entering concrete behaviours.
-  #radioRowsCBS = Radiobutton(main, text = 'CBS Rows', variable = whichRadio, value = 'Rows', 
-           #                  state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
-            #                 radioBoxCBS, allConcreteScrollingArea[0], textBoxCBSFrame, whichRadio)) #use box index
- # radioRowsCBS.pack(in_=formatCBS, side = LEFT)
-  
-  ##Radio button for the alternate style of entering concrete behaviours.
- # radioBoxCBS = Radiobutton(main, text = 'CBS Box', variable = whichRadio, value = 'Box', 
-           #                 command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
-            #                allConcreteScrollingArea[0], textBoxCBSFrame, whichRadio)) #use box index
-  #radioBoxCBS.pack(in_=formatCBS, side = RIGHT)
-
-  """Labels and Entries exclusive for page 4."""
-  ##Button to fill circle table with beahviour in each row.
-  #fillBev = Button(main, text = 'Fill with Behaviours', 
-              #   command = lambda: fill_bev(allBevDict[1], stimDict, circleTableBoxes), 
-              #   width = 31)  
-  
-  ##Button to fill lambda table with neutral stimulus.
- # fillN = Button(main, text = 'Fill with neutral stimulus', 
-                 #command = lambda: fill_n(allBevDict[1], stimDict, lambdaTableBoxes), 
-                # width = 31)
   
   """Labels and Entries exclusive for page 5."""
   ##Text entry to give the user a preview of the text file.

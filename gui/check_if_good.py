@@ -296,7 +296,7 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
   
     ##Check which template is being used (either Rows or Box).
     if whichRadio.get() == 'Rows':
-      for entry in range(1, entriesCBS[boxIndex][0, 0] + 1):
+      for entry in range(1, allEntriesCBS[boxIndex][0, 0] + 1):
         ##Check through CBS dictionary to find specific invalidities.
         if allEntriesCBS[boxIndex][entry, 1].get() == ' ' * len(allEntriesCBS[boxIndex][entry, 1].get()):
           if goodCBS == True:
