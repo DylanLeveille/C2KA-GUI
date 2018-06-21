@@ -71,6 +71,9 @@ def next_page():
   
   global moreThanOneAgent ##Boolean to keep track of if there is more than one agent inputted.
   
+  global allIsGoodCBS 
+  global allIsGoodTable  
+  
   global generatedTables ##List to keep track of tables that were already generated for each agent.
   global generatedCBS ##List to keep track of Bool variables to check if CBS were generated.
   
@@ -173,6 +176,8 @@ def next_page():
           del allCircleGridFrame[i]
           del allLambdaScrollingArea[i] 
           del allLambdaGridFrame[i] 
+          del allIsGoodCBS[i] 
+          del allIsGoodTable[i]          
           
           agentsDeleted += 1
 
@@ -192,6 +197,8 @@ def next_page():
         allEntriesCBS.append(None)        
         allCircleGridFrame.append(None) 
         allLambdaGridFrame.append(None) 
+        allIsGoodCBS.append(True) 
+        allIsGoodTable.append(True)         
 
       ##Save agents in old agents in case user returns to page 2 WITHOUT going to page 1.
       oldAgentNames = agentNames.copy() 
@@ -249,6 +256,10 @@ def next_page():
     
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
+    if moreThanOneAgent: 
+      for boxIndex in range(len(agentNames)): 
+        allIsGoodCBS[boxIndex] = check_if_good_CBS(main, allEntriesCBS[boxIndex], allRadioButtons[boxIndex], allTextBoxCBS[boxIndex]) 
+ 
     ##Create dictionaries to hold the values from tables.
     allCircleTableValues = get_empty_dict()
     allLambdaTableValues = get_empty_dict()
@@ -361,6 +372,12 @@ def prev_page():
   if pageNum == 4:
     if moreThanOneAgent: ##Back to page 2 if True, not page 3.
       print('well...do what you gotta do')
+      editScrollingArea[0].pack_forget() 
+
+      ##Repack the agent scrolling area and the add agent button.       
+      agentScrollingArea[0].pack(expand = 1, fill = BOTH)  
+      addAgent.pack(in_=buttonsFrame, side = TOP)      
+      
       pageNum -= 1
     
     else: ##One agent only.
@@ -500,6 +517,10 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##List to check if the table was generated.
   generatedTables = []
   
+  allIsGoodCBS = [] 
+   
+  allIsGoodTable = [] 
+    
   ##Frame to hold the main buttons
   buttonsFrame = Frame(main)
   buttonsFrame.pack(side = BOTTOM, anchor = S, fill = X)

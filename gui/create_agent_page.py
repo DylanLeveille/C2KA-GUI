@@ -26,6 +26,8 @@ def create_agent_page(main, allButtons, allFrames, editScrollingArea, allBevDict
         editButton.pack(anchor = N)
         #completeLabel.pack(side = RIGHT, anchor = N)
         editFrame.pack(anchor = W)
+        
+        editScrollingArea[0] = editScrollingAreaTemp         
 
 
 def edit_agent_specs(main, allButtons, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS,allEntriesCBS, allAgentCBS, allFrames, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, boxIndex, allCBSTabContents, allTableTabContents):
@@ -39,7 +41,7 @@ def edit_agent_specs(main, allButtons, editScrollingArea, allBevDict, stimDict, 
         allButtons[boxIndex].config(state = DISABLED)
         
         editButtonsFrame = Frame(editAgent) ##Making the save and cancel buttons
-        saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(main, boxIndex, allButtons, allFrames))
+        saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(main, boxIndex, allButtons, allFrames, allCircleTableBoxes))
         saveButton.pack(side = RIGHT, anchor = S)
         cancelButton = Button(editButtonsFrame, text = "Clear")
         cancelButton.pack(side = LEFT, anchor = S)
@@ -76,7 +78,7 @@ def edit_agent_specs(main, allButtons, editScrollingArea, allBevDict, stimDict, 
                    generatedTables, moreThanOneAgent, boxIndex, allTableTabContents)
         
              
-def close_edit(main, boxIndex, allButtons, allFrames):
+def close_edit(main, boxIndex, allButtons, allFrames, allCircleTableBoxes):
     """ (tkinter.Tk) -> (none)
       
       Destroys the editAgent window 
