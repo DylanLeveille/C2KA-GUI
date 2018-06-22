@@ -267,6 +267,7 @@ def next_page():
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
     if moreThanOneAgent: 
+      
       isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS) #only checks if good for all, therefore not keeping track of individuals. But works :).
    
     ##Create dictionaries to hold the values from tables.
@@ -559,12 +560,12 @@ if __name__ == '__main__': ##only start program when running gui.py
   stimFrame.pack(side = BOTTOM, anchor = S, expand = True, pady = 50)
   
   """Pictures and Fonts used for Buttons and Entries"""
-  check_mark = PhotoImage(file = "images./check_mark.png")
-  right_arrow = PhotoImage(file="images./right_arrow.png")
-  left_arrow = PhotoImage(file="images./left_arrow.png")
-  return_arrow = PhotoImage(file = "images./return_arrow.png")
-  remove_x = PhotoImage(file = "images./remove_x.png")
-  save_icon = PhotoImage(file = "images./save_icon.png")
+  check_mark = PhotoImage(file = "images/check_mark.png")
+  right_arrow = PhotoImage(file="images/right_arrow.png")
+  left_arrow = PhotoImage(file="images/left_arrow.png")
+  return_arrow = PhotoImage(file = "images/return_arrow.png")
+  remove_x = PhotoImage(file = "images/remove_x.png")
+  save_icon = PhotoImage(file = "images/save_icon.png")
   entry_font = ('Comic Sans MS', 11)
 
   """Defining Buttons available on each page.""" 

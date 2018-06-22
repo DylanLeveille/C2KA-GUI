@@ -59,14 +59,14 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         editAgent.resizable(width = False, height = False) 
         allFrames[boxIndex] = editAgent ##Store specific frame according to index.
 
-        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(main, boxIndex, allEditButtons, allFrames, allCircleTableBoxes))
+        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(boxIndex, allEditButtons, allFrames))
         
         editAgent.geometry('500x500')
         
         allEditButtons[boxIndex].config(state = DISABLED)
         
         editButtonsFrame = Frame(editAgent) ##Making the save and cancel buttons
-        saveButton = Button(editButtonsFrame, text = "Done", command = lambda: close_edit(main, boxIndex, allEditButtons, allFrames, allCircleTableBoxes))
+        saveButton = Button(editButtonsFrame, text = "Done", command = lambda: close_edit(boxIndex, allEditButtons, allFrames))
         saveButton.pack(side = RIGHT, anchor = S)
         cancelButton = Button(editButtonsFrame, text = "Clear")
         cancelButton.pack(side = LEFT, anchor = S)
@@ -105,13 +105,11 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
                    generatedTables, moreThanOneAgent, boxIndex, allTableTabContents)  
              
-def close_edit(main, boxIndex, allEditButtons, allFrames, allCircleTableBoxes):
+def close_edit(boxIndex, allEditButtons, allFrames):
     """ (tkinter.Tk) -> (none)
       
       Destroys the editAgent window 
     
     """     
     allFrames[boxIndex].withdraw()
-    contents = allFrames[boxIndex].winfo_children()
-    #print(contents[1].winfo_children())
     allEditButtons[boxIndex].config(state = NORMAL)
