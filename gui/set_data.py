@@ -8,8 +8,10 @@ from entry_mods import *
 import vertSuperscroll
 import superscroll ##Module containing the widget allowing a vertical and horizontal scrollbar.
 
-def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, allFrames, allTitleCBS, allFormatCBS, allRadioButtons, 
-                 allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, boxIndex, allCBSTabContents):
+def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, 
+                 allFrames, allTitleCBS, allFormatCBS, allRadioButtons, 
+                 allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, 
+                 generatedCBS, moreThanOneAgent, boxIndex, allCBSTabContents):
   
   """Editing CBS"""
   ##If no concrete behaviours were yet generated for the behaviours,
@@ -204,15 +206,17 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
     allFillButtons[boxIndex][0].config(command = lambda: fill_bev(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1]))
     allFillButtons[boxIndex][1].config(command = lambda: fill_n(allBevDict[boxIndex + 1], stimDict, allLambdaTableBoxes[boxIndex + 1]))
     
-    ##Store a copy of the old circleTableBoxes and lambdaTableBoxes size to see if any changes were made after calling fix_grids.
+    ##Store a copy of the old circleTableBoxes and lambdaTableBoxes to see if any changes were made after calling fix_grids.
     ##This way, if no changes were made, there is no neeed to recreate the tables.
-    oldTableSize = allCircleTableBoxes[boxIndex + 1][0, 0]
+    oldCircleTableBoxes = allCircleTableBoxes[boxIndex + 1].copy()
+    oldLambdaTableBoxes = allLambdaTableBoxes[boxIndex + 1].copy()
     
     ##Calling fix_grids() to check if modifications are necessary to the grids.
     fix_grids(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1], 
               allCircleGridFrame[boxIndex], allLambdaGridFrame[boxIndex]) 
-    
-    if oldTableSize != allCircleTableBoxes[boxIndex + 1][0, 0]: ##Means changes were made.
+    print(oldCircleTableBoxes)
+    print(allCircleTableBoxes[boxIndex + 1])
+    if oldCircleTableBoxes != allCircleTableBoxes[boxIndex + 1] or oldLambdaTableBoxes != allLambdaTableBoxes[boxIndex + 1]: ##Means changes were made.
     
       ##Recreating the table by using a technique similar to the one described
       ##on the CBS page (see PAGE 2 to PAGE 3).
