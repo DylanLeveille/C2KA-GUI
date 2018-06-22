@@ -165,7 +165,7 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
      
     circleScrollingArea = [superscroll.Scrolling_Area(window, width=1, height=1)]
     circleScrollingArea[0].pack(expand=1, fill = BOTH)    
-    allCircleScrollingArea.append(circleScrollingArea)
+    allCircleScrollingArea[boxIndex] = circleScrollingArea
   
     circleGridFrame = Frame(circleScrollingArea[0].innerframe) 
     circleTableLabel = Label(circleGridFrame, text = 'o')   
@@ -173,7 +173,7 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
   
     lambdaScrollingArea = [superscroll.Scrolling_Area(window, width=1, height=1)]
     lambdaScrollingArea[0].pack(expand=1, fill = BOTH)   
-    allLambdaScrollingArea.append(lambdaScrollingArea)
+    allLambdaScrollingArea[boxIndex] = lambdaScrollingArea
   
     lambdaGridFrame = Frame(lambdaScrollingArea[0].innerframe) 
     lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.  

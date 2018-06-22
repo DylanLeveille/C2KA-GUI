@@ -170,9 +170,9 @@ def next_page():
           del allConcreteScrollingArea[i]      
           del allEntriesCBS[i]      
           del allFillButtons[i]
-          #del allCircleScrollingArea[i] 
+          del allCircleScrollingArea[i] 
           del allCircleGridFrame[i]
-          #del allLambdaScrollingArea[i] 
+          del allLambdaScrollingArea[i] 
           del allLambdaGridFrame[i] 
           del generatedCBS[i] 
           del generatedTables[i]          
@@ -189,12 +189,14 @@ def next_page():
         allTitleCBS.append(None)   
         allFormatCBS.append(None)        
         allRadioButtons.append(None)
+        allConcreteScrollingArea.append(None)   
+        allEntriesCBS.append(None)    
         allTextBoxCBSFrame.append(None)
         allTextBoxCBS.append(None) 
         allAgentCBS.append(None) 
         allFillButtons.append((None, None, buttonsFrame))
-        allConcreteScrollingArea.append(None)   
-        allEntriesCBS.append(None)        
+        allCircleScrollingArea.append(None)
+        allLambdaScrollingArea.append(None)
         allCircleGridFrame.append(None) 
         allLambdaGridFrame.append(None) 
         allIsGoodCBS.append(True) 

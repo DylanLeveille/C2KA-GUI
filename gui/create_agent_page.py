@@ -8,6 +8,8 @@ from CBS_mods import *
 from CBS_radio import *
 from set_data import *
 
+def text():
+    print('YOU SHALL NOT CLOSE!!!')
 
 def create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBevDict, 
                       stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
@@ -56,15 +58,19 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
     if generatedCBS[boxIndex] == False:
         editAgent = Toplevel() ##Creating new window to edit agent specs
         editAgent.resizable(width = False, height = False) 
-        allFrames[boxIndex] = editAgent ##Store specific frame according to index
-    
+        allFrames[boxIndex] = editAgent ##Store specific frame according to index.
+
+        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(main, boxIndex, allEditButtons, allFrames, allCircleTableBoxes))
+        
         editAgent.geometry('500x500')
         
         allEditButtons[boxIndex, 0].config(state = DISABLED)
         allEditButtons[boxIndex, 1] = True
         
         editButtonsFrame = Frame(editAgent) ##Making the save and cancel buttons
+        
         saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(boxIndex, allEditButtons, allFrames))
+
         saveButton.pack(side = RIGHT, anchor = S)
         cancelButton = Button(editButtonsFrame, text = "Clear")
         cancelButton.pack(side = LEFT, anchor = S)
@@ -80,6 +86,8 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         
         editTabs.pack(expand = 1, fill = BOTH)    
     else:
+        allEditButtons[boxIndex].config(state = DISABLED)
+        
         editAgent = allFrames[boxIndex]
         CBSTab = allFrames[boxIndex].winfo_children()[1].winfo_children()[0]
         tableTab = allFrames[boxIndex].winfo_children()[1].winfo_children()[1]
@@ -109,5 +117,4 @@ def close_edit(boxIndex, allEditButtons, allFrames):
     """     
     allFrames[boxIndex].withdraw()
     allEditButtons[boxIndex, 0].config(state = NORMAL)
-    
-    
+
