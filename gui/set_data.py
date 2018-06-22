@@ -214,8 +214,7 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
     ##Calling fix_grids() to check if modifications are necessary to the grids.
     fix_grids(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1], 
               allCircleGridFrame[boxIndex], allLambdaGridFrame[boxIndex]) 
-    print(oldCircleTableBoxes)
-    print(allCircleTableBoxes[boxIndex + 1])
+    
     if oldCircleTableBoxes != allCircleTableBoxes[boxIndex + 1] or oldLambdaTableBoxes != allLambdaTableBoxes[boxIndex + 1]: ##Means changes were made.
     
       ##Recreating the table by using a technique similar to the one described

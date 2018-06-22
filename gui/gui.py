@@ -163,21 +163,21 @@ def next_page():
         if oldAgentNames[i] not in agentNames:
           del allAgentCBS[i]
           del allTitleCBS[i]
-          del allFormatCBS[i]
-          del generatedCBS[i]      
+          del allFormatCBS[i]     
           del allRadioButtons[i]
           del allTextBoxCBSFrame[i]
-          del TextBoxCBS[i]
+          del allTextBoxCBS[i]
           del allConcreteScrollingArea[i]      
-          del allEntriesCBS[i]
-          del generatedTables[i]      
+          del allEntriesCBS[i]      
           del allFillButtons[i]
-          del allCircleScrollingArea[i] 
+          #del allCircleScrollingArea[i] 
           del allCircleGridFrame[i]
-          del allLambdaScrollingArea[i] 
+          #del allLambdaScrollingArea[i] 
           del allLambdaGridFrame[i] 
-          del allIsGoodCBS[i] 
-          del allIsGoodTable[i]          
+          del generatedCBS[i] 
+          del generatedTables[i]          
+          #del allIsGoodCBS[i]  not yet implemented
+          #del allIsGoodTable[i]   not yet implemented       
           
           agentsDeleted += 1
 
@@ -280,50 +280,68 @@ def next_page():
     isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
                                       allLambdaTableBoxes, allCircleTableValues, 
                                       allLambdaTableValues)
-   
-    ##If the table is good, proceed.
-    if isGoodTable: #diffrernt stuff happens based on UI.
-      ##Forget table scrolling areas.
-      allCircleScrollingArea[0][0].pack_forget()
-      allLambdaScrollingArea[0][0].pack_forget()
     
-      ##Forget table frames.
-      allCircleGridFrame[0].pack_forget()
-      allLambdaGridFrame[0].pack_forget()
-    
-      ##Forget next button, fillBev button and fillN button, since they are not
-      ##needed on the last page of the program.
-      allFillButtons[0][0].pack_forget()
-      allFillButtons[0][1].pack_forget()
-      nextButton.pack_forget()
+    if moreThanOneAgent: ##Two things to check; CBS and tables.
+      if isGoodCBS == False:
+        incorrect_CBS(main, return_arrow) ##Calls function for pop-up.
+  
+        pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
       
-      ##Extract concrete behaviour in a dictionary.
-      concreteBehaviours = get_concrete_behaviours(allEntriesCBS[0])      
+      ##If the table is good, proceed.
+      elif isGoodTable:
+        print('dif UI')
+      
+      ##Table is not good.
+      else:
+        ##Deliver a pop-up to the user to warn of invalid entries in the table.
+        incorrect_table(main, numInvalid, return_arrow)
+        ##Decrease pageNum to stay on current page.
+        pageNum -= 1        
 
-      ##Call create_text() to create the agentspec.txt file.
-      create_text(agentNames[0], agentBehaviours[1], concreteBehaviours, allTextBoxCBS[0], 
-                  allCircleTableValues[1], allLambdaTableValues[1], stimDict, allBevDict[1], allRadioButtons[0][2])
+    if not moreThanOneAgent: ##Only check tables.
+      ##If the table is good, proceed.
+      if isGoodTable: 
+        ##Forget table scrolling areas.
+        allCircleScrollingArea[0][0].pack_forget()
+        allLambdaScrollingArea[0][0].pack_forget()
       
-      ##Configure the text entry to be modifiable.
-      textEntry.config(state = 'normal')
-      ##Remove the previous text to insert new one.
-      textEntry.delete(1.0, END)
-      textEntry.insert(INSERT, open("agent_text_backup./agentspec.txt", "r").read())
-      ##Configure the text entry so that it cannot be modified.
-      textEntry.config(state="disabled")
-      ##Pack the text entry frame to give a preview to the user.
-      textEntryFrame.pack(expand = True)
+        ##Forget table frames.
+        allCircleGridFrame[0].pack_forget()
+        allLambdaGridFrame[0].pack_forget()
       
-      ##Pack the button allowing the user to save the file if satisfied
-      ##with the result.
-      saveButton.pack(in_=buttonsFrame)
-    
-    ##Table is not good.
-    else:
-      ##Deliver a pop-up to the user to warn of invalid entries in the table.
-      incorrect_table(main, numInvalid, return_arrow)
-      ##Decrease pageNum to stay on current page.
-      pageNum -= 1
+        ##Forget next button, fillBev button and fillN button, since they are not
+        ##needed on the last page of the program.
+        allFillButtons[0][0].pack_forget()
+        allFillButtons[0][1].pack_forget()
+        nextButton.pack_forget()
+        
+        ##Extract concrete behaviour in a dictionary.
+        concreteBehaviours = get_concrete_behaviours(allEntriesCBS[0])      
+  
+        ##Call create_text() to create the agentspec.txt file.
+        create_text(agentNames[0], agentBehaviours[1], concreteBehaviours, allTextBoxCBS[0], 
+                    allCircleTableValues[1], allLambdaTableValues[1], stimDict, allBevDict[1], allRadioButtons[0][2])
+        
+        ##Configure the text entry to be modifiable.
+        textEntry.config(state = 'normal')
+        ##Remove the previous text to insert new one.
+        textEntry.delete(1.0, END)
+        textEntry.insert(INSERT, open("agent_text_backup./agentspec.txt", "r").read())
+        ##Configure the text entry so that it cannot be modified.
+        textEntry.config(state="disabled")
+        ##Pack the text entry frame to give a preview to the user.
+        textEntryFrame.pack(expand = True)
+        
+        ##Pack the button allowing the user to save the file if satisfied
+        ##with the result.
+        saveButton.pack(in_=buttonsFrame)
+      
+      ##Table is not good.
+      else:
+        ##Deliver a pop-up to the user to warn of invalid entries in the table.
+        incorrect_table(main, numInvalid, return_arrow)
+        ##Decrease pageNum to stay on current page.
+        pageNum -= 1
   
   ##Add one to pageNum everytime the next button is clicked.
   pageNum += 1

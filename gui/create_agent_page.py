@@ -54,6 +54,7 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
     
     if generatedCBS[boxIndex] == False:
         editAgent = Toplevel() ##Creating new window to edit agent specs
+        editAgent.resizable(width = False, height = False) 
         allFrames[boxIndex] = editAgent ##Store specific frame according to index
     
         editAgent.geometry('500x500')
@@ -80,7 +81,6 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         editAgent = allFrames[boxIndex]
         CBSTab = allFrames[boxIndex].winfo_children()[1].winfo_children()[0]
         tableTab = allFrames[boxIndex].winfo_children()[1].winfo_children()[1]
-    
 
     
     
