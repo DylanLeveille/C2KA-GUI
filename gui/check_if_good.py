@@ -232,7 +232,7 @@ def incorrect_bevs(main, return_arrow):
 
 ##Function is called when an incorrect concrete behaviour is entered.
 
-def incorrect_CBS(main, return_arrow):
+def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow):
   """ (tkinter.Tk) -> (none)
     
     Pop-up to tell the user that the concrete behaviour entries
@@ -266,11 +266,13 @@ def incorrect_CBS(main, return_arrow):
 
   ##Disable main window until pop up is closed
   wrongCBS.grab_set()
+  if not moreThanOneAgent:
+    Label(wrongCBS, text = 'Please enter at least one valid concrete behaviour').pack(side = TOP)
   
-  Label(wrongCBS, text = 'Please enter at least one valid concrete behaviour').pack(side = TOP)
+    Label(wrongCBS, text = 'or remove invalid concrete behaviour').pack(side = TOP) 
 
-  Label(wrongCBS, text = 'or remove invalid concrete behaviour').pack(side = TOP) 
-
+  else:
+    Label(wrongCBS, text = 'ERROR! Fix %d Agents' %(allIsGoodCBS.count(False))).pack(side = TOP)
   pressToClose = Button(wrongCBS, image = return_arrow, border = 0, 
                         command = lambda: return_to_CBS(main))
 
@@ -321,7 +323,7 @@ def button_not_clicked(main, return_arrow):
   
   
   
-def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
+def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS):
   """ (tkinter.Tk, dict, tupple) -> (Bool)
     
     Pop-up to tell the user that the agent behaviour entry
@@ -330,11 +332,10 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
   """    
   ##Extract the number of agents.
   numAgents = len(allEntriesCBS)
-  
-  ##Flag to check if there are any invalid entries. Assumming everything is good.
-  goodCBS = True
+
+
   for boxIndex in range(numAgents):
-    
+    goodCBS = True
 
     ##Extract the radio button that was pressed for each window.
     whichRadio = allRadioButtons[boxIndex][2]
@@ -346,6 +347,7 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
         if allEntriesCBS[boxIndex][entry, 1].get() == ' ' * len(allEntriesCBS[boxIndex][entry, 1].get()):
           if goodCBS == True:
             goodCBS = False
+
 
             
           ##If entry is invalid, change the background to white.
@@ -363,15 +365,19 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
       if len(textBoxWords) == 0:
         if goodCBS == True:
           goodCBS = False 
+
       
       ##Check to see if the number of 'if' equals to the number of 'fi' and check if there 
       ##are any 'if' as well.  
       if textBoxWords.count('if') != textBoxWords.count('fi'):   
         if goodCBS == True:
           goodCBS = False
-      
+
+    allIsGoodCBS[boxIndex] = goodCBS
+  if allIsGoodCBS.count(False) > 0:
+    return False
   ##If there are no invalid entries, return True; else return False  
-  return goodCBS
+  return True
 
 ##Function is called to verify entries in tables.
 def check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, allLambdaTableBoxes, 
