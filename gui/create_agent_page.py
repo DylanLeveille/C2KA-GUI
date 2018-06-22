@@ -36,7 +36,8 @@ def create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBev
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
                                                                                 boxIndex, allCBSTabContents, allTableTabContents)) 
 
-        allEditButtons[i] = editButton
+        allEditButtons[i, 0] = editButton
+        allEditButtons[i, 1] = False
         editLabel.pack(side = LEFT, anchor = N)
         editButton.pack(anchor = N)
         #completeLabel.pack(side = RIGHT, anchor = N)
@@ -63,10 +64,13 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         
         editAgent.geometry('500x500')
         
-        allEditButtons[boxIndex].config(state = DISABLED)
+        allEditButtons[boxIndex, 0].config(state = DISABLED)
+        allEditButtons[boxIndex, 1] = True
         
-        editButtonsFrame = Frame(editAgent) ##Making the save and cancel buttons
+        editButtonsFrame = Frame(editAgent) ##Making the save and cancel button
+        
         saveButton = Button(editButtonsFrame, text = "Done", command = lambda: close_edit(boxIndex, allEditButtons, allFrames))
+
         saveButton.pack(side = RIGHT, anchor = S)
         cancelButton = Button(editButtonsFrame, text = "Clear")
         cancelButton.pack(side = LEFT, anchor = S)
@@ -112,4 +116,7 @@ def close_edit(boxIndex, allEditButtons, allFrames):
     
     """     
     allFrames[boxIndex].withdraw()
-    allEditButtons[boxIndex].config(state = NORMAL)
+
+    allEditButtons[boxIndex, 0].config(state = NORMAL)
+
+

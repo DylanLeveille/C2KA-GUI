@@ -266,7 +266,7 @@ def incorrect_CBS(main, return_arrow):
 
   ##Disable main window until pop up is closed
   wrongCBS.grab_set()
-
+  
   Label(wrongCBS, text = 'Please enter at least one valid concrete behaviour').pack(side = TOP)
 
   Label(wrongCBS, text = 'or remove invalid concrete behaviour').pack(side = TOP) 
@@ -277,6 +277,50 @@ def incorrect_CBS(main, return_arrow):
   pressToClose.pack(side = BOTTOM, anchor = E)
 
 
+def button_not_clicked(main, return_arrow):
+  """ (tkinter.Tk) -> (none)
+    
+    Pop-up to tell the user that the concrete behaviour entries
+    are incorrect.
+  
+  """    
+  global buttonNotClicked
+
+  ##Create pop-up window.
+  buttonNotClicked = Toplevel()
+
+  buttonNotClicked.config(takefocus = True) ##Get focus on screen.  
+
+  windowSize = 300 ##Pop up size (300 x 300). 
+
+  ##Collect screen (monitor) width and height to position the window in the center. 
+  screenWidth = buttonNotClicked.winfo_screenwidth() 
+  screenHeight = buttonNotClicked.winfo_screenheight()
+
+  ##Calculate the center position.
+  positionRight = screenWidth/2 - windowSize/2
+  positionDown = screenHeight/2 - windowSize/2
+
+  ##Set the window size using the geometry() method.
+  buttonNotClicked.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
+                                    positionRight, positionDown)) 
+
+  buttonNotClicked.resizable(width = False, height = False) ##The window is not resizeable.
+
+  buttonNotClicked.wm_title("Incorrect Concrete Behaviour")
+
+  ##Disable main window until pop up is closed
+  buttonNotClicked.grab_set()
+  
+  Label(buttonNotClicked, text = 'Please fill out all agent specifcations').pack(side = TOP)
+
+  pressToClose = Button(buttonNotClicked, image = return_arrow, border = 0, 
+                        command = lambda: return_to_edit(main))
+
+  pressToClose.pack(side = BOTTOM, anchor = E)
+  
+  
+  
 def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
   """ (tkinter.Tk, dict, tupple) -> (Bool)
     
@@ -291,6 +335,7 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
   goodCBS = True
   for boxIndex in range(numAgents):
     
+
     ##Extract the radio button that was pressed for each window.
     whichRadio = allRadioButtons[boxIndex][2]
   
@@ -301,6 +346,7 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
         if allEntriesCBS[boxIndex][entry, 1].get() == ' ' * len(allEntriesCBS[boxIndex][entry, 1].get()):
           if goodCBS == True:
             goodCBS = False
+
             
           ##If entry is invalid, change the background to white.
           allEntriesCBS[boxIndex][entry, 1].config(background = 'tomato')
@@ -325,7 +371,7 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
           goodCBS = False
       
   ##If there are no invalid entries, return True; else return False  
-  return goodCBS 
+  return goodCBS
 
 ##Function is called to verify entries in tables.
 def check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, allLambdaTableBoxes, 
@@ -533,3 +579,12 @@ def return_to_tables(main):
   
   """   
   invalidEntryPop.destroy()
+
+def return_to_edit(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the buttonNotClicked window and re-generates
+    the main window.
+  
+  """     
+  buttonNotClicked.destroy()
