@@ -309,7 +309,7 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
           ##If entry is valid, change the backgound to white.
           allEntriesCBS[boxIndex][entry, 1].config(background = 'white')
   
-    else:
+    else: ##Concrete behaviours was on box display.
       ##Create list of texbox lines, filters out empty lines.
       textBoxWords = allTextBoxCBS[boxIndex].get("1.0", END).split()
       
@@ -328,8 +328,8 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS):
   return goodCBS 
 
 ##Function is called to verify entries in tables.
-def check_if_good_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes, 
-                  circleTableValues, lambdaTableValues):
+def check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, allLambdaTableBoxes, 
+                  allCircleTableValues, allLambdaTableValues):
   """ (dict, dict, dict, dict, dict, dict) -> (bool)
     
     Validates all data in the tables by returning True
@@ -338,37 +338,44 @@ def check_if_good_table(bevDict, stimDict, circleTableBoxes, lambdaTableBoxes,
   """       
   invalidEntries = 0 ##A counter for invalid entries.
   
-  firstFlag = True
-  secondFlag = True
+  ##Extract the number of agents.
+  numAgents = len(allCircleTableBoxes)  
   
-  found = False
-  ##Search for incorrect value in circleTableValues. 
-  for key in circleTableValues.keys():
-    if circleTableValues[key] not in bevDict.values():
-      if found == False:
-        firstFlag = False 
-        found = True
-      circleTableBoxes[key].config(bg = 'tomato')
-      invalidEntries += 1
-    ##Change background to white (normal) if the value is now valid.  
-    else:
-      circleTableBoxes[key].config(bg = 'white')    
+  ##Assuming both tables are good for each agent.
+  circleTablesGood = True
+  lambdaTablesGood = True
   
-  found = False    
-  ##Search for incorrect value in lambdaTableValues.     
-  for key in lambdaTableValues.keys():
-    if lambdaTableValues[key] not in stimDict.values() and lambdaTableValues[key] != 'N' and lambdaTableValues[key] != 'D':
-      if found == False:
-        secondFlag = False 
-        found = True
-      lambdaTableBoxes[key].config(bg = 'tomato') 
-      invalidEntries += 1
-    ##Change background to white (normal) if the value is now valid.  
-    else: 
-      lambdaTableBoxes[key].config(bg = 'white')
+  for boxIndex in range(numAgents):
+
+    ##Search for incorrect value in circleTableValues. 
+    for key in allCircleTableValues[boxIndex + 1].keys():
+      if allCircleTableValues[boxIndex + 1][key] not in allBevDict[boxIndex + 1].values():
+        if circleTablesGood == True:
+          circleTablesGood = False 
+  
+        allCircleTableBoxes[boxIndex + 1][key].config(bg = 'tomato')
+        invalidEntries += 1
+        
+      ##Change background to white (normal) if the value is now valid.  
+      else:
+        allCircleTableBoxes[boxIndex + 1][key].config(bg = 'white')    
+    
+    
+    ##Search for incorrect value in lambdaTableValues.     
+    for key in allLambdaTableValues[boxIndex + 1].keys():
+      if allLambdaTableValues[boxIndex + 1][key] not in stimDict.values() and allLambdaTableValues[boxIndex + 1][key] != 'N' and allLambdaTableValues[boxIndex + 1][key] != 'D':
+        if lambdaTablesGood == True:
+          lambdaTablesGood = False 
+         
+        allLambdaTableBoxes[boxIndex + 1][key].config(bg = 'tomato') 
+        invalidEntries += 1
+        
+      ##Change background to white (normal) if the value is now valid.  
+      else: 
+        allLambdaTableBoxes[boxIndex + 1][key].config(bg = 'white')
   
   ##If both tables contain valid values, return True; else return False.    
-  if firstFlag == True and secondFlag == True:
+  if circleTablesGood == True and lambdaTablesGood == True:
     return True, invalidEntries
   else:
     return False, invalidEntries 

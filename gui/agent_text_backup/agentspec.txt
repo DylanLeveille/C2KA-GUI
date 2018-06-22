@@ -1,22 +1,17 @@
 begin AGENT where
-    j := L K
+    j := K L
 end
 
 begin NEXT_BEHAVIOUR where
-    (i, L) = L
     (i, K) = K
-    (j, L) = L
-    (j, K) = K
+    (i, L) = L
 end
 
 begin NEXT_STIMULUS where
-    (i, L) = N
     (i, K) = N
-    (j, L) = N
-    (j, K) = N
+    (i, L) = N
 end
 
 begin CONCRETE BEHAVIOUR where
-    L => [ p ]
-    K => [ u ]
+    j => [ h ]
 end

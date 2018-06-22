@@ -55,7 +55,7 @@ def next_page():
   global allFrames
   global allCBSTabContents
   global allTableTabContents
-  global allButtons
+  global allEditButtons
   
   global allCircleTableBoxes ##Dict to hold entry boxes and labels of circle table for all agents.
   global allLambdaTableBoxes ##Dict to hold entry boxes and labels of lambda table for all agents.
@@ -199,15 +199,17 @@ def next_page():
         allLambdaGridFrame.append(None) 
         allIsGoodCBS.append(True) 
         allIsGoodTable.append(True)         
-
-      ##Save agents in old agents in case user returns to page 2 WITHOUT going to page 1.
-      oldAgentNames = agentNames.copy() 
       
       if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a different layout.
         moreThanOneAgent = True        
         
+        if len(oldAgentNames) == 1 and oldAgentNames[0] == agentNames[0]: ##If agent was single but now multiple, we need to remake the UI for that agent in the multiple agent page.
+          generatedTables[0] = False
+          generatedCBS[0] = False
+          
+        
         ##Special UI when more than one agent is entered.
-        create_agent_page(main, allButtons, allFrames, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
+        create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
                           allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
                           allTitleCBS, allFormatCBS, allEntriesCBS, allAgentCBS, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
                           generatedTables, generatedCBS, allCBSTabContents, allTableTabContents) 
@@ -217,11 +219,17 @@ def next_page():
       else: ##Only one agent.            
         moreThanOneAgent = False
         
+        if len(oldAgentNames) > 1 and oldAgentNames[0] == agentNames[0]: ##If agent was in multiple agents but now signle, we need to remake the UI for that agent in the single agent page.
+          generatedTables[0] = False
+          generatedCBS[0] = False        
+        
         set_CBS_data(main, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, allFrames,  
                      allTitleCBS, allFormatCBS, allRadioButtons, allConcreteScrollingArea, 
                      allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, 0, allCBSTabContents)
         
-    
+      ##Save agents in old agents in case user returns to page 2 WITHOUT going to page 1.
+      oldAgentNames = agentNames.copy()  
+      
   """PAGE 3 to PAGE 4."""
   if pageNum == 3 and moreThanOneAgent == False: ##Only true when one agent only.
    
@@ -257,9 +265,8 @@ def next_page():
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
     if moreThanOneAgent: 
-      for boxIndex in range(len(agentNames)): 
-        allIsGoodCBS[boxIndex] = check_if_good_CBS(main, allEntriesCBS[boxIndex], allRadioButtons[boxIndex], allTextBoxCBS[boxIndex]) 
- 
+      isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS) #only checks if good for all, therefore not keeping track of individuals. But works :).
+   
     ##Create dictionaries to hold the values from tables.
     allCircleTableValues = get_empty_dict()
     allLambdaTableValues = get_empty_dict()
@@ -269,12 +276,13 @@ def next_page():
       allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
                                                                                   allLambdaTableBoxes[i + 1]) 
      
-      ##Calling check_if_good() to assure all the inputs are valid.
-      isGood, numInvalid = check_if_good_table(allBevDict[i + 1], stimDict, allCircleTableBoxes[i + 1], 
-                                         allLambdaTableBoxes[i + 1], allCircleTableValues[i + 1], 
-                                         allLambdaTableValues[i + 1])
+    ##Calling check_if_good() to assure all the inputs are valid.
+    isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
+                                      allLambdaTableBoxes, allCircleTableValues, 
+                                      allLambdaTableValues)
+   
     ##If the table is good, proceed.
-    if isGood: #diffrernt stuff happens based on UI.
+    if isGoodTable: #diffrernt stuff happens based on UI.
       ##Forget table scrolling areas.
       allCircleScrollingArea[0][0].pack_forget()
       allLambdaScrollingArea[0][0].pack_forget()
@@ -500,7 +508,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   allFrames = {} ##Dictionary for all the pop-ups
   allCBSTabContents = {} ##Dictionary for everything inside CBSTab
   allTableTabContents = {}
-  allButtons = {} ##Dictionary for all the edit buttons    
+  allEditButtons = {} ##Dictionary for all the edit buttons    
   
   ##Bind these to empty lists to allow them to be passed as arguments.
   allCircleScrollingArea = []

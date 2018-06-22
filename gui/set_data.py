@@ -137,10 +137,7 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
                    generatedTables, moreThanOneAgent, boxIndex, allTableTabContents):
 
-  if generatedTables[boxIndex] == True and boxIndex == 0 and moreThanOneAgent:
-    generatedTables[boxIndex] == False   
-
-  elif generatedTables[boxIndex] == False: 
+  if generatedTables[boxIndex] == False: 
     ##Creating scrolling areas and frames for both the circle and lambda tables.
     ##Also creating the labels in the upper corner of each table.
     if moreThanOneAgent:
@@ -204,46 +201,59 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
       allFillButtons[boxIndex][0].pack(in_=allFillButtons[boxIndex][2], side = LEFT) 
       allFillButtons[boxIndex][1].pack(in_=allFillButtons[boxIndex][2], side = RIGHT)
     
+    allFillButtons[boxIndex][0].config(command = lambda: fill_bev(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1]))
+    allFillButtons[boxIndex][1].config(command = lambda: fill_n(allBevDict[boxIndex + 1], stimDict, allLambdaTableBoxes[boxIndex + 1]))
+    
+    ##Store a copy of the old circleTableBoxes and lambdaTableBoxes size to see if any changes were made after calling fix_grids.
+    ##This way, if no changes were made, there is no neeed to recreate the tables.
+    oldTableSize = allCircleTableBoxes[boxIndex + 1][0, 0]
+    
     ##Calling fix_grids() to check if modifications are necessary to the grids.
     fix_grids(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1], 
               allCircleGridFrame[boxIndex], allLambdaGridFrame[boxIndex]) 
-  
-    ##Recreating the table by using a technique similar to the one described
-    ##on the CBS page (see PAGE 2 to PAGE 3).
-    circleScrollingAreaTemp = superscroll.Scrolling_Area(window, width=1, height=1)
-    circleScrollingAreaTemp.pack(expand=1, fill = BOTH)   
-  
-    circleGridFrameTemp = Frame(circleScrollingAreaTemp.innerframe) 
-    circleTableLabel = Label(circleGridFrameTemp, text = 'o')   
-    circleTableLabel.grid(row = 0, column = 0)
-  
-    lambdaScrollingAreaTemp = superscroll.Scrolling_Area(window, width=1, height=1)
-    lambdaScrollingAreaTemp.pack(expand=1, fill = BOTH)      
-  
-    lambdaGridFrameTemp = Frame(lambdaScrollingAreaTemp.innerframe) 
-    lambdaTableLabel = Label(lambdaGridFrameTemp, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.     
-    lambdaTableLabel.grid(row = 0, column = 0) 
     
-    ##Recreate the tables with the new data structures, and assing the data scructures
-    ##to the newly created entry boxes.
-    allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1] = recreate_table(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1], 
-                                                        allLambdaTableBoxes[boxIndex + 1], circleGridFrameTemp, 
-                                                        lambdaGridFrameTemp)
+    if oldTableSize != allCircleTableBoxes[boxIndex + 1][0, 0]: ##Means changes were made.
     
-    ##Destroy old scrolling areas and frames.
-    allCircleScrollingArea[boxIndex][0].destroy()
-    allCircleGridFrame[boxIndex].destroy()
-    allLambdaScrollingArea[boxIndex][0].destroy()
-    allLambdaGridFrame[boxIndex].destroy()
-         
-    ##Pack the new scrolling areas and frames.
-    circleScrollingAreaTemp.pack(side=TOP, anchor = NW)
-    circleGridFrameTemp.pack(side=TOP, anchor = NW)
-    lambdaScrollingAreaTemp.pack(side=TOP, anchor = SW)
-    lambdaGridFrameTemp.pack(side=TOP, anchor = SW)
+      ##Recreating the table by using a technique similar to the one described
+      ##on the CBS page (see PAGE 2 to PAGE 3).
+      circleScrollingAreaTemp = superscroll.Scrolling_Area(window, width=1, height=1)
+      circleScrollingAreaTemp.pack(expand=1, fill = BOTH)   
     
-    ##Assign the old scrolling areas and frames to the new ones.
-    allCircleScrollingArea[boxIndex] = [circleScrollingAreaTemp]
-    allCircleGridFrame[boxIndex] = circleGridFrameTemp
-    allLambdaScrollingArea[boxIndex] = [lambdaScrollingAreaTemp]
-    allLambdaGridFrame[boxIndex] = lambdaGridFrameTemp        
+      circleGridFrameTemp = Frame(circleScrollingAreaTemp.innerframe) 
+      circleTableLabel = Label(circleGridFrameTemp, text = 'o')   
+      circleTableLabel.grid(row = 0, column = 0)
+    
+      lambdaScrollingAreaTemp = superscroll.Scrolling_Area(window, width=1, height=1)
+      lambdaScrollingAreaTemp.pack(expand=1, fill = BOTH)      
+    
+      lambdaGridFrameTemp = Frame(lambdaScrollingAreaTemp.innerframe) 
+      lambdaTableLabel = Label(lambdaGridFrameTemp, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.     
+      lambdaTableLabel.grid(row = 0, column = 0) 
+      
+      ##Recreate the tables with the new data structures, and assing the data scructures
+      ##to the newly created entry boxes.
+      allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1] = recreate_table(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1], 
+                                                          allLambdaTableBoxes[boxIndex + 1], circleGridFrameTemp, 
+                                                          lambdaGridFrameTemp)
+      ##Destroy old scrolling areas and frames.
+      allCircleScrollingArea[boxIndex][0].destroy()
+      allCircleGridFrame[boxIndex].destroy()
+      allLambdaScrollingArea[boxIndex][0].destroy()
+      allLambdaGridFrame[boxIndex].destroy()
+           
+      ##Pack the new frames.
+      circleGridFrameTemp.pack(side=TOP, anchor = NW)
+      lambdaGridFrameTemp.pack(side=TOP, anchor = SW)
+      
+      ##Assign the old scrolling areas and frames to the new ones.
+      allCircleScrollingArea[boxIndex] = [circleScrollingAreaTemp]
+      allCircleGridFrame[boxIndex] = circleGridFrameTemp
+      allLambdaScrollingArea[boxIndex] = [lambdaScrollingAreaTemp]
+      allLambdaGridFrame[boxIndex] = lambdaGridFrameTemp        
+  
+    else: ##No changes to tables.    
+      if not moreThanOneAgent: ##We must repack the tables for a single agent.
+        allCircleScrollingArea[boxIndex][0].pack(expand=1, fill = BOTH)  
+        allCircleGridFrame[boxIndex].pack(side=TOP, anchor = NW)
+        allLambdaScrollingArea[boxIndex][0].pack(expand=1, fill = BOTH)  
+        allLambdaGridFrame[boxIndex].pack(side=TOP, anchor = SW)        
