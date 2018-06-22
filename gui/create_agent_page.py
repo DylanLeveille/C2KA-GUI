@@ -34,7 +34,8 @@ def create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBev
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
                                                                                 boxIndex, allCBSTabContents, allTableTabContents)) 
 
-        allEditButtons[i] = editButton
+        allEditButtons[i, 0] = editButton
+        allEditButtons[i, 1] = False
         editLabel.pack(side = LEFT, anchor = N)
         editButton.pack(anchor = N)
         #completeLabel.pack(side = RIGHT, anchor = N)
@@ -59,10 +60,11 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
     
         editAgent.geometry('500x500')
         
-        allEditButtons[boxIndex].config(state = DISABLED)
+        allEditButtons[boxIndex, 0].config(state = DISABLED)
+        allEditButtons[boxIndex, 1] = True
         
         editButtonsFrame = Frame(editAgent) ##Making the save and cancel buttons
-        saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(main, boxIndex, allEditButtons, allFrames, allCircleTableBoxes))
+        saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(boxIndex, allEditButtons, allFrames))
         saveButton.pack(side = RIGHT, anchor = S)
         cancelButton = Button(editButtonsFrame, text = "Clear")
         cancelButton.pack(side = LEFT, anchor = S)
@@ -99,13 +101,13 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
                    generatedTables, moreThanOneAgent, boxIndex, allTableTabContents)  
              
-def close_edit(main, boxIndex, allEditButtons, allFrames, allCircleTableBoxes):
+def close_edit(boxIndex, allEditButtons, allFrames):
     """ (tkinter.Tk) -> (none)
       
       Destroys the editAgent window 
     
     """     
     allFrames[boxIndex].withdraw()
-    contents = allFrames[boxIndex].winfo_children()
-    print(contents[1].winfo_children())
-    allEditButtons[boxIndex].config(state = NORMAL)
+    allEditButtons[boxIndex, 0].config(state = NORMAL)
+    
+    

@@ -72,7 +72,7 @@ def next_page():
   global moreThanOneAgent ##Boolean to keep track of if there is more than one agent inputted.
   
   global allIsGoodCBS 
-  global allIsGoodTable  
+  global allIsGoodTable
   
   global generatedTables ##List to keep track of tables that were already generated for each agent.
   global generatedCBS ##List to keep track of Bool variables to check if CBS were generated.
@@ -264,39 +264,48 @@ def next_page():
     
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
-    if moreThanOneAgent: 
-      isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS) #only checks if good for all, therefore not keeping track of individuals. But works :).
-   
-    ##Create dictionaries to hold the values from tables.
-    allCircleTableValues = get_empty_dict()
-    allLambdaTableValues = get_empty_dict()
-   
-    ##Extract circle table values and lambda table values for each agent.
-    for i in range(len(agentNames)):
-      allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
-                                                                                  allLambdaTableBoxes[i + 1]) 
-     
-    ##Calling check_if_good() to assure all the inputs are valid.
-    isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
-                                      allLambdaTableBoxes, allCircleTableValues, 
-                                      allLambdaTableValues)
+    if moreThanOneAgent:
+      buttonsClicked = 0
+      for i in range(len(agentNames)):
+        if allEditButtons[i, 1] == True:
+          
+          buttonsClicked+=1
+      
+      if buttonsClicked == len(agentNames):
+        isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS) #only checks if good for all, therefore not keeping track of individuals. But works :).
+
+        ##Create dictionaries to hold the values from tables.
+        allCircleTableValues = get_empty_dict()
+        allLambdaTableValues = get_empty_dict()
+       
+        ##Extract circle table values and lambda table values for each agent.
+        for i in range(len(agentNames)):
+          allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
+                                                                                      allLambdaTableBoxes[i + 1]) 
+         
+        ##Calling check_if_good() to assure all the inputs are valid.
+        isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
+                                          allLambdaTableBoxes, allCircleTableValues, 
+                                          allLambdaTableValues)
+        if isGoodCBS == False:
+          incorrect_CBS(main, return_arrow) ##Calls function for pop-up.
     
-    if moreThanOneAgent: ##Two things to check; CBS and tables.
-      if isGoodCBS == False:
-        incorrect_CBS(main, return_arrow) ##Calls function for pop-up.
-  
-        pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
+          pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
+        
+        ##If the table is good, proceed.
+        elif isGoodTable:
+          print('dif UI')
+        
+        ##Table is not good.
+        else:
+          ##Deliver a pop-up to the user to warn of invalid entries in the table.
+          incorrect_table(main, numInvalid, return_arrow)
+          ##Decrease pageNum to stay on current page.
+          pageNum -= 1    
       
-      ##If the table is good, proceed.
-      elif isGoodTable:
-        print('dif UI')
-      
-      ##Table is not good.
       else:
-        ##Deliver a pop-up to the user to warn of invalid entries in the table.
-        incorrect_table(main, numInvalid, return_arrow)
-        ##Decrease pageNum to stay on current page.
-        pageNum -= 1        
+        button_not_clicked(main, return_arrow)
+        pageNum -=1
 
     if not moreThanOneAgent: ##Only check tables.
       ##If the table is good, proceed.
