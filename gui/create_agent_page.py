@@ -60,16 +60,16 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         editAgent.resizable(width = False, height = False) 
         allFrames[boxIndex] = editAgent ##Store specific frame according to index.
 
-        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(main, boxIndex, allEditButtons, allFrames, allCircleTableBoxes))
+        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(boxIndex, allEditButtons, allFrames))
         
         editAgent.geometry('500x500')
         
         allEditButtons[boxIndex, 0].config(state = DISABLED)
         allEditButtons[boxIndex, 1] = True
         
-        editButtonsFrame = Frame(editAgent) ##Making the save and cancel buttons
+        editButtonsFrame = Frame(editAgent) ##Making the save and cancel button
         
-        saveButton = Button(editButtonsFrame, text = "Done", command = lambda boxIndex=boxIndex: close_edit(boxIndex, allEditButtons, allFrames))
+        saveButton = Button(editButtonsFrame, text = "Done", command = lambda: close_edit(boxIndex, allEditButtons, allFrames))
 
         saveButton.pack(side = RIGHT, anchor = S)
         cancelButton = Button(editButtonsFrame, text = "Clear")
@@ -116,5 +116,7 @@ def close_edit(boxIndex, allEditButtons, allFrames):
     
     """     
     allFrames[boxIndex].withdraw()
+
     allEditButtons[boxIndex, 0].config(state = NORMAL)
+
 
