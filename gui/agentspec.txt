@@ -1,0 +1,15 @@
+begin AGENT where
+    i := i
+end
+
+begin NEXT_BEHAVIOUR where
+    (l0, I) = I
+end
+
+begin NEXT_STIMULUS where
+    (l0, I) = N
+end
+
+begin CONCRETE BEHAVIOUR where
+    I => [ 123 ]
+end

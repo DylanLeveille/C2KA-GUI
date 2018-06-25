@@ -157,7 +157,6 @@ def next_page():
       
       ##Keep track of agents deleted.
       agentsDeleted = 0
-      
       ##Remove generated tables and CBS based on if agents were removed. Since we used lists, the indices will shift automatically.
       for i in range(len(oldAgentNames)):
         if oldAgentNames[i] not in agentNames: #and edit clicked at i == True ->>> super important!
@@ -172,15 +171,19 @@ def next_page():
           del allFillButtons[i]
           del allCircleScrollingArea[i] 
           del allCircleGridFrame[i]
-          del allCircleTableBoxes[len(allCircleTableBoxes)]
           del allLambdaScrollingArea[i] 
           del allLambdaGridFrame[i] 
-          del allLambdaTableBoxes[len(allLambdaTableBoxes)]
           del generatedCBS[i] 
           del generatedTables[i]          
-          del allIsGoodCBS[i] 
-          #del allIsGoodTable[i]   not yet implemented       
+          del allIsGoodCBS[i]
           
+          
+          if allEditButtons[i][1] == True:
+            del allCircleTableBoxes[len(allCircleTableBoxes)]
+            del allLambdaTableBoxes[len(allLambdaTableBoxes)]
+          #del allIsGoodTable[i]   not yet implemented
+          del allEditButtons[i]
+          del allFrames[i]
           agentsDeleted += 1
 
       ##Set False to the tables generated based on if new agents were added.
@@ -189,7 +192,10 @@ def next_page():
         generatedTables.append(False)    
         
         ##Append None to create a new size to each of the lists.
-        allTitleCBS.append(None)   
+        allEditButtons.append(None)
+        allFrames.append(None)
+        
+        allTitleCBS.append(None)
         allFormatCBS.append(None)        
         allRadioButtons.append(None)
         allConcreteScrollingArea.append(None)   
@@ -274,15 +280,12 @@ def next_page():
     ##Create dictionaries to hold the values from tables.
     allCircleTableValues = get_empty_dict()
     allLambdaTableValues = get_empty_dict()
-
-    ##Extract circle table values and lambda table values for each agent.
-    for i in range(len(agentNames)):
-      allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
-                                                                                  allLambdaTableBoxes[i + 1])       
+     
+     
     if moreThanOneAgent:
       buttonsClicked = 0
       for i in range(len(agentNames)):
-        if allEditButtons[i, 1] == True:
+        if allEditButtons[i][1] == True:
           
           buttonsClicked+=1
       
@@ -327,6 +330,10 @@ def next_page():
 
     elif not moreThanOneAgent: ##Only check tables.
       
+      ##Extract circle table values and lambda table values for each agent.
+      for i in range(len(agentNames)):
+        allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
+                                                                                    allLambdaTableBoxes[i + 1])       
       ##Calling check_if_good() to assure all the inputs are valid.
       isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
                                         allLambdaTableBoxes, allCircleTableValues, 
@@ -556,10 +563,10 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##Initialize lists to hold the fill with behaviour and fill with neutral stimuli buttons and the frames for them.
   allFillButtons = []
   
-  allFrames = {} ##Dictionary for all the pop-ups
+  allFrames = [] ##Dictionary for all the pop-ups
   allCBSTabContents = {} ##Dictionary for everything inside CBSTab
   allTableTabContents = {}
-  allEditButtons = {} ##Dictionary for all the edit buttons    
+  allEditButtons = [] ##Dictionary for all the edit buttons    
   
   ##Bind these to empty lists to allow them to be passed as arguments.
   allCircleScrollingArea = []

@@ -19,7 +19,6 @@ def create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBev
     editScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
     editScrollingAreaTemp.pack(expand = 1, fill=BOTH)
 
-    
     for i in range(len(agentNames)):
         editFrame = Frame(editScrollingAreaTemp.innerframe)
         editLabel = Label(editFrame, text = agentNames[i])
@@ -33,15 +32,15 @@ def create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBev
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
                                                                                 boxIndex, allCBSTabContents, allTableTabContents)) 
 
-        allEditButtons[i, 0] = editButton
-        allEditButtons[i, 1] = False
+
+        allEditButtons[i] = editButton, False
         editLabel.pack(side = LEFT, anchor = N)
         editButton.pack(anchor = N)
         #completeLabel.pack(side = RIGHT, anchor = N)
         editFrame.pack(anchor = W)
         
-        editScrollingArea[0] = editScrollingAreaTemp         
-
+        editScrollingArea[0] = editScrollingAreaTemp  
+    
 
 def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
                      allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
@@ -52,6 +51,9 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
                      allCBSTabContents, allTableTabContents):
     global editAgent      
     
+    allEditButtons[boxIndex][0].config(state = DISABLED)
+    allEditButtons[boxIndex] = allEditButtons[boxIndex][0], True 
+    
     if generatedCBS[boxIndex] == False:
         editAgent = Toplevel() ##Creating new window to edit agent specs
         editAgent.resizable(width = False, height = False) 
@@ -61,8 +63,6 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         
         editAgent.geometry('500x500')
         
-        allEditButtons[boxIndex, 0].config(state = DISABLED)
-        allEditButtons[boxIndex, 1] = True
         
         editButtonsFrame = Frame(editAgent) ##Making the save and cancel button
         
@@ -83,11 +83,14 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         
         editTabs.pack(expand = 1, fill = BOTH)    
     else:
-        allEditButtons[boxIndex, 0].config(state = DISABLED)
         
         editAgent = allFrames[boxIndex]
+        editAgent.protocol("WM_DELETE_WINDOW", lambda boxIndex = boxIndex: close_edit(boxIndex, allEditButtons, allFrames))
+        allFrames[boxIndex].winfo_children()[0].winfo_children()[0].config(command = lambda: close_edit(boxIndex, allEditButtons, allFrames))
+        
         CBSTab = allFrames[boxIndex].winfo_children()[1].winfo_children()[0]
         tableTab = allFrames[boxIndex].winfo_children()[1].winfo_children()[1]
+        
 
     
     
@@ -105,15 +108,16 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
                    allLambdaTableBoxes, allCircleScrollingArea, 
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
                    generatedTables, moreThanOneAgent, boxIndex, allTableTabContents)  
-             
+     
 def close_edit(boxIndex, allEditButtons, allFrames):
     """ (tkinter.Tk) -> (none)
       
       Destroys the editAgent window 
     
-    """     
+    """
+
     allFrames[boxIndex].withdraw()
 
-    allEditButtons[boxIndex, 0].config(state = NORMAL)
+    allEditButtons[boxIndex][0].config(state = NORMAL)
 
 
