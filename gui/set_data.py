@@ -130,6 +130,10 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
       allFormatCBS[boxIndex].pack(side = BOTTOM, anchor = S, expand = True)
       
     else:
+      allRadioButtons[boxIndex][0].config(command = lambda: change_CBS(allRadioButtons[boxIndex][0], 
+                                 allRadioButtons[boxIndex][1], allConcreteScrollingArea[boxIndex], allTextBoxCBSFrame[boxIndex], allRadioButtons[boxIndex][2]))
+      allRadioButtons[boxIndex][1].config(command = lambda: change_CBS(allRadioButtons[boxIndex][0], 
+                                 allRadioButtons[boxIndex][1], allConcreteScrollingArea[boxIndex], allTextBoxCBSFrame[boxIndex], allRadioButtons[boxIndex][2]))      
       allFrames[boxIndex].deiconify()
 
         
