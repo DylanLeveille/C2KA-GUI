@@ -86,7 +86,7 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         
         editTabs.pack(expand = 1, fill = BOTH)    
     else:
-        allEditButtons[boxIndex].config(state = DISABLED)
+        allEditButtons[boxIndex, 0].config(state = DISABLED)
         
         editAgent = allFrames[boxIndex]
         CBSTab = allFrames[boxIndex].winfo_children()[1].winfo_children()[0]

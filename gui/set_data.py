@@ -131,7 +131,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
       
     else:
       allFrames[boxIndex].deiconify()
-      allFrames[boxIndex].iconify()
+
         
 
 def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableBoxes, 

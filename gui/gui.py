@@ -284,14 +284,26 @@ def next_page():
           buttonsClicked+=1
       
       if buttonsClicked == len(agentNames):
-        isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS) #only checks if good for all, therefore not keeping track of individuals. But works :).
+
+        
+        isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS) #only checks if good for all, therefore not keeping track of individuals. But works :).
+
+        ##Create dictionaries to hold the values from tables.
+        allCircleTableValues = get_empty_dict()
+        allLambdaTableValues = get_empty_dict()
+       
+        ##Extract circle table values and lambda table values for each agent.
+        for i in range(len(agentNames)):
+          allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
+                                                                                      allLambdaTableBoxes[i + 1]) 
+
          
         ##Calling check_if_good() to assure all the inputs are valid.
         isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
                                           allLambdaTableBoxes, allCircleTableValues, 
                                           allLambdaTableValues)
         if isGoodCBS == False:
-          incorrect_CBS(main, return_arrow) ##Calls function for pop-up.
+          incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow) ##Calls function for pop-up.
     
           pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
         
