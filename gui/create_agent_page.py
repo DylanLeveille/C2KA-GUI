@@ -8,9 +8,6 @@ from CBS_mods import *
 from CBS_radio import *
 from set_data import *
 
-def text():
-    print('YOU SHALL NOT CLOSE!!!')
-
 def create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBevDict, 
                       stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
                       allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 

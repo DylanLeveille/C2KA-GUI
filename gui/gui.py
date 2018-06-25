@@ -101,7 +101,7 @@ def next_page():
       
       ##Pack new scrolling area for the agent and its behaviours,
       ##and pack the button to add an agent.
-      agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))  
+      agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))        
       
       addAgent.pack(in_=buttonsFrame, side = TOP)
       
@@ -160,7 +160,7 @@ def next_page():
       
       ##Remove generated tables and CBS based on if agents were removed. Since we used lists, the indices will shift automatically.
       for i in range(len(oldAgentNames)):
-        if oldAgentNames[i] not in agentNames:
+        if oldAgentNames[i] not in agentNames: #and edit clicked at i == True ->>> super important!
           del allAgentCBS[i]
           del allTitleCBS[i]
           del allFormatCBS[i]     
@@ -172,11 +172,13 @@ def next_page():
           del allFillButtons[i]
           del allCircleScrollingArea[i] 
           del allCircleGridFrame[i]
+          del allCircleTableBoxes[len(allCircleTableBoxes)]
           del allLambdaScrollingArea[i] 
           del allLambdaGridFrame[i] 
+          del allLambdaTableBoxes[len(allLambdaTableBoxes)]
           del generatedCBS[i] 
           del generatedTables[i]          
-          #del allIsGoodCBS[i]  not yet implemented
+          del allIsGoodCBS[i] 
           #del allIsGoodTable[i]   not yet implemented       
           
           agentsDeleted += 1
@@ -184,7 +186,8 @@ def next_page():
       ##Set False to the tables generated based on if new agents were added.
       for i in range(len(oldAgentNames) - agentsDeleted, len(agentNames)):
         generatedCBS.append(False)
-        generatedTables.append(False)     
+        generatedTables.append(False)    
+        
         ##Append None to create a new size to each of the lists.
         allTitleCBS.append(None)   
         allFormatCBS.append(None)        
@@ -200,12 +203,12 @@ def next_page():
         allCircleGridFrame.append(None) 
         allLambdaGridFrame.append(None) 
         allIsGoodCBS.append(True) 
-        allIsGoodTable.append(True)         
+        #allIsGoodTable.append(True)       not yet implemented  
       
       if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a different layout.
         moreThanOneAgent = True        
         
-        if len(oldAgentNames) == 1 and oldAgentNames[0] == agentNames[0]: ##If agent was single but now multiple, we need to remake the UI for that agent in the multiple agent page.
+        if len(oldAgentNames) == 1 and oldAgentNames[0] in agentNames: ##If agent was single but now multiple, we need to remake the UI for that agent in the multiple agent page.
           generatedTables[0] = False
           generatedCBS[0] = False
           
@@ -220,11 +223,12 @@ def next_page():
 
       else: ##Only one agent.            
         moreThanOneAgent = False
-        
-        if len(oldAgentNames) > 1 and oldAgentNames[0] == agentNames[0]: ##If agent was in multiple agents but now signle, we need to remake the UI for that agent in the single agent page.
+     
+        if len(oldAgentNames) > 1 and agentNames[0] in oldAgentNames: ##If agent was in multiple agents but now single, we need to remake the UI for that agent in the single agent page.
           generatedTables[0] = False
           generatedCBS[0] = False        
-        
+          allFillButtons[0] = (None, None, buttonsFrame)
+
         set_CBS_data(main, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, allFrames,  
                      allTitleCBS, allFormatCBS, allRadioButtons, allConcreteScrollingArea, 
                      allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, 0, allCBSTabContents)
@@ -236,7 +240,7 @@ def next_page():
   if pageNum == 3 and moreThanOneAgent == False: ##Only true when one agent only.
    
     ##Boolean variable for validity of entries.
-    isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS)
+    isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS)
    
     ##If there are invalid entries, create popup.
     if isGoodCBS == False:
@@ -258,7 +262,7 @@ def next_page():
       allTitleCBS[0].pack_forget()
       allAgentCBS[0].pack_forget()
       allFormatCBS[0].pack_forget()
-     
+
       set_table_data(main, allBevDict, stimDict, allFillButtons, allCircleTableBoxes,
                      allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 
                      allCircleGridFrame, allLambdaGridFrame, generatedTables, 
@@ -267,6 +271,14 @@ def next_page():
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
     
+    ##Create dictionaries to hold the values from tables.
+    allCircleTableValues = get_empty_dict()
+    allLambdaTableValues = get_empty_dict()
+
+    ##Extract circle table values and lambda table values for each agent.
+    for i in range(len(agentNames)):
+      allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
+                                                                                  allLambdaTableBoxes[i + 1])       
     if moreThanOneAgent:
       buttonsClicked = 0
       for i in range(len(agentNames)):
@@ -275,6 +287,7 @@ def next_page():
           buttonsClicked+=1
       
       if buttonsClicked == len(agentNames):
+
         
         isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS) #only checks if good for all, therefore not keeping track of individuals. But works :).
 
@@ -286,6 +299,7 @@ def next_page():
         for i in range(len(agentNames)):
           allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
                                                                                       allLambdaTableBoxes[i + 1]) 
+
          
         ##Calling check_if_good() to assure all the inputs are valid.
         isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
@@ -311,7 +325,13 @@ def next_page():
         button_not_clicked(main, return_arrow)
         pageNum -=1
 
-    if not moreThanOneAgent: ##Only check tables.
+    elif not moreThanOneAgent: ##Only check tables.
+      
+      ##Calling check_if_good() to assure all the inputs are valid.
+      isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
+                                        allLambdaTableBoxes, allCircleTableValues, 
+                                        allLambdaTableValues)      
+      
       ##If the table is good, proceed.
       if isGoodTable: 
         ##Forget table scrolling areas.
@@ -623,9 +643,15 @@ if __name__ == '__main__': ##only start program when running gui.py
                    command = lambda: add_agent(main, agentFrames, agentScrollingArea, remove_x), 
                    width = 23)  
   
+  ##Make a new title for the frame.
+  agentTitle = Label(agentScrollingArea[0].innerframe, text='Please Enter The Agents')
+  agentTitle.pack()
+  
   """Scrolling area for the edit page of multiple agents."""
   editScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
   
+  ##Make a new title for the frame.
+  agentTitle = Label(agentScrollingArea[0].innerframe, text='Please Enter The Agents')  
   
   """Labels and Entries exclusive for page 5."""
   ##Text entry to give the user a preview of the text file.
