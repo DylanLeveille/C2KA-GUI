@@ -267,6 +267,15 @@ def next_page():
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
     
+    ##Create dictionaries to hold the values from tables.
+    allCircleTableValues = get_empty_dict()
+    allLambdaTableValues = get_empty_dict()
+   
+    ##Extract circle table values and lambda table values for each agent.
+    for i in range(len(agentNames)):
+      allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
+                                                                                  allLambdaTableBoxes[i + 1])     
+    
     if moreThanOneAgent:
       buttonsClicked = 0
       for i in range(len(agentNames)):
@@ -275,6 +284,7 @@ def next_page():
           buttonsClicked+=1
       
       if buttonsClicked == len(agentNames):
+
         
         isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS) #only checks if good for all, therefore not keeping track of individuals. But works :).
 
@@ -286,6 +296,7 @@ def next_page():
         for i in range(len(agentNames)):
           allCircleTableValues[i + 1], allLambdaTableValues[i + 1] = get_table_values(allCircleTableBoxes[i + 1], 
                                                                                       allLambdaTableBoxes[i + 1]) 
+
          
         ##Calling check_if_good() to assure all the inputs are valid.
         isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
@@ -312,6 +323,12 @@ def next_page():
         pageNum -=1
 
     if not moreThanOneAgent: ##Only check tables.
+      
+      ##Calling check_if_good() to assure all the inputs are valid.
+      isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
+                                        allLambdaTableBoxes, allCircleTableValues, 
+                                        allLambdaTableValues)      
+      
       ##If the table is good, proceed.
       if isGoodTable: 
         ##Forget table scrolling areas.
