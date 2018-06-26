@@ -232,7 +232,7 @@ def incorrect_bevs(main, return_arrow):
 
 ##Function is called when an incorrect concrete behaviour is entered.
 
-def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow):
+def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, numWrong):
   """ (tkinter.Tk) -> (none)
     
     Pop-up to tell the user that the concrete behaviour entries
@@ -272,7 +272,7 @@ def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow):
     Label(wrongCBS, text = 'or remove invalid concrete behaviour').pack(side = TOP) 
 
   else:
-    Label(wrongCBS, text = 'ERROR! Fix %d Agents' %(allIsGoodCBS.count(False))).pack(side = TOP)
+    Label(wrongCBS, text = 'ERROR! Fix %d Agents' %(numWrong)).pack(side = TOP)
   pressToClose = Button(wrongCBS, image = return_arrow, border = 0, 
                         command = lambda: return_to_CBS(main))
 
@@ -321,7 +321,7 @@ def button_not_clicked(main, return_arrow):
 
   pressToClose.pack(side = BOTTOM, anchor = E)
   
-  
+   
   
 def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS):
   """ (tkinter.Tk, dict, tupple) -> (Bool)
@@ -381,7 +381,7 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIs
 
 ##Function is called to verify entries in tables.
 def check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, allLambdaTableBoxes, 
-                  allCircleTableValues, allLambdaTableValues):
+                  allCircleTableValues, allLambdaTableValues, allIsGoodTable):
   """ (dict, dict, dict, dict, dict, dict) -> (bool)
     
     Validates all data in the tables by returning True
@@ -393,11 +393,12 @@ def check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, allLambdaTabl
   ##Extract the number of agents.
   numAgents = len(allCircleTableBoxes)  
   
-  ##Assuming both tables are good for each agent.
-  circleTablesGood = True
-  lambdaTablesGood = True
+
   
   for boxIndex in range(numAgents):
+    ##Assuming both tables are good for each agent.
+    circleTablesGood = True
+    lambdaTablesGood = True
 
     ##Search for incorrect value in circleTableValues. 
     for key in allCircleTableValues[boxIndex + 1].keys():
@@ -425,7 +426,10 @@ def check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, allLambdaTabl
       ##Change background to white (normal) if the value is now valid.  
       else: 
         allLambdaTableBoxes[boxIndex + 1][key].config(bg = 'white')
-  
+    if circleTablesGood == True and lambdaTablesGood == True:
+      allIsGoodTable[boxIndex] = True
+    else:
+      allIsGoodTable[boxIndex] = False
   ##If both tables contain valid values, return True; else return False.    
   if circleTablesGood == True and lambdaTablesGood == True:
     return True, invalidEntries
