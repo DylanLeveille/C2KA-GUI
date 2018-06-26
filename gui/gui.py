@@ -74,6 +74,8 @@ def next_page():
   global allIsGoodCBS 
   global allIsGoodTable
   
+  global allPreviewPops ##List to hold the pop-up windows for each agent specification
+
   global generatedTables ##List to keep track of tables that were already generated for each agent.
   global generatedCBS ##List to keep track of Bool variables to check if CBS were generated.
   
@@ -334,8 +336,13 @@ def next_page():
         
         
         if isPageGood:
-          print('UI stuffs')
-          pageNum -=1
+          ##Iterate through each edit button to change their text and command functions.
+          for i in range(len(allEditButtons)):
+            allEditButtons[i][0].config(text = 'preview', command = lambda boxIndex = i:create_agent_preview(allEditButtons, allPreviewPops, agentNames, allEntriesCBS, 
+                                                                                                             agentBehaviours, allTextBoxCBS, allCircleTableValues, 
+                                                                                                             allLambdaTableValues, stimDict, allBevDict, allRadioButtons,
+                                                                                                             save_icon, return_arrow, boxIndex))
+            allEditButtons[i] = allEditButtons[i][0], False ##Change clicked to False for ecah button.
           
         else:
           incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, wrongAgents)
@@ -600,6 +607,9 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##List to check if the table was generated.
   generatedTables = []
   
+  ##List to hold the preview pop-ups for the text files (for multiple agents).
+  allPreviewPops = []
+   
   allIsGoodCBS = [] 
    
   allIsGoodTable = [] 
