@@ -9,6 +9,7 @@ from check_if_good import * ##Functions which validate most of the data in the p
 from entry_mods import * ##Functions which modify entry boxes.
 from get_word_list import * ##Functions which parse an entry box and returns lists of words.
 from create_agent_page import *
+from create_agent_preview import *
 from set_data import *
 from CBS_radio import * ##Functions that set the CBS page depending on which radio button is clicked.
 from create_text import * ##A module containing the function that creates the final product (text file).
@@ -194,7 +195,7 @@ def next_page():
               allLambdaTableBoxes[key - 1] = allLambdaTableBoxes[key]
               del allLambdaTableBoxes[key]              
             
-            
+          del allPreviewPops[i]  
           del allEditButtons[i]
           del allFrames[i]
           agentsDeleted += 1
@@ -224,6 +225,7 @@ def next_page():
         allIsGoodCBS.append(True) 
         allIsGoodTable.append(True)
         allCheckLabels.append(None)
+        allPreviewPops.append(None)
       
       if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a different layout.
         moreThanOneAgent = True        
