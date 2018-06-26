@@ -148,6 +148,10 @@ def next_page():
        
       else: ##Entry is good.
         agentFrames['agentBev'][i].config(bg = 'white')
+    if len(agentNames)==0:
+      agentsGood = False
+      incorrect_agent(main, return_arrow)
+      pageNum-=1
    
     if agentsGood:
       ##Before going to the next page, extract the full text describing 

@@ -175,7 +175,7 @@ def incorrect_agent(main, return_arrow):
     
   wrongAgent.resizable(width = False, height = False) ##The window is not resizeable.
 
-  wrongAgent.wm_title("Incorrect behaviour(s)")
+  wrongAgent.wm_title("Incorrect Agent(s)")
 
   ##Disable main window until pop up is closed
   wrongAgent.grab_set()
