@@ -340,10 +340,10 @@ def next_page():
         if isPageGood:
           ##Iterate through each edit button to change their text and command functions.
           for i in range(len(allEditButtons)):
-            allEditButtons[i][0].config(text = 'preview', command = lambda boxIndex = i:create_agent_preview(allEditButtons, allPreviewPops, agentNames, allEntriesCBS, 
+            allEditButtons[i][0].config(text = 'preview', command = lambda boxIndex = i:create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEntriesCBS, 
                                                                                                              agentBehaviours, allTextBoxCBS, allCircleTableValues, 
                                                                                                              allLambdaTableValues, stimDict, allBevDict, allRadioButtons,
-                                                                                                             save_icon, return_arrow, boxIndex))
+                                                                                                             save_icon, return_arrow, moreThanOneAgent, boxIndex))
             allEditButtons[i] = allEditButtons[i][0], False ##Change clicked to False for ecah button.
           
         else:

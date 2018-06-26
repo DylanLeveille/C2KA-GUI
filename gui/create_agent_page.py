@@ -31,11 +31,12 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrol
                                                                                 allEntriesCBS, allAgentCBS, allFrames, allTextBoxCBS, allRadioButtons,
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
                                                                                 boxIndex, allCBSTabContents, allTableTabContents)) 
-
-        if allEditButtons[i] == None:
+        print(allEditButtons)
+        if allEditButtons[i][0] == None:
             allEditButtons[i] = editButton, False
         else:
             allEditButtons[i] = editButton, allEditButtons[i][1]
+
             completeLabel.config(image = allCheckLabels[i].cget("image"))
             
         

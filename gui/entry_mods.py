@@ -128,9 +128,9 @@ def add_agent(main, agentFrames, agentScrollingArea, remove_x):
     
     ####Declare widgets in the new frame.
     agentLabel = Label(agentEntryFrame, text = 'Agent Name:')
-    agentEntry = Entry(agentEntryFrame, width = 50)
+    agentEntry = Entry(agentEntryFrame, width = 40)
     agentBevLabel = Label(agentEntryFrame, text = 'Agent Behaviour:')
-    agentBevEntry = Entry(agentEntryFrame, width = 50)   
+    agentBevEntry = Entry(agentEntryFrame, width = 40)   
   
     agentDeleteButton = Button(agentEntryFrame, image = remove_x, border = 0, 
                               command = lambda boxIndex=i: remove_agent(main, agentFrames, agentScrollingArea, boxIndex, remove_x))   

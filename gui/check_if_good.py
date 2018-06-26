@@ -86,7 +86,7 @@ def incorrect_stim_num(main, return_arrow):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.
-  wrongStimNum.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
+  wrongStimNum.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
                                     positionRight, positionDown)) 
   
   wrongStimNum.resizable(width = False, height = False) ##The window is not resizeable.
@@ -128,7 +128,7 @@ def incorrect_stims(main, return_arrow):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.
-  wrongStims.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
+  wrongStims.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
                                     positionRight, positionDown)) 
   
   wrongStims.resizable(width = False, height = False) ##The window is not resizeable.
@@ -257,7 +257,7 @@ def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, numWrong):
   positionDown = screenHeight/2 - windowSize/2
 
   ##Set the window size using the geometry() method.
-  wrongCBS.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
+  wrongCBS.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
                                     positionRight, positionDown)) 
 
   wrongCBS.resizable(width = False, height = False) ##The window is not resizeable.
@@ -304,7 +304,7 @@ def button_not_clicked(main, return_arrow):
   positionDown = screenHeight/2 - windowSize/2
 
   ##Set the window size using the geometry() method.
-  buttonNotClicked.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
+  buttonNotClicked.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
                                     positionRight, positionDown)) 
 
   buttonNotClicked.resizable(width = False, height = False) ##The window is not resizeable.
