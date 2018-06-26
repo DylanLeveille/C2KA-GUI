@@ -181,19 +181,21 @@ def next_page():
           if allEditButtons[i][1] == True:
             del allCircleTableBoxes[i + 1]
             del allLambdaTableBoxes[i + 1]
-            
-            for j in range(i, len(oldAgentNames) - 1):
-              allCircleTableBoxes[j + 1] = allCircleTableBoxes[j + 2]
-              del allCircleTableBoxes[j + 2]
+          
+          for j in range(i + 1, len(oldAgentNames)):
+            key = j + 1
+            if key in allCircleTableBoxes.keys():
+              allCircleTableBoxes[key - 1] = allCircleTableBoxes[key]
+              del allCircleTableBoxes[key]
               
-              allLambdaTableBoxes[j + 1] = allLambdaTableBoxes[j + 2]
-              del allLambdaTableBoxes[j + 2]              
+              allLambdaTableBoxes[key - 1] = allLambdaTableBoxes[key]
+              del allLambdaTableBoxes[key]              
             
           #del allIsGoodTable[i]   not yet implemented
           del allEditButtons[i]
           del allFrames[i]
           agentsDeleted += 1
-
+      
       ##Set False to the tables generated based on if new agents were added.
       for i in range(len(oldAgentNames) - agentsDeleted, len(agentNames)):
         generatedCBS.append(False)
