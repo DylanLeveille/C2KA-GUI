@@ -262,7 +262,7 @@ def next_page():
    
     ##If there are invalid entries, create popup.
     if isGoodCBS == False:
-      incorrect_CBS(main, return_arrow) ##Calls function for pop-up.
+      incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, numWrong) ##Calls function for pop-up.
 
       pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
 
@@ -354,7 +354,7 @@ def next_page():
       ##Calling check_if_good() to assure all the inputs are valid.
       isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
                                         allLambdaTableBoxes, allCircleTableValues, 
-                                        allLambdaTableValues)      
+                                        allLambdaTableValues, allIsGoodTable)      
       
       ##If the table is good, proceed.
       if isGoodTable: 
