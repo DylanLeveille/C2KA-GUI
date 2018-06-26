@@ -176,7 +176,8 @@ def next_page():
           del generatedCBS[i] 
           del generatedTables[i]          
           del allIsGoodCBS[i]
-          
+          del allIsGoodTable[i]
+          del allCheckLabels[i]
           
           if allEditButtons[i][1] == True:
             del allCircleTableBoxes[i + 1]
@@ -191,7 +192,7 @@ def next_page():
               allLambdaTableBoxes[key - 1] = allLambdaTableBoxes[key]
               del allLambdaTableBoxes[key]              
             
-          #del allIsGoodTable[i]   not yet implemented
+            
           del allEditButtons[i]
           del allFrames[i]
           agentsDeleted += 1
@@ -219,7 +220,8 @@ def next_page():
         allCircleGridFrame.append(None) 
         allLambdaGridFrame.append(None) 
         allIsGoodCBS.append(True) 
-        #allIsGoodTable.append(True)       not yet implemented  
+        allIsGoodTable.append(True)
+        allCheckLabels.append(None)
       
       if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a different layout.
         moreThanOneAgent = True        
@@ -230,7 +232,7 @@ def next_page():
           
         
         ##Special UI when more than one agent is entered.
-        create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
+        create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
                           allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
                           allTitleCBS, allFormatCBS, allEntriesCBS, allAgentCBS, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
                           generatedTables, generatedCBS, allCBSTabContents, allTableTabContents) 
@@ -290,8 +292,9 @@ def next_page():
     ##Create dictionaries to hold the values from tables.
     allCircleTableValues = get_empty_dict()
     allLambdaTableValues = get_empty_dict()
-     
-     
+    isPageGood = True 
+    wrongAgents = 0
+    
     if moreThanOneAgent:
       buttonsClicked = 0
       for i in range(len(agentNames)):
@@ -317,22 +320,26 @@ def next_page():
         ##Calling check_if_good() to assure all the inputs are valid.
         isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
                                           allLambdaTableBoxes, allCircleTableValues, 
-                                          allLambdaTableValues)
-        if isGoodCBS == False:
-          incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow) ##Calls function for pop-up.
-    
-          pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
+                                          allLambdaTableValues, allIsGoodTable)
+
+        for j in range(len(agentNames)):
+          if allIsGoodCBS[j] == False or allIsGoodTable[j] == False:
+            allCheckLabels[j].config(image = incorrect_icon)
+            isPageGood = False
+            wrongAgents += 1
+            
+          
+          else:
+            allCheckLabels[j].config(image = correct_icon)
         
-        ##If the table is good, proceed.
-        elif isGoodTable:
-          print('dif UI')
         
-        ##Table is not good.
+        if isPageGood:
+          print('UI stuffs')
+          pageNum -=1
+          
         else:
-          ##Deliver a pop-up to the user to warn of invalid entries in the table.
-          incorrect_table(main, numInvalid, return_arrow)
-          ##Decrease pageNum to stay on current page.
-          pageNum -= 1    
+          incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, wrongAgents)
+          pageNum -=1
       
       else:
         button_not_clicked(main, return_arrow)
@@ -596,6 +603,8 @@ if __name__ == '__main__': ##only start program when running gui.py
   allIsGoodCBS = [] 
    
   allIsGoodTable = [] 
+  
+  allCheckLabels = []
     
   ##Frame to hold the main buttons
   buttonsFrame = Frame(main)
@@ -613,6 +622,8 @@ if __name__ == '__main__': ##only start program when running gui.py
   return_arrow = PhotoImage(file = "images/return_arrow.png")
   remove_x = PhotoImage(file = "images/remove_x.png")
   save_icon = PhotoImage(file = "images/save_icon.png")
+  incorrect_icon = PhotoImage(file = "images/incorrect_icon.png")
+  correct_icon = PhotoImage(file = "images/correct_icon.png")
   entry_font = ('Comic Sans MS', 11)
 
   """Defining Buttons available on each page.""" 

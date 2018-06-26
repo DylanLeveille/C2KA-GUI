@@ -8,7 +8,7 @@ from CBS_mods import *
 from CBS_radio import *
 from set_data import *
 
-def create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBevDict, 
+def create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrollingArea, allBevDict, 
                       stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
                       allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 
                       allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
@@ -20,9 +20,9 @@ def create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBev
     editScrollingAreaTemp.pack(expand = 1, fill=BOTH)
 
     for i in range(len(agentNames)):
-        editFrame = Frame(editScrollingAreaTemp.innerframe)
+        editFrame = Frame(editScrollingAreaTemp.innerframe, pady = 20)
         editLabel = Label(editFrame, text = agentNames[i])
-        #completeLabel = Label(editFrame, image = complete_icon)
+        completeLabel = Label(editFrame)
         editButton = Button(editFrame, text = 'Edit', border = 1, 
                                   command = lambda boxIndex=i: edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
                                                                                 allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
@@ -32,13 +32,18 @@ def create_agent_page(main, allEditButtons, allFrames, editScrollingArea, allBev
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
                                                                                 boxIndex, allCBSTabContents, allTableTabContents)) 
 
-
-        allEditButtons[i] = editButton, False
-        editLabel.pack(side = LEFT, anchor = N)
-        editButton.pack(anchor = N)
-        #completeLabel.pack(side = RIGHT, anchor = N)
-        editFrame.pack(anchor = W)
+        if allEditButtons[i] == None:
+            allEditButtons[i] = editButton, False
+        else:
+            allEditButtons[i] = editButton, allEditButtons[i][1]
+            completeLabel.config(image = allCheckLabels[i].cget("image"))
+            
         
+        allCheckLabels[i] = completeLabel
+        editLabel.pack(side = LEFT, anchor = N)
+        editButton.pack(side = LEFT, anchor = N)
+        completeLabel.pack(side = LEFT, anchor = N)
+        editFrame.pack(anchor = W, )
         editScrollingArea[0] = editScrollingAreaTemp  
     
 
