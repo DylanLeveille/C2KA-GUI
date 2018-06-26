@@ -206,7 +206,7 @@ def next_page():
         generatedTables.append(False)    
         
         ##Append None to create a new size to each of the lists.
-        allEditButtons.append(None)
+        allEditButtons.append((None, buttonsFrame))
         allFrames.append(None)
         
         allTitleCBS.append(None)
@@ -380,27 +380,6 @@ def next_page():
         allFillButtons[0][0].pack_forget()
         allFillButtons[0][1].pack_forget()
         nextButton.pack_forget()
-        
-        ##Extract concrete behaviour in a dictionary.
-        concreteBehaviours = get_concrete_behaviours(allEntriesCBS[0])      
-  
-        ##Call create_text() to create the agentspec.txt file.
-        create_text(agentNames[0], agentBehaviours[1], concreteBehaviours, allTextBoxCBS[0], 
-                    allCircleTableValues[1], allLambdaTableValues[1], stimDict, allBevDict[1], allRadioButtons[0][2])
-        
-        ##Configure the text entry to be modifiable.
-        textEntry.config(state = 'normal')
-        ##Remove the previous text to insert new one.
-        textEntry.delete(1.0, END)
-        textEntry.insert(INSERT, open("agent_text_backup./agentspec.txt", "r").read())
-        ##Configure the text entry so that it cannot be modified.
-        textEntry.config(state="disabled")
-        ##Pack the text entry frame to give a preview to the user.
-        textEntryFrame.pack(expand = True)
-        
-        ##Pack the button allowing the user to save the file if satisfied
-        ##with the result.
-        saveButton.pack(in_=buttonsFrame)
       
       ##Table is not good.
       else:
@@ -620,7 +599,7 @@ if __name__ == '__main__': ##only start program when running gui.py
     
   ##Frame to hold the main buttons
   buttonsFrame = Frame(main)
-  buttonsFrame.pack(side = BOTTOM, anchor = S, fill = X)
+  buttonsFrame.pack(side = BOTTOM, anchor = S, fill = X, pady = (5, 0))
   
   ##Frame for the stim number Label, button and entry box (to specify
   ##a number of stimuli to be generated).
@@ -719,7 +698,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   yscrollbarText.config(command=textEntry.yview)    
   
   ##Save button to have the user save the text file.
-  saveButton = Button(main, image = save_icon, border = 0, command = create_save_file)
+  #saveButton = Button(main, image = save_icon, border = 0, command = create_save_file(textEntry.get(1.0, END)))
   
   """Loop the main window."""
   main.mainloop()
