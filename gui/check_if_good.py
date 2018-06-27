@@ -38,7 +38,7 @@ def specify_stim(main, stimList, numStims, stimScrollingArea, remove_x, return_a
     positionDown = screenHeight/2 - windowSize/2
     
     ##Set the window size using the geometry() method.
-    warningStims.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
+    warningStims.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
                                       positionRight, positionDown)) 
     
     warningStims.resizable(width = False, height = False) ##The window is not resizeable.
@@ -56,9 +56,9 @@ def specify_stim(main, stimList, numStims, stimScrollingArea, remove_x, return_a
     pressToClose = Button(warningStims, image = return_arrow, border = 0, 
                           command = lambda: return_to_stims_cancellation(main))
     
-    pressToContinue.pack(side = BOTTOM)
+    pressToContinue.pack(side = RIGHT, anchor = S)
     
-    pressToClose.pack(side = BOTTOM, anchor = E)
+    pressToClose.pack(side = LEFT, anchor = S)
         
 
 ##Function to warn the user that the specified number of stims is invalid.
@@ -170,7 +170,7 @@ def incorrect_agent(main, return_arrow):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.  
-  wrongAgent.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
+  wrongAgent.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
                                       positionRight, positionDown)) 
     
   wrongAgent.resizable(width = False, height = False) ##The window is not resizeable.
@@ -212,7 +212,7 @@ def incorrect_bevs(main, return_arrow):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.  
-  wrongBevs.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
+  wrongBevs.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
                                       positionRight, positionDown)) 
     
   wrongBevs.resizable(width = False, height = False) ##The window is not resizeable.
@@ -436,6 +436,54 @@ def check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, allLambdaTabl
   else:
     return False, invalidEntries 
 
+
+def check_if_good_agents(agentNames):
+  agentSet = set(agentNames)
+  if len(agentSet) < len(agentNames):
+    return False
+  else:
+    return True
+
+def same_agent(main, return_arrow):
+  """ (tkinter.Tk) -> (none)
+    
+    Pop-up to tell the user that the agent entry
+    is incorrect.
+  
+  """       
+  global sameAgent
+  ##Create pop-up window.
+  sameAgent = Toplevel()
+    
+  sameAgent.config(takefocus = True) ##Get focus on screen.   
+    
+  windowSize = 300 ##Pop up size (300 x 300).
+  
+  ##Collect screen (monitor) width and height to position the window in the center. 
+  screenWidth = sameAgent.winfo_screenwidth() 
+  screenHeight = sameAgent.winfo_screenheight()
+  
+  ##Calculate the center position.  
+  positionRight = screenWidth/2 - windowSize/2
+  positionDown = screenHeight/2 - windowSize/2
+  
+  ##Set the window size using the geometry() method.  
+  sameAgent.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
+                                      positionRight, positionDown)) 
+    
+  sameAgent.resizable(width = False, height = False) ##The window is not resizeable.
+
+  sameAgent.wm_title("Incorrect Agent(s)")
+
+  ##Disable main window until pop up is closed
+  sameAgent.grab_set()
+    
+  Label(sameAgent, text = 'Please remove duplicate agents').pack(side = TOP)
+    
+  pressToClose = Button(sameAgent, image = return_arrow, border = 0, 
+                        command = lambda: return_to_bevs_same(main))
+  pressToClose.pack(side = BOTTOM, anchor = E)
+
 def incorrect_table(main, numInvalid, return_arrow):
   """ (tkinter.Tk, int) -> (none)
     
@@ -460,7 +508,7 @@ def incorrect_table(main, numInvalid, return_arrow):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.
-  invalidEntryPop.geometry('%dx%d+%d+%d' % (windowSize, windowSize/4, 
+  invalidEntryPop.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
                                             positionRight, positionDown))    
   
   invalidEntryPop.resizable(width = False, height = False) ##The window is not resizeable.
@@ -598,3 +646,12 @@ def return_to_edit(main):
   
   """     
   buttonNotClicked.destroy()
+
+def return_to_bevs_same(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the sameAgent window and re-generates
+    the main window.
+  
+  """
+  sameAgent.destroy()
