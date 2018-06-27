@@ -290,7 +290,7 @@ def next_page():
         generatedTables.append(False)    
         
         ##Append None to create a new size to each of the lists.
-        allEditButtons.append((None, buttonsFrame))
+        allEditButtons.append(None)
         allFrames.append(None)
         
         allTitleCBS.append(None)
@@ -323,7 +323,7 @@ def next_page():
         create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
                           allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
                           allTitleCBS, allFormatCBS, allEntriesCBS, allAgentCBS, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
-                          generatedTables, generatedCBS, allCBSTabContents, allTableTabContents) 
+                          generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon) 
         
         pageNum += 1 ##Add one to pageNum because we are skipping page 4.
 
@@ -424,7 +424,7 @@ def next_page():
         if isPageGood:
           ##Iterate through each edit button to change their text and command functions.
           for i in range(len(allEditButtons)):
-            allEditButtons[i][0].config(text = 'preview', command = lambda boxIndex = i:create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEntriesCBS, 
+            allEditButtons[i][0].config(image = view_icon, command = lambda boxIndex = i:create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEntriesCBS, 
                                                                                                              agentBehaviours, allTextBoxCBS, allCircleTableValues, 
                                                                                                              allLambdaTableValues, stimDict, allBevDict, allRadioButtons,
                                                                                                              save_icon, return_arrow, moreThanOneAgent, boxIndex))
@@ -574,7 +574,7 @@ def prev_page():
     if moreThanOneAgent:
       ##Iterate through each edit button to change their text and command functions.
       for i in range(len(allEditButtons)):
-        allEditButtons[i][0].config(text = 'edit', command = lambda boxIndex = i:edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
+        allEditButtons[i][0].config(image = edit_icon, command = lambda boxIndex = i:edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
                                                                                                   allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
                                                                                                   allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
                                                                                                   allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, allEntriesCBS, 
@@ -718,6 +718,8 @@ if __name__ == '__main__': ##only start program when running gui.py
   left_arrow = PhotoImage(file="images/left_arrow.png")
   return_arrow = PhotoImage(file = "images/return_arrow.png")
   remove_x = PhotoImage(file = "images/remove_x.png")
+  edit_icon = PhotoImage(file = "images/edit_icon.png")
+  view_icon = PhotoImage(file = "images/view_icon.png")
   save_icon = PhotoImage(file = "images/save_icon.png")
   incorrect_icon = PhotoImage(file = "images/incorrect_icon.png")
   correct_icon = PhotoImage(file = "images/correct_icon.png")
@@ -725,11 +727,11 @@ if __name__ == '__main__': ##only start program when running gui.py
 
   """Defining Buttons available on each page.""" 
   ##Next Button (will not be available on page 5).
-  nextButton = Button(main, command = next_page, image = right_arrow, width = "25", height = "25", border = 0)
+  nextButton = Button(main, command = next_page, image = right_arrow, width = "25", height = "25", border = 0, highlightthickness = 0)
   nextButton.pack(in_=buttonsFrame, side = RIGHT, anchor = E)
 
   ##Prev Button (will not be availible on page 1).
-  prevButton = Button(main, command = prev_page, image = left_arrow, width = "25", height = "25", border = 0)
+  prevButton = Button(main, command = prev_page, image = left_arrow, width = "25", height = "25", border = 0, highlightthickness = 0)
   
   """Label and Buttons exclusive to page 1."""  
   ##The scrolling area is at index zero of the stimScrollingArea list, this way, 
@@ -745,7 +747,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   enterStimLabel = Label(main, text = 'Enter # of stimuli : ')
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
-  enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow))
+  enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow), highlightthickness = 0)
   enterStimButton.pack(in_=stimFrame, side = RIGHT, anchor = N)
   
   enterStimBox = ttk.Entry(main, font = entry_font)
@@ -754,7 +756,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##Add stimulus entry Button.
   addStim = Button(main, text = 'Add new stimulus', 
                    command = lambda: add_stim(main, stimList, stimScrollingArea, remove_x), 
-                   width = 23)
+                   width = 23, highlightthickness = 0)
   
   addStim.pack(in_=buttonsFrame, side = LEFT)
   
@@ -766,7 +768,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##Add agent entry Button.
   addAgent = Button(main, text = 'Add new agent', 
                    command = lambda: add_agent(main, agentFrames, agentScrollingArea, remove_x), 
-                   width = 23)  
+                   width = 23, highlightthickness = 0)  
   
   ##Make a title for the frame.
   agentTitle = Label(agentScrollingArea[0].innerframe, text='Please Enter The Agents')
