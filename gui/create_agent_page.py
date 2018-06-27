@@ -14,16 +14,16 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrol
                       allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
                       allTitleCBS, allFormatCBS,allEntriesCBS, allAgentCBS, allTextBoxCBS, 
                       allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
-                      generatedTables, generatedCBS, allCBSTabContents, allTableTabContents):
+                      generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon):
     
     editScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
     editScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 80))
 
     for i in range(len(agentNames)):
-        editFrame = Frame(editScrollingAreaTemp.innerframe, pady = 20)
-        editLabel = Label(editFrame, text = agentNames[i], padx = 15)
+        editFrame = Frame(editScrollingAreaTemp.innerframe, pady = 20, highlightbackground = "black", highlightcolor = "black", highlightthickness = 1)
+        editLabel = Label(editFrame, text = agentNames[i], justify = LEFT, font = ("Times", 16), padx = 15)
         completeLabel = Label(editFrame)
-        editButton = Button(editFrame, text = 'Edit', border = 1, 
+        editButton = Button(editFrame, image = edit_icon, border = 0, highlightthickness = 0,
                                   command = lambda boxIndex=i: edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
                                                                                 allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
                                                                                 allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
@@ -32,7 +32,7 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrol
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
                                                                                 boxIndex, allCBSTabContents, allTableTabContents)) 
 
-        if allEditButtons[i][0] == None:
+        if allEditButtons[i] == None:
             allEditButtons[i] = editButton, False
         else:
             allEditButtons[i] = editButton, allEditButtons[i][1]
@@ -42,9 +42,9 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrol
         
         allCheckLabels[i] = completeLabel
         editLabel.pack(side = LEFT, anchor = N)
-        editButton.pack(side = LEFT, anchor = N)
-        completeLabel.pack(side = LEFT, anchor = N)
-        editFrame.pack(anchor = W)
+        editButton.pack(side = RIGHT, anchor = N, padx = 20)
+        completeLabel.pack(side = RIGHT, anchor = N)
+        editFrame.pack(anchor = W, fill = X)
         editScrollingArea[0] = editScrollingAreaTemp  
     
 
@@ -72,11 +72,11 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         
         editButtonsFrame = Frame(editAgent) ##Making the save and cancel button
         
-        saveButton = Button(editButtonsFrame, text = "Done", command = lambda: close_edit(boxIndex, allEditButtons, allFrames))
+        saveButton = Button(editButtonsFrame, text = "Done", command = lambda: close_edit(boxIndex, allEditButtons, allFrames), highlightthickness = 0)
 
         saveButton.pack(side = RIGHT, anchor = S)
-        cancelButton = Button(editButtonsFrame, text = "Clear")
-        cancelButton.pack(side = LEFT, anchor = S)
+        #cancelButton = Button(editButtonsFrame, text = "Clear", highlightthickness = 0)
+        #cancelButton.pack(side = LEFT, anchor = S)
         editButtonsFrame.pack(side = BOTTOM, fill = X)
         
         editTabs = ttk.Notebook(editAgent) ##Create Tabs to switch from tables to CBS

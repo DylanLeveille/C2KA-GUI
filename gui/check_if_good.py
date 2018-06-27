@@ -50,10 +50,10 @@ def specify_stim(main, stimList, numStims, stimScrollingArea, remove_x, return_a
     
     Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
     
-    pressToContinue = Button(warningStims, text = "Continue", 
+    pressToContinue = Button(warningStims, text = "Continue", highlightthickness = 0, 
                           command = lambda: return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove_x))
     
-    pressToClose = Button(warningStims, image = return_arrow, border = 0, 
+    pressToClose = Button(warningStims, image = return_arrow, border = 0, highlightthickness = 0, 
                           command = lambda: return_to_stims_cancellation(main))
     
     pressToContinue.pack(side = RIGHT, anchor = S)
@@ -99,7 +99,7 @@ def incorrect_stim_num(main, return_arrow):
   Label(wrongStimNum, text = 'Please enter a valid number of stimuli').pack(side = TOP)
   
   pressToClose = Button(wrongStimNum, image = return_arrow, border = 0, 
-                        command = lambda: return_to_stim_num(main))
+                        command = lambda: return_to_stim_num(main), highlightthickness = 0)
   pressToClose.pack(side = BOTTOM, anchor = E)
    
 
@@ -141,7 +141,7 @@ def incorrect_stims(main, return_arrow):
   Label(wrongStims, text = 'or remove invalid stimuli').pack(side = TOP)
   
   pressToClose = Button(wrongStims, image = return_arrow, border = 0,
-                        command = lambda: return_to_stims(main))
+                        command = lambda: return_to_stims(main), highlightthickness = 0)
   pressToClose.pack(side = BOTTOM, anchor = E)
    
 
@@ -183,7 +183,7 @@ def incorrect_agent(main, return_arrow):
   Label(wrongAgent, text = 'Please enter one valid agent').pack(side = TOP)
     
   pressToClose = Button(wrongAgent, image = return_arrow, border = 0, 
-                        command = lambda: return_to_bevs_agent(main))
+                        command = lambda: return_to_bevs_agent(main), highlightthickness = 0)
   pressToClose.pack(side = BOTTOM, anchor = E)
   
 
@@ -226,7 +226,7 @@ def incorrect_bevs(main, return_arrow):
   Label(wrongBevs, text = 'or remove invalid behaviours').pack(side = TOP)
     
   pressToClose = Button(wrongBevs, image = return_arrow, border = 0, 
-                        command = lambda: return_to_bevs_bevs(main))
+                        command = lambda: return_to_bevs_bevs(main), highlightthickness = 0)
   pressToClose.pack(side = BOTTOM, anchor = E)
   
 
@@ -274,7 +274,7 @@ def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, numWrong):
   else:
     Label(wrongCBS, text = 'ERROR! Fix %d Agents' %(numWrong)).pack(side = TOP)
   pressToClose = Button(wrongCBS, image = return_arrow, border = 0, 
-                        command = lambda: return_to_CBS(main))
+                        command = lambda: return_to_CBS(main), highlightthickness = 0)
 
   pressToClose.pack(side = BOTTOM, anchor = E)
 
@@ -317,7 +317,7 @@ def button_not_clicked(main, return_arrow):
   Label(buttonNotClicked, text = 'Please fill out all agent specifcations').pack(side = TOP)
 
   pressToClose = Button(buttonNotClicked, image = return_arrow, border = 0, 
-                        command = lambda: return_to_edit(main))
+                        command = lambda: return_to_edit(main), highlightthickness = 0)
 
   pressToClose.pack(side = BOTTOM, anchor = E)
 
@@ -385,7 +385,7 @@ def same_agent(main, return_arrow):
   Label(sameAgent, text = 'Please remove duplicate agents').pack(side = TOP)
     
   pressToClose = Button(sameAgent, image = return_arrow, border = 0, 
-                        command = lambda: return_to_bevs_same(main))
+                        command = lambda: return_to_bevs_same(main), highlightthickness = 0)
   pressToClose.pack(side = BOTTOM, anchor = E)   
   
 def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS):
@@ -541,7 +541,7 @@ def incorrect_table(main, numInvalid, return_arrow):
   invalidEntriesLabel.pack(side = TOP)
   
   pressToClose = Button(invalidEntryPop, image = return_arrow, border = 0, 
-                        command = lambda: return_to_tables(main))
+                        command = lambda: return_to_tables(main), highlightthickness = 0)
   pressToClose.pack(side = BOTTOM, anchor = E)
   
 
@@ -578,7 +578,7 @@ def return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove
   for i in range(numStims):
     stimEntryFrame = Frame(stimScrollingArea[0].innerframe)
     stimEntry = Entry(stimEntryFrame)
-    stimDeleteButton = Button(stimEntryFrame, image = remove_x, border = 0, 
+    stimDeleteButton = Button(stimEntryFrame, image = remove_x, border = 0, highlightthickness = 0,  
                               command = lambda boxIndex=i: remove_stim(main, stimList, stimScrollingArea, boxIndex, remove_x))
     stimList.append(stimEntry)
     stimEntry.pack(side = LEFT)
