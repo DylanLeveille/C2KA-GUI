@@ -38,7 +38,6 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
             ##Text entry to give the user a preview of the text file.
             ##Create a frame for the text box.
             textEntryFrame = Frame(agentSpecs)
-            textEntry = Text(textEntryFrame)
             
             ##Declaring x and y scrollbars for the text box.
             xscrollbarText = Scrollbar(textEntryFrame, orient=HORIZONTAL)
@@ -82,16 +81,32 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
    
     else: ##One Agent.
         ##Create the save button.
-        saveButton = Button(main, image = save_icon, border = 0, command = lambda: create_save_file(textEntry.get(1.0, END)))
-        saveButton.pack(side = RIGHT, anchor = S)        
+        saveButton = Button(main, image = save_icon, border = 0, command = lambda: create_save_file(textEntry.get(1.0, END)))      
         
         ##Text entry to give the user a preview of the text file.
         ##Create a frame for the text box.
         textEntryFrame = Frame(main)
-        textEntry = Text(textEntryFrame)        
+        
+        ##Declaring x and y scrollbars for the text box.
+        xscrollbarText = Scrollbar(textEntryFrame, orient=HORIZONTAL)
+        xscrollbarText.grid(row=1, column=0, sticky=N+S+E+W)
+      
+        yscrollbarText = Scrollbar(textEntryFrame)
+        yscrollbarText.grid(row=0, column=1, sticky=N+S+E+W)
+      
+        ##Create the text box widget for the preview page.
+        textEntry = Text(textEntryFrame, wrap=NONE,
+                    xscrollcommand=xscrollbarText.set,
+                    yscrollcommand=yscrollbarText.set,
+                    width = 60)
+        
+        textEntry.grid(row=0, column=0)
+      
+        xscrollbarText.config(command=textEntry.xview)
+        yscrollbarText.config(command=textEntry.yview)          
         
         ##Extract concrete behaviour in a dictionary.
-        concreteBehaviours = get_concrete_behaviours(allEntriesCBS[0])      
+        concreteBehaviours = get_concrete_behaviours(allEntriesCBS[boxIndex])            
   
         ##Call create_text() to create the agentspec.txt file.
         create_text(agentNames[boxIndex], agentBehaviours[boxIndex + 1], concreteBehaviours, 
@@ -112,6 +127,10 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
         ##Pack the button allowing the user to save the file if satisfied
         ##with the result.
         saveButton.pack(in_=allEditButtons[boxIndex][1])       
+        
+        ##Widgets must be returned to be unpacked later.
+        return textEntry, textEntryFrame, saveButton
+    
 ##Function to close the preview page for the agent specification. 
 def close_preview(allEditButtons, allPreviewPops, boxIndex):
     """ (tkinter.Button, tkinter.Toplevel, int) -> (none)

@@ -155,12 +155,12 @@ def next_page():
         same_agent(main, return_arrow)
         pageNum-=1      
       
-      if len(agentNames) == 0: ##Means there are absolutely no agents.
+      elif len(agentNames) == 0: ##Means there are absolutely no agents.
         agentsGood = False
         incorrect_agent(main, return_arrow)
         pageNum-=1
    
-    elif agentsGood:
+    if agentsGood:
       ##Before going to the next page, extract the full text describing 
       ##the agents' behaviour (used when create the text file).
       agentBehaviours = extract_full_behaviour(agentFrames['agentBev'])
@@ -464,26 +464,11 @@ def next_page():
         allFillButtons[0][1].pack_forget()
         nextButton.pack_forget()
         
-        ##Extract concrete behaviour in a dictionary.
-        concreteBehaviours = get_concrete_behaviours(allEntriesCBS[0])      
-  
         ##Call create_text() to create the agentspec.txt file.
-        create_text(agentNames[0], agentBehaviours[1], concreteBehaviours, allTextBoxCBS[0], 
-                    allCircleTableValues[1], allLambdaTableValues[1], stimDict, allBevDict[1], allRadioButtons[0][2])
-        
-        ##Configure the text entry to be modifiable.
-        textEntry.config(state = 'normal')
-        ##Remove the previous text to insert new one.
-        textEntry.delete(1.0, END)
-        textEntry.insert(INSERT, open("agent_text_backup./agentspec.txt", "r").read())
-        ##Configure the text entry so that it cannot be modified.
-        textEntry.config(state="disabled")
-        ##Pack the text entry frame to give a preview to the user.
-        textEntryFrame.pack(expand = True)
-        
-        ##Pack the button allowing the user to save the file if satisfied
-        ##with the result.
-        saveButton.pack(in_=buttonsFrame)        
+        textEntry, textEntryFrame, saveButton = create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEntriesCBS, 
+                                                                     agentBehaviours, allTextBoxCBS, allCircleTableValues, 
+                                                                     allLambdaTableValues, stimDict, allBevDict, allRadioButtons,
+                                                                     save_icon, return_arrow, moreThanOneAgent, 0)
       
       ##Table is not good.
       else:
