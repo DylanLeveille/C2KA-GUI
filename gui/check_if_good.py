@@ -24,21 +24,21 @@ def specify_stim(main, stimList, numStims, stimScrollingArea, remove_x, return_a
   else: ##True if entry is valid.  
     ##Create pop-up window.
     warningStims = Toplevel()
-  
-    warningStims.config(takefocus = True) ##Get focus on screen.  
     
-    windowSize = 300 ##Pop up size (300 x 300).
+    warningStims.config(takefocus = True) ##Get focus on screen.  
     
     ##Collect screen (monitor) width and height to position the window in the center. 
     screenWidth = warningStims.winfo_screenwidth() 
     screenHeight = warningStims.winfo_screenheight()
     
+    windowSize =  screenWidth/6 ##One sixth of the screen.
+    
     ##Calculate the center position.
-    positionRight = screenWidth/2 - windowSize/2
-    positionDown = screenHeight/2 - windowSize/2
+    positionRight = int(screenWidth/2 - windowSize/2)
+    positionDown = int(screenHeight/2 - windowSize/2)
     
     ##Set the window size using the geometry() method.
-    warningStims.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
+    warningStims.geometry('%dx%d+%d+%d' % (int(windowSize), int(windowSize)/4, 
                                       positionRight, positionDown)) 
     
     warningStims.resizable(width = False, height = False) ##The window is not resizeable.
@@ -48,7 +48,9 @@ def specify_stim(main, stimList, numStims, stimScrollingArea, remove_x, return_a
     ##Disable main window until pop up is closed
     warningStims.grab_set()
     
-    Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
+    a = Label(warningStims, text = 'This action will permenantly delete the current stimuli')
+    a.pack(side = TOP)
+    print(a.winfo_width())
     
     pressToContinue = Button(warningStims, text = "Continue", highlightthickness = 0, 
                           command = lambda: return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove_x))
@@ -388,11 +390,53 @@ def same_agent(main, return_arrow):
                         command = lambda: return_to_bevs_same(main), highlightthickness = 0)
   pressToClose.pack(side = BOTTOM, anchor = E)   
   
+##Pop-up when there are two or more agents with the same name.
+def dont_go_back(main, return_arrow):
+  """ (tkinter.Tk, img) -> (none)
+    
+    Pop-up to tell the user that they must close the
+    pop-ups before going to the previous page.
+  
+  """       
+  global closePops
+  ##Create pop-up window.
+  closePops = Toplevel()
+    
+  closePops.config(takefocus = True) ##Get focus on screen.   
+    
+  windowSize = 300 ##Pop up size (300 x 300).
+  
+  ##Collect screen (monitor) width and height to position the window in the center. 
+  screenWidth = closePops.winfo_screenwidth() 
+  screenHeight = closePops.winfo_screenheight()
+  
+  ##Calculate the center position.  
+  positionRight = screenWidth/2 - windowSize/2
+  positionDown = screenHeight/2 - windowSize/2
+  
+  ##Set the window size using the geometry() method.  
+  closePops.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
+                                      positionRight, positionDown)) 
+    
+  closePops.resizable(width = False, height = False) ##The window is not resizeable.
+
+  closePops.wm_title("Incorrect Agent(s)")
+
+  ##Disable main window until pop up is closed
+  closePops.grab_set()
+    
+  Label(closePops, text = 'Please close all pop-ups').pack(side = TOP)
+    
+  pressToClose = Button(closePops, image = return_arrow, border = 0, 
+                        command = lambda: cancel_previous_page(main), highlightthickness = 0)
+  pressToClose.pack(side = BOTTOM, anchor = E)     
+
+##Function to check if CBS   
 def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS):
   """ (tkinter.Tk, dict, tupple) -> (Bool)
     
-    Pop-up to tell the user that the agent behaviour entry
-    is incorrect.
+    Checks whether or not the concrete behaviours are valid for
+    either the rows or box layout.
   
   """    
   ##Extract the number of agents.
@@ -654,6 +698,17 @@ def return_to_edit(main):
   
   """     
   buttonNotClicked.destroy()
+
+##Function to close the pop-up warmning the user to close all pop-ups
+##before going to the previous page.
+def cancel_previous_page(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the closePops window and re-generates
+    the main window.
+  
+  """   
+  closePops.destroy()
   
 ##Function to return to the concrete behaviour page after the pop-up
 def return_to_CBS(main):

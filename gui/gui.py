@@ -535,14 +535,29 @@ def prev_page():
   """PAGE 4 to PAGE 3."""
   if pageNum == 4:
     if moreThanOneAgent: ##Back to page 2 if True, not page 3.
-      print('well...do what you gotta do')
-      editScrollingArea[0].pack_forget() 
-
-      ##Repack the agent scrolling area and the add agent button.       
-      agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))  
-      addAgent.pack(in_=buttonsFrame, side = TOP)      
       
-      pageNum -= 1
+      stayOnPage = False ##Boolean variable to check if any pop-ups are open.
+      
+      for button in allEditButtons:
+        if button[0].cget("state") == DISABLED: ##If the button is disabled, then that means a pop-up is open.
+          if stayOnPage == False:
+            stayOnPage = True
+      
+      if stayOnPage == True:
+        ##Deliver a pop-up to the user to warn of closing the pop-ups first.
+        dont_go_back(main, return_arrow)
+        
+        pageNum += 1
+      
+      else:  
+        print('well...do what you gotta do')
+        editScrollingArea[0].pack_forget() 
+
+        ##Repack the agent scrolling area and the add agent button.       
+        agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))  
+        addAgent.pack(in_=buttonsFrame, side = TOP)      
+        
+        pageNum -= 1
     
     else: ##One agent only.
       ##Forget scrolling areas and frames for the tables.
@@ -572,20 +587,35 @@ def prev_page():
   """PAGE 5 to PAGE 4."""
   if pageNum == 5:
     if moreThanOneAgent:
-      ##Iterate through each edit button to change their text and command functions.
-      for i in range(len(allEditButtons)):
-        allEditButtons[i][0].config(image = edit_icon, command = lambda boxIndex = i:edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
-                                                                                                  allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
-                                                                                                  allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
-                                                                                                  allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, allEntriesCBS, 
-                                                                                                  allAgentCBS, allFrames, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
-                                                                                                  moreThanOneAgent, generatedTables, generatedCBS, boxIndex, 
-                                                                                                  allCBSTabContents, allTableTabContents))
-        allCheckLabels[i].pack(side = LEFT, anchor = N)
-        allEditButtons[i] = allEditButtons[i][0], True ##Change clicked to True for each button.      
+      
+      stayOnPage = False ##Boolean variable to check if any pop-ups are open.
+      
+      for button in allEditButtons:
+        if button[0].cget("state") == DISABLED: ##If the button is disabled, then that means a pop-up is open.
+          if stayOnPage == False:
+            stayOnPage = True
+      
+      if stayOnPage == True:
+        ##Deliver a pop-up to the user to warn of closing the pop-ups first.
+        dont_go_back(main, return_arrow)
         
-        ##Repack the next button.
-        nextButton.pack(in_=buttonsFrame, side = RIGHT)          
+        pageNum += 1   
+      
+      else:  
+        ##Iterate through each edit button to change their text and command functions.
+        for i in range(len(allEditButtons)):
+          allEditButtons[i][0].config(image = edit_icon, command = lambda boxIndex = i:edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
+                                                                                                    allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
+                                                                                                    allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
+                                                                                                    allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, allEntriesCBS, 
+                                                                                                    allAgentCBS, allFrames, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
+                                                                                                    moreThanOneAgent, generatedTables, generatedCBS, boxIndex, 
+                                                                                                    allCBSTabContents, allTableTabContents))
+          allCheckLabels[i].pack(side = LEFT, anchor = N)
+          allEditButtons[i] = allEditButtons[i][0], True ##Change clicked to True for each button.      
+          
+          ##Repack the next button.
+          nextButton.pack(in_=buttonsFrame, side = RIGHT)          
       
     else: ##One agent only.    
       ##Forget text preview box and save button.

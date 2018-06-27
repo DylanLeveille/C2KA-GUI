@@ -1,15 +1,15 @@
 begin AGENT where
-    l := O
+    j := K
 end
 
 begin NEXT_BEHAVIOUR where
-    (i, O) = O
+    (i, K) = K
 end
 
 begin NEXT_STIMULUS where
-    (i, O) = N
+    (i, K) = N
 end
 
 begin CONCRETE BEHAVIOUR where
-    O => [ o ]
+    K => [ o ]
 end
