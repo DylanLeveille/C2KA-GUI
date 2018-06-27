@@ -358,7 +358,9 @@ Do note that there is no guarantee that the program won't crash if uncommon char
 
 ● Empty entries in the stimuli page are ignored. However, at least one stimuli must be entered to proceed to the next page.
 
-● Entered behaviours are automatically capitalized. For behaviours to be valid, they must be seperated by whitespaces. Ex: x + y; z is good, not x + y;z nor x+y;z .
+● Entered behaviours are automatically capitalized. For behaviours to be valid, they must be seperated by whitespaces. 
+
+Ex: x + y; z is good, not x + y;z nor x+y;z .
 
 ● The Neutral stimulis is represented by the capital N, and the Deactivation stimulus is represented by the capital D.
 
