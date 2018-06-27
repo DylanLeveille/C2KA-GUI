@@ -126,10 +126,10 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
         
         ##Pack the button allowing the user to save the file if satisfied
         ##with the result.
-        saveButton.pack(in_=allEditButtons[boxIndex][1])       
+        saveButton.pack(in_=main, anchor = S)       
         
         ##Widgets must be returned to be unpacked later.
-        return textEntry, textEntryFrame, saveButton
+        return textEntryFrame, saveButton
     
 ##Function to close the preview page for the agent specification. 
 def close_preview(allEditButtons, allPreviewPops, boxIndex):

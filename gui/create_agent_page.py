@@ -31,7 +31,7 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrol
                                                                                 allEntriesCBS, allAgentCBS, allFrames, allTextBoxCBS, allRadioButtons,
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
                                                                                 boxIndex, allCBSTabContents, allTableTabContents)) 
-        print(allEditButtons)
+
         if allEditButtons[i][0] == None:
             allEditButtons[i] = editButton, False
         else:
@@ -84,8 +84,8 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         tableTab = Frame(editTabs)
         
         ##Add tabs to frame
-        editTabs.add(CBSTab)
-        editTabs.add(tableTab) 
+        editTabs.add(CBSTab, text = "Concrete Behaviours")
+        editTabs.add(tableTab, text = "Tables") 
         
         editTabs.pack(expand = 1, fill = BOTH)    
     else:

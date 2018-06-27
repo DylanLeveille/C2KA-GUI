@@ -33,6 +33,9 @@ def next_page():
   """
   global pageNum ##Keeps track of the page number.
   
+  global saveButton
+  global textEntryFrame
+  
   global stimDict ##Dictionary to hold final entries of entered stimuli.
   global allBevDict ##Dictionary to hold agent behaviours.
   
@@ -71,6 +74,8 @@ def next_page():
   global allLambdaGridFrame ##Global frame for the lambda table.
   
   global moreThanOneAgent ##Boolean to keep track of if there is more than one agent inputted.
+  
+ # global wrongAgents ##Count for the number of incorrect agents (only if multiple)
   
   global allIsGoodCBS 
   global allIsGoodTable
@@ -150,7 +155,7 @@ def next_page():
         agentFrames['agentBev'][i].config(bg = 'white')
         
     if agentsGood:  ##If there is still no error
-      if not check_if_good_agents(agentNames):
+      if not check_if_good_agents(agentNames, agentFrames['agentNames']):
         agentsGood = False
         same_agent(main, return_arrow)
         pageNum-=1      
@@ -176,7 +181,6 @@ def next_page():
       agentsDeleted = 0
       ##Remove generated tables and CBS based on if agents were removed. Since we used lists, the indices will shift automatically.
       for i in range(len(oldAgentNames)):
-        print(i)
         if oldAgentNames[i] not in agentNames: ##Checks if any agents were removed.
           
           if allEditButtons[i - agentsDeleted][1] == True: ##Means dictionaries were made for that agent.
@@ -346,7 +350,7 @@ def next_page():
    
     ##If there are invalid entries, create popup.
     if isGoodCBS == False:
-      incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, wrongAgents) ##Calls function for pop-up.
+      incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, 0) ##Calls function for pop-up.
 
       pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
 
@@ -465,7 +469,7 @@ def next_page():
         nextButton.pack_forget()
         
         ##Call create_text() to create the agentspec.txt file.
-        textEntry, textEntryFrame, saveButton = create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEntriesCBS, 
+        textEntryFrame, saveButton = create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEntriesCBS, 
                                                                      agentBehaviours, allTextBoxCBS, allCircleTableValues, 
                                                                      allLambdaTableValues, stimDict, allBevDict, allRadioButtons,
                                                                      save_icon, return_arrow, moreThanOneAgent, 0)
@@ -774,33 +778,6 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##Make a title for the frame.
   editTitle = Label(editScrollingArea[0].innerframe, text='Please Edit The Agents')  #Not working...
   editTitle.pack()
-  
-  """Labels and Entries exclusive for page 5."""
-  ##Text entry to give the user a preview of the text file.
-  ##Create a frame for the text box.
-  textEntryFrame = Frame(main)
-  textEntry = Text(textEntryFrame)
-  
-  ##Declaring x and y scrollbars for the text box.
-  xscrollbarText = Scrollbar(textEntryFrame, orient=HORIZONTAL)
-  xscrollbarText.grid(row=1, column=0, sticky=N+S+E+W)
-
-  yscrollbarText = Scrollbar(textEntryFrame)
-  yscrollbarText.grid(row=0, column=1, sticky=N+S+E+W)
-
-  ##Create the text box widget for the preview page.
-  textEntry = Text(textEntryFrame, wrap=NONE,
-              xscrollcommand=xscrollbarText.set,
-              yscrollcommand=yscrollbarText.set,
-              width = 60)
-  
-  textEntry.grid(row=0, column=0)
-
-  xscrollbarText.config(command=textEntry.xview)
-  yscrollbarText.config(command=textEntry.yview)    
-  
-  ##Save button to have the user save the text file.
-  saveButton = Button(main, image = save_icon, border = 0, command = lambda: create_save_file(textEntry.get(1.0, END)))  
   
   """Loop the main window."""
   main.mainloop()

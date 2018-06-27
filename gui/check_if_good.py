@@ -320,8 +320,73 @@ def button_not_clicked(main, return_arrow):
                         command = lambda: return_to_edit(main))
 
   pressToClose.pack(side = BOTTOM, anchor = E)
+
+##Function which checks if there are two or more agents which have the same name.  
+def check_if_good_agents(agentNames, agentEntries):
+  """ (list, list) -> (bool)
+    
+    Function to check if there are duplicate
+    agents.
   
-   
+  """        
+  numDeleted = 0
+  agentSet = set(agentNames) ##Set only keeps unique names.
+  
+  if len(agentSet) < len(agentNames): ##If true, two or more agent names are the same.
+    for agent in agentSet:
+      if agentNames.count(agent) > 1:
+        
+        while agentNames.count(agent) != 0:
+          index = agentNames.index(agent)
+          agentEntries[index + numDeleted].config(bg = 'tomato')
+          del agentNames[index]
+          numDeleted += 1
+          
+    return False
+  
+  else:
+    return True
+
+##Pop-up when there are two or more agents with the same name.
+def same_agent(main, return_arrow):
+  """ (tkinter.Tk, img) -> (none)
+    
+    Pop-up to tell the user that the agent entry
+    is incorrect.
+  
+  """       
+  global sameAgent
+  ##Create pop-up window.
+  sameAgent = Toplevel()
+    
+  sameAgent.config(takefocus = True) ##Get focus on screen.   
+    
+  windowSize = 300 ##Pop up size (300 x 300).
+  
+  ##Collect screen (monitor) width and height to position the window in the center. 
+  screenWidth = sameAgent.winfo_screenwidth() 
+  screenHeight = sameAgent.winfo_screenheight()
+  
+  ##Calculate the center position.  
+  positionRight = screenWidth/2 - windowSize/2
+  positionDown = screenHeight/2 - windowSize/2
+  
+  ##Set the window size using the geometry() method.  
+  sameAgent.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
+                                      positionRight, positionDown)) 
+    
+  sameAgent.resizable(width = False, height = False) ##The window is not resizeable.
+
+  sameAgent.wm_title("Incorrect Agent(s)")
+
+  ##Disable main window until pop up is closed
+  sameAgent.grab_set()
+    
+  Label(sameAgent, text = 'Please remove duplicate agents').pack(side = TOP)
+    
+  pressToClose = Button(sameAgent, image = return_arrow, border = 0, 
+                        command = lambda: return_to_bevs_same(main))
+  pressToClose.pack(side = BOTTOM, anchor = E)   
   
 def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS):
   """ (tkinter.Tk, dict, tupple) -> (Bool)
@@ -436,56 +501,8 @@ def check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, allLambdaTabl
   else:
     return False, invalidEntries 
 
-
-def check_if_good_agents(agentNames):
-  agentSet = set(agentNames)
-  if len(agentSet) < len(agentNames):
-    return False
-  else:
-    return True
-
-def same_agent(main, return_arrow):
-  """ (tkinter.Tk) -> (none)
-    
-    Pop-up to tell the user that the agent entry
-    is incorrect.
-  
-  """       
-  global sameAgent
-  ##Create pop-up window.
-  sameAgent = Toplevel()
-    
-  sameAgent.config(takefocus = True) ##Get focus on screen.   
-    
-  windowSize = 300 ##Pop up size (300 x 300).
-  
-  ##Collect screen (monitor) width and height to position the window in the center. 
-  screenWidth = sameAgent.winfo_screenwidth() 
-  screenHeight = sameAgent.winfo_screenheight()
-  
-  ##Calculate the center position.  
-  positionRight = screenWidth/2 - windowSize/2
-  positionDown = screenHeight/2 - windowSize/2
-  
-  ##Set the window size using the geometry() method.  
-  sameAgent.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
-                                      positionRight, positionDown)) 
-    
-  sameAgent.resizable(width = False, height = False) ##The window is not resizeable.
-
-  sameAgent.wm_title("Incorrect Agent(s)")
-
-  ##Disable main window until pop up is closed
-  sameAgent.grab_set()
-    
-  Label(sameAgent, text = 'Please remove duplicate agents').pack(side = TOP)
-    
-  pressToClose = Button(sameAgent, image = return_arrow, border = 0, 
-                        command = lambda: return_to_bevs_same(main))
-  pressToClose.pack(side = BOTTOM, anchor = E)
-
 def incorrect_table(main, numInvalid, return_arrow):
-  """ (tkinter.Tk, int) -> (none)
+  """ (tkinter.Tk, img) -> (none)
     
     Pop-up to tell the user that some entries are inccorect
     in the table. The pop-up specifies the number of entries 
@@ -532,7 +549,7 @@ def incorrect_table(main, numInvalid, return_arrow):
 
 ##Generate the specified stim entries. 
 def return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove_x):
-  """ (tkinter.Tk, dict, int, tkinter.Frame) -> (none)
+  """ (tkinter.Tk, dict, int, tkinter.Frame, img) -> (none)
     
     After confirming with the user that the stimuli entries
     will be deleted, this function begins deleting the current
@@ -598,6 +615,16 @@ def return_to_stims(main):
   """   
   wrongStims.destroy() 
 
+##Function to return to the agent entry page after the pop-up.
+def return_to_bevs_same(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the sameAgent window and re-generates
+    the main window.
+  
+  """
+  sameAgent.destroy()
+
 ##Function to return to the behaviour entry page after the pop-up. 
 def return_to_bevs_agent(main):
   """ (tkinter.Tk) -> (none)
@@ -617,6 +644,16 @@ def return_to_bevs_bevs(main):
   
   """   
   wrongBevs.destroy() 
+
+##Function to return to the multiple agents edit page.
+def return_to_edit(main):
+  """ (tkinter.Tk) -> (none)
+    
+    Destroys the buttonNotClicked window and re-generates
+    the main window.
+  
+  """     
+  buttonNotClicked.destroy()
   
 ##Function to return to the concrete behaviour page after the pop-up
 def return_to_CBS(main):
@@ -637,21 +674,3 @@ def return_to_tables(main):
   
   """   
   invalidEntryPop.destroy()
-
-def return_to_edit(main):
-  """ (tkinter.Tk) -> (none)
-    
-    Destroys the buttonNotClicked window and re-generates
-    the main window.
-  
-  """     
-  buttonNotClicked.destroy()
-
-def return_to_bevs_same(main):
-  """ (tkinter.Tk) -> (none)
-    
-    Destroys the sameAgent window and re-generates
-    the main window.
-  
-  """
-  sameAgent.destroy()
