@@ -148,11 +148,17 @@ def next_page():
        
       else: ##Entry is good.
         agentFrames['agentBev'][i].config(bg = 'white')
-    
-    if len(agentNames) == 0: ##Means there are absolutely no agents.
-      agentsGood = False
-      incorrect_agent(main, return_arrow)
-      pageNum-=1
+        
+    if agentsGood:  ##If there is still no error
+      if not check_if_good_agents(agentNames):
+        agentsGood = False
+        same_agent(main, return_arrow)
+        pageNum-=1      
+      
+      if len(agentNames) == 0: ##Means there are absolutely no agents.
+        agentsGood = False
+        incorrect_agent(main, return_arrow)
+        pageNum-=1
    
     elif agentsGood:
       ##Before going to the next page, extract the full text describing 
@@ -340,7 +346,7 @@ def next_page():
    
     ##If there are invalid entries, create popup.
     if isGoodCBS == False:
-      incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, numWrong) ##Calls function for pop-up.
+      incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, wrongAgents) ##Calls function for pop-up.
 
       pageNum -= 1 ##Decrease pageNum by one to stay on current page. 
 
