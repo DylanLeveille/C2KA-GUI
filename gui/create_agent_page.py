@@ -17,11 +17,11 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrol
                       generatedTables, generatedCBS, allCBSTabContents, allTableTabContents):
     
     editScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
-    editScrollingAreaTemp.pack(expand = 1, fill=BOTH)
+    editScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 80))
 
     for i in range(len(agentNames)):
         editFrame = Frame(editScrollingAreaTemp.innerframe, pady = 20)
-        editLabel = Label(editFrame, text = agentNames[i])
+        editLabel = Label(editFrame, text = agentNames[i], padx = 15)
         completeLabel = Label(editFrame)
         editButton = Button(editFrame, text = 'Edit', border = 1, 
                                   command = lambda boxIndex=i: edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
@@ -44,7 +44,7 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrol
         editLabel.pack(side = LEFT, anchor = N)
         editButton.pack(side = LEFT, anchor = N)
         completeLabel.pack(side = LEFT, anchor = N)
-        editFrame.pack(anchor = W, )
+        editFrame.pack(anchor = W)
         editScrollingArea[0] = editScrollingAreaTemp  
     
 
