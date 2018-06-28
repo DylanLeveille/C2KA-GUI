@@ -532,11 +532,11 @@ def prev_page():
     allAgentCBS[0].pack_forget()      
     allFormatCBS[0].pack_forget()
   
+  stayOnPage = False ##Boolean variable to check if any pop-ups are open.
+  
   """PAGE 4 to PAGE 3."""
   if pageNum == 4:
     if moreThanOneAgent: ##Back to page 2 if True, not page 3.
-      
-      stayOnPage = False ##Boolean variable to check if any pop-ups are open.
       
       for button in allEditButtons:
         if button[0].cget("state") == DISABLED: ##If the button is disabled, then that means a pop-up is open.
@@ -585,10 +585,8 @@ def prev_page():
       allFormatCBS[0].pack(side = BOTTOM, anchor = S, expand = True)    
 
   """PAGE 5 to PAGE 4."""
-  if pageNum == 5:
+  if pageNum == 5 and stayOnPage == False: ##stayOnPage must be false in case it was turned True by previous if statement.
     if moreThanOneAgent:
-      
-      stayOnPage = False ##Boolean variable to check if any pop-ups are open.
       
       for button in allEditButtons:
         if button[0].cget("state") == DISABLED: ##If the button is disabled, then that means a pop-up is open.
@@ -647,11 +645,11 @@ if __name__ == '__main__': ##only start program when running gui.py
   mainStyle = ttk.Style()
   mainStyle.theme_use("clam")
   
-  windowSize = 500 ##500 is the dimension that will be used for the window (500 x 500).
-  
   ##Collect screen (monitor) width and height to position the program's main window in the center. 
   screenWidth = main.winfo_screenwidth() 
-  screenHeight = main.winfo_screenheight()
+  screenHeight = main.winfo_screenheight()  
+  
+  windowSize = int(screenHeight/2.16) ##Dimension of the window is about half that of the screen height.
   
   ##Calculate the center position.
   positionRight = screenWidth/2 - windowSize/2
@@ -706,7 +704,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   
   allFrames = [] ##Dictionary for all the pop-ups
   allCBSTabContents = {} ##Dictionary for everything inside CBSTab
-  allTableTabContents = {}
+  allTableTabContents = {} ##Dictionary for everything inside tableTab
   allEditButtons = [] ##Dictionary for all the edit buttons    
   
   ##Bind these to empty lists to allow them to be passed as arguments.
@@ -757,11 +755,11 @@ if __name__ == '__main__': ##only start program when running gui.py
 
   """Defining Buttons available on each page.""" 
   ##Next Button (will not be available on page 5).
-  nextButton = Button(main, command = next_page, image = right_arrow, width = "25", height = "25", border = 0, highlightthickness = 0)
+  nextButton = Button(main, command = next_page, image = right_arrow, width = int(screenWidth/76.8), height = int(screenWidth/76.8), border = 0, highlightthickness = 0)
   nextButton.pack(in_=buttonsFrame, side = RIGHT, anchor = E)
 
   ##Prev Button (will not be availible on page 1).
-  prevButton = Button(main, command = prev_page, image = left_arrow, width = "25", height = "25", border = 0, highlightthickness = 0)
+  prevButton = Button(main, command = prev_page, image = left_arrow, width = int(screenWidth/76.8), height = int(screenWidth/76.8), border = 0, highlightthickness = 0)
   
   """Label and Buttons exclusive to page 1."""  
   ##The scrolling area is at index zero of the stimScrollingArea list, this way, 
@@ -777,16 +775,18 @@ if __name__ == '__main__': ##only start program when running gui.py
   enterStimLabel = Label(main, text = 'Enter # of stimuli : ')
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
-  enterStimButton = Button(main, image = check_mark, border = 0, command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow), highlightthickness = 0)
+  enterStimButton = Button(main, image = check_mark, border = 0, width = int(screenWidth/76.8), height = int(screenWidth/76.8), 
+                           command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow), 
+                           highlightthickness = 0)
   enterStimButton.pack(in_=stimFrame, side = RIGHT, anchor = N)
   
   enterStimBox = ttk.Entry(main, font = entry_font)
-  enterStimBox.pack(in_=stimFrame, side = TOP)
+  enterStimBox.pack(in_=stimFrame, side = TOP, padx = (0, 10))
   
   ##Add stimulus entry Button.
   addStim = Button(main, text = 'Add new stimulus', 
                    command = lambda: add_stim(main, stimList, stimScrollingArea, remove_x), 
-                   width = 23, highlightthickness = 0)
+                   width = int(screenWidth/83.47826), highlightthickness = 0)
   
   addStim.pack(in_=buttonsFrame, side = LEFT)
   

@@ -64,11 +64,16 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         editAgent = Toplevel() ##Creating new window to edit agent specs
         editAgent.resizable(width = False, height = False) 
         allFrames[boxIndex] = editAgent ##Store specific frame according to index.
+        
+        ##Collect screen (monitor) width and height to position the window in the center. 
+        screenWidth = editAgent.winfo_screenwidth() 
+        screenHeight = editAgent.winfo_screenheight()       
+        
+        windowSize = int(screenHeight/2.16) ##Dimension of the window is about half that of the screen height.
+        
+        editAgent.geometry('%dx%d' % (windowSize, windowSize))
 
-        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(boxIndex, allEditButtons, allFrames))
-        
-        editAgent.geometry('500x500')
-        
+        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(boxIndex, allEditButtons, allFrames)) ##Give a command to the X button of the window.
         
         editButtonsFrame = Frame(editAgent) ##Making the save and cancel button
         

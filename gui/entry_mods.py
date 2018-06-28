@@ -11,6 +11,9 @@ def add_stim(main, stimList, stimScrollingArea, remove_x):
     and updates the scrolling area.  
   
   """ 
+  ##Get screen width to make dimensions relative to that value.
+  screenWidth = main.winfo_screenwidth()    
+  
   ##Make a new frame capable of scrolling to the new entry box.
   stimScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
   stimScrollingAreaTemp.pack(expand = 1, fill=BOTH)
@@ -22,7 +25,7 @@ def add_stim(main, stimList, stimScrollingArea, remove_x):
   ##Generate the boxes.    
   for i in range(len(stimList)):
     ##Declare a frame in the scrolling area.
-    stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe, height = 27)
+    stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe, height = int(screenWidth / 71.11111))
     
     ##Declare widgets in the frame.
     stimEntry = Entry(stimEntryFrame)
@@ -39,7 +42,7 @@ def add_stim(main, stimList, stimScrollingArea, remove_x):
     stimDeleteButton.pack(side = RIGHT)
   
   ##Assign a new entry box to the scrolling area by making a new frame.
-  stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe, height = 27)
+  stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe, height = int(screenWidth / 71.11111))
   
   ####Declare widgets in the new frame.
   stimEntry = Entry(stimEntryFrame) 
@@ -69,6 +72,9 @@ def remove_stim(main, stimList, stimScrollingArea, boxIndex, remove_x):
     adapt to this change.
   
   """  
+  ##Get screen width to make dimensions relative to that value.
+  screenWidth = main.winfo_screenwidth()   
+  
   ##Make a new frame capable of scrolling to the new entry box.
   stimScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
   stimScrollingAreaTemp.pack(expand = 1, fill=BOTH)
@@ -83,7 +89,7 @@ def remove_stim(main, stimList, stimScrollingArea, boxIndex, remove_x):
   ##Generate the boxes.       
   for i in range(len(stimList)):
     ##Declare a frame in the scrolling area.
-    stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe, height = 27)
+    stimEntryFrame = Frame(stimScrollingAreaTemp.innerframe, height = int(screenWidth / 71.11111))
     
     ##Declare widgets in the frame.
     stimEntry = Entry(stimEntryFrame)
@@ -113,6 +119,9 @@ def add_agent(main, agentFrames, agentScrollingArea, remove_x):
     and updates the scrolling area.  
   
   """ 
+  ##Get screen width to make dimensions relative to that value.
+  screenWidth = main.winfo_screenwidth()   
+  
   ##Make a new frame capable of scrolling to the new agent frames.
   agentScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
   agentScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 80))
@@ -124,13 +133,13 @@ def add_agent(main, agentFrames, agentScrollingArea, remove_x):
   ##Generate the agents.    
   for i in range(len(agentFrames['agentNames'])):
     ##Declare a frame in the scrolling area.
-    agentEntryFrame = Frame(agentScrollingAreaTemp.innerframe, height = 80)
+    agentEntryFrame = Frame(agentScrollingAreaTemp.innerframe, height = int(screenWidth/24))
     
     ####Declare widgets in the new frame.
     agentLabel = Label(agentEntryFrame, text = 'Agent Name:')
-    agentEntry = Entry(agentEntryFrame, width = 40)
+    agentEntry = Entry(agentEntryFrame, width = int(screenWidth/48))
     agentBevLabel = Label(agentEntryFrame, text = 'Agent Behaviour:')
-    agentBevEntry = Entry(agentEntryFrame, width = 40)   
+    agentBevEntry = Entry(agentEntryFrame, width = int(screenWidth/48))   
   
     agentDeleteButton = Button(agentEntryFrame, image = remove_x, border = 0, 
                               command = lambda boxIndex=i: remove_agent(main, agentFrames, agentScrollingArea, boxIndex, remove_x))   
@@ -151,13 +160,13 @@ def add_agent(main, agentFrames, agentScrollingArea, remove_x):
     agentEntryFrame.pack(side = TOP, anchor = W, fill = X, pady = 20)
   
   ##Assign a the new entry boxes to the scrolling area by making a new frame.
-  agentEntryFrame = Frame(agentScrollingAreaTemp.innerframe, height = 80)
+  agentEntryFrame = Frame(agentScrollingAreaTemp.innerframe, height = int(screenWidth/24))
   
   ####Declare widgets in the new frame.
   agentLabel = Label(agentEntryFrame, text = 'Agent Name:')
-  agentEntry = Entry(agentEntryFrame, width = 40)
+  agentEntry = Entry(agentEntryFrame, width = int(screenWidth/48))
   agentBevLabel = Label(agentEntryFrame, text = 'Agent Behaviour:')
-  agentBevEntry = Entry(agentEntryFrame, width = 40)   
+  agentBevEntry = Entry(agentEntryFrame, width = int(screenWidth/48))   
   
   agentDeleteButton = Button(agentEntryFrame, image = remove_x, border = 0, 
                             command = lambda boxIndex=len(agentFrames['agentNames']): remove_agent(main, agentFrames, agentScrollingArea, boxIndex, remove_x))   
@@ -188,6 +197,9 @@ def remove_agent(main, agentFrames, agentScrollingArea, boxIndex, remove_x):
     adapt to this change.
   
   """  
+  ##Get screen width to make dimensions relative to that value.
+  screenWidth = main.winfo_screenwidth()   
+  
   ##Make a new frame capable of scrolling to the new entry box.
   agentScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
   agentScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 80))
@@ -203,13 +215,13 @@ def remove_agent(main, agentFrames, agentScrollingArea, boxIndex, remove_x):
   ##Generate the agents.       
   for i in range(len(agentFrames['agentNames'])):
     ##Declare a frame in the scrolling area.
-    agentEntryFrame = Frame(agentScrollingAreaTemp.innerframe, height = 80)
+    agentEntryFrame = Frame(agentScrollingAreaTemp.innerframe, height = int(screenWidth/24))
     
     ####Declare widgets in the new frame.
     agentLabel = Label(agentEntryFrame, text = 'Agent Name:')
-    agentEntry = Entry(agentEntryFrame, width = 40)
+    agentEntry = Entry(agentEntryFrame, width = int(screenWidth/48))
     agentBevLabel = Label(agentEntryFrame, text = 'Agent Behaviour:')
-    agentBevEntry = Entry(agentEntryFrame, width = 40)   
+    agentBevEntry = Entry(agentEntryFrame, width = int(screenWidth/48))   
   
     agentDeleteButton = Button(agentEntryFrame, image = remove_x, border = 0, 
                               command = lambda boxIndex=i: remove_agent(main, agentFrames, agentScrollingArea, boxIndex, remove_x))   

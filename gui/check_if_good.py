@@ -34,11 +34,11 @@ def specify_stim(main, stimList, numStims, stimScrollingArea, remove_x, return_a
     windowSize =  screenWidth/6 ##One sixth of the screen.
     
     ##Calculate the center position.
-    positionRight = int(screenWidth/2 - windowSize/2)
-    positionDown = int(screenHeight/2 - windowSize/2)
+    positionRight = screenWidth/2 - windowSize/2
+    positionDown = screenHeight/2 - windowSize/2
     
     ##Set the window size using the geometry() method.
-    warningStims.geometry('%dx%d+%d+%d' % (int(windowSize), int(windowSize)/4, 
+    warningStims.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
                                       positionRight, positionDown)) 
     
     warningStims.resizable(width = False, height = False) ##The window is not resizeable.
@@ -48,10 +48,8 @@ def specify_stim(main, stimList, numStims, stimScrollingArea, remove_x, return_a
     ##Disable main window until pop up is closed
     warningStims.grab_set()
     
-    a = Label(warningStims, text = 'This action will permenantly delete the current stimuli')
-    a.pack(side = TOP)
-    print(a.winfo_width())
-    
+    Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
+
     pressToContinue = Button(warningStims, text = "Continue", highlightthickness = 0, 
                           command = lambda: return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove_x))
     
@@ -77,11 +75,11 @@ def incorrect_stim_num(main, return_arrow):
   
   wrongStimNum.config(takefocus = True) ##Get focus on screen.  
   
-  windowSize = 300 ##Pop up size (300 x 300).
-  
   ##Collect screen (monitor) width and height to position the window in the center. 
   screenWidth = wrongStimNum.winfo_screenwidth() 
   screenHeight = wrongStimNum.winfo_screenheight()
+  
+  windowSize =  screenWidth/6 ##One sixth of the screen.
   
   ##Calculate the center position.
   positionRight = screenWidth/2 - windowSize/2
@@ -119,11 +117,11 @@ def incorrect_stims(main, return_arrow):
   
   wrongStims.config(takefocus = True) ##Get focus on screen. 
   
-  windowSize = 300 ##Pop up size (300 x 300).
-  
   ##Collect screen (monitor) width and height to position the window in the center. 
   screenWidth = wrongStims.winfo_screenwidth() 
   screenHeight = wrongStims.winfo_screenheight()
+  
+  windowSize =  screenWidth/6 ##One sixth of the screen.
   
   ##Calculate the center position.
   positionRight = screenWidth/2 - windowSize/2
@@ -161,11 +159,11 @@ def incorrect_agent(main, return_arrow):
     
   wrongAgent.config(takefocus = True) ##Get focus on screen.   
     
-  windowSize = 300 ##Pop up size (300 x 300).
-  
   ##Collect screen (monitor) width and height to position the window in the center. 
   screenWidth = wrongAgent.winfo_screenwidth() 
   screenHeight = wrongAgent.winfo_screenheight()
+  
+  windowSize =  screenWidth/6 ##One sixth of the screen.
   
   ##Calculate the center position.  
   positionRight = screenWidth/2 - windowSize/2
@@ -203,11 +201,11 @@ def incorrect_bevs(main, return_arrow):
   
   wrongBevs.config(takefocus = True) ##Get focus on screen. 
     
-  windowSize = 300 ##Pop up size (300 x 300).
-  
   ##Collect screen (monitor) width and height to position the window in the center. 
   screenWidth = wrongBevs.winfo_screenwidth() 
   screenHeight = wrongBevs.winfo_screenheight()
+  
+  windowSize =  screenWidth/6 ##One sixth of the screen.
     
   ##Calculate the center position.  
   positionRight = screenWidth/2 - windowSize/2
@@ -223,7 +221,7 @@ def incorrect_bevs(main, return_arrow):
   
   ##Disable main window until pop up is closed
   wrongBevs.grab_set()
-    
+                            
   Label(wrongBevs, text = 'Please enter at least one valid behaviour').pack(side = TOP)
   Label(wrongBevs, text = 'or remove invalid behaviours').pack(side = TOP)
     
@@ -248,11 +246,11 @@ def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, numWrong):
 
   wrongCBS.config(takefocus = True) ##Get focus on screen.  
 
-  windowSize = 300 ##Pop up size (300 x 300). 
-
   ##Collect screen (monitor) width and height to position the window in the center. 
   screenWidth = wrongCBS.winfo_screenwidth() 
   screenHeight = wrongCBS.winfo_screenheight()
+  
+  windowSize =  screenWidth/6 ##One sixth of the screen.
 
   ##Calculate the center position.
   positionRight = screenWidth/2 - windowSize/2
@@ -264,16 +262,18 @@ def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, numWrong):
 
   wrongCBS.resizable(width = False, height = False) ##The window is not resizeable.
 
-  wrongCBS.wm_title("Incorrect Concrete Behaviour")
-
   ##Disable main window until pop up is closed
   wrongCBS.grab_set()
-  if not moreThanOneAgent:
+  if not moreThanOneAgent:  
+    wrongCBS.wm_title("Incorrect Concrete Behaviour")
+    
     Label(wrongCBS, text = 'Please enter at least one valid concrete behaviour').pack(side = TOP)
   
     Label(wrongCBS, text = 'or remove invalid concrete behaviour').pack(side = TOP) 
 
   else:
+    wrongCBS.wm_title("Fix Agents")
+    
     Label(wrongCBS, text = 'ERROR! Fix %d Agents' %(numWrong)).pack(side = TOP)
   pressToClose = Button(wrongCBS, image = return_arrow, border = 0, 
                         command = lambda: return_to_CBS(main), highlightthickness = 0)
@@ -295,11 +295,11 @@ def button_not_clicked(main, return_arrow):
 
   buttonNotClicked.config(takefocus = True) ##Get focus on screen.  
 
-  windowSize = 300 ##Pop up size (300 x 300). 
-
   ##Collect screen (monitor) width and height to position the window in the center. 
   screenWidth = buttonNotClicked.winfo_screenwidth() 
   screenHeight = buttonNotClicked.winfo_screenheight()
+  
+  windowSize =  screenWidth/6 ##One sixth of the screen.
 
   ##Calculate the center position.
   positionRight = screenWidth/2 - windowSize/2
@@ -363,11 +363,11 @@ def same_agent(main, return_arrow):
     
   sameAgent.config(takefocus = True) ##Get focus on screen.   
     
-  windowSize = 300 ##Pop up size (300 x 300).
-  
   ##Collect screen (monitor) width and height to position the window in the center. 
   screenWidth = sameAgent.winfo_screenwidth() 
   screenHeight = sameAgent.winfo_screenheight()
+  
+  windowSize =  screenWidth/6 ##One sixth of the screen.
   
   ##Calculate the center position.  
   positionRight = screenWidth/2 - windowSize/2
@@ -404,11 +404,11 @@ def dont_go_back(main, return_arrow):
     
   closePops.config(takefocus = True) ##Get focus on screen.   
     
-  windowSize = 300 ##Pop up size (300 x 300).
-  
   ##Collect screen (monitor) width and height to position the window in the center. 
   screenWidth = closePops.winfo_screenwidth() 
   screenHeight = closePops.winfo_screenheight()
+  
+  windowSize =  screenWidth/6 ##One sixth of the screen.
   
   ##Calculate the center position.  
   positionRight = screenWidth/2 - windowSize/2
@@ -420,7 +420,7 @@ def dont_go_back(main, return_arrow):
     
   closePops.resizable(width = False, height = False) ##The window is not resizeable.
 
-  closePops.wm_title("Incorrect Agent(s)")
+  closePops.wm_title("close pop-up(s)")
 
   ##Disable main window until pop up is closed
   closePops.grab_set()
@@ -501,9 +501,7 @@ def check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, allLambdaTabl
   
   ##Extract the number of agents.
   numAgents = len(allCircleTableBoxes)  
-  
-
-  
+    
   for boxIndex in range(numAgents):
     ##Assuming both tables are good for each agent.
     circleTablesGood = True
@@ -535,10 +533,13 @@ def check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, allLambdaTabl
       ##Change background to white (normal) if the value is now valid.  
       else: 
         allLambdaTableBoxes[boxIndex + 1][key].config(bg = 'white')
+        
     if circleTablesGood == True and lambdaTablesGood == True:
       allIsGoodTable[boxIndex] = True
+      
     else:
       allIsGoodTable[boxIndex] = False
+      
   ##If both tables contain valid values, return True; else return False.    
   if circleTablesGood == True and lambdaTablesGood == True:
     return True, invalidEntries
@@ -558,11 +559,11 @@ def incorrect_table(main, numInvalid, return_arrow):
   invalidEntryPop = Toplevel()
   invalidEntryPop.config(takefocus = True) ##Get focus on screen. 
   
-  windowSize = 300 ##Pop up size (300 x 300).
-  
   ##Collect screen (monitor) width and height to position the window in the center. 
   screenWidth = invalidEntryPop.winfo_screenwidth() 
   screenHeight = invalidEntryPop.winfo_screenheight()
+  
+  windowSize =  screenWidth/6 ##One sixth of the screen.
   
   ##Calculate the center position.
   positionRight = screenWidth/2 - windowSize/2

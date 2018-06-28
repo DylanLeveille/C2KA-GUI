@@ -20,10 +20,16 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
             agentSpecs = Toplevel() ##Creating new window to preview agent specs.
             agentSpecs.resizable(width = False, height = False) 
             allPreviewPops[boxIndex] = agentSpecs ##Store the window at the correct index.
-    
-            agentSpecs.protocol("WM_DELETE_WINDOW", lambda: close_preview(allEditButtons, allPreviewPops, boxIndex))
             
-            agentSpecs.geometry('500x500')       
+            ##Collect screen (monitor) width and height to position the window in the center. 
+            screenWidth = agentSpecs.winfo_screenwidth() 
+            screenHeight = agentSpecs.winfo_screenheight()       
+            
+            windowSize = int(screenHeight/2.16) ##Dimension of the window is about half that of the screen height.
+            
+            agentSpecs.geometry('%dx%d' % (windowSize, windowSize))            
+    
+            agentSpecs.protocol("WM_DELETE_WINDOW", lambda: close_preview(allEditButtons, allPreviewPops, boxIndex))   
             
             previewAgent = Frame(agentSpecs) ##Making a frame on the preview page to hold the save and return buttons.
             

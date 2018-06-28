@@ -153,19 +153,20 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
     else: ##One agent
       buttonsFrame = allFillButtons[boxIndex][2]
     
+    screenWidth = window.winfo_screenwidth() 
+    
     ##Button to fill circle table with beahviour in each row and button to fill
     ##lambda table with neutral stimulis is initialized here in a tupple. The tupple
     ##also contains the buttons frame.
     allFillButtons[boxIndex] = (Button(window, text = 'Fill with Behaviours', 
                      command = lambda: fill_bev(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1]), 
-                     width = 31), Button(window, text = 'Fill with neutral stimulus', 
+                     width = int(screenWidth/62)), Button(window, text = 'Fill with neutral stimulus', 
                      command = lambda: fill_n(allBevDict[boxIndex + 1], stimDict, allLambdaTableBoxes[boxIndex + 1]), 
-                     width = 31), buttonsFrame)   
+                     width = int(screenWidth/62)), buttonsFrame)   
     
     ##Pack the fill buttons.
-    allFillButtons[boxIndex][0].pack(in_=buttonsFrame, side = LEFT) 
-    allFillButtons[boxIndex][1].pack(in_=buttonsFrame, side = RIGHT)
-  
+    allFillButtons[boxIndex][0].pack(in_=buttonsFrame, side = LEFT, expand = 1, fill = X) 
+    allFillButtons[boxIndex][1].pack(in_=buttonsFrame, side = RIGHT, expand = 1, fill = X)
      
     circleScrollingArea = [superscroll.Scrolling_Area(window, width=1, height=1)]
     circleScrollingArea[0].pack(expand=1, fill = BOTH)    
