@@ -56,7 +56,7 @@ def next_page():
   
   global allFillButtons
   
-  global allFrames
+  global allAgentWindows
   global allCBSTabContents
   global allTableTabContents
   global allEditButtons
@@ -174,7 +174,7 @@ def next_page():
       agentScrollingArea[0].pack_forget()      
       addAgent.pack_forget()
       
-      ##A swap list to hold agents swapped.
+      ##A swap list to hold agents that may need swapping.
       swapList = []
       
       ##Keep track of agents deleted.
@@ -207,7 +207,7 @@ def next_page():
           del allCheckLabels[i - agentsDeleted]
           del allPreviewPops[i - agentsDeleted]  
           del allEditButtons[i - agentsDeleted]
-          del allFrames[i - agentsDeleted]          
+          del allAgentWindows[i - agentsDeleted]          
           
           for j in range(i - agentsDeleted + 1, len(oldAgentNames) - agentsDeleted): ##Shift all the keys down by 1.
             key = j + 1
@@ -220,78 +220,17 @@ def next_page():
               
           agentsDeleted += 1
         
-        elif oldAgentNames[i] != agentNames[i - agentsDeleted] and oldAgentNames[i] not in swapList: ##Means some agents have swapped places. We do not swap if it was already done.   
-          ##Find position of where the agent name belongs.
-          for j in range(i - agentsDeleted + 1, len(agentNames)): ##Postion to switch found if True.
-            if agentNames[j] == oldAgentNames[i]:
-              indexSwitch = j 
-              
-          ##Begin to switch the data for the dictionaries. If none of the agents had dictionaries, then there is no dictionary to shift.
-          if allEditButtons[i - agentsDeleted][1] == True and allEditButtons[indexSwitch][1] == True: ##Both agents had keys associated with them.
-            allCircleTableBoxes[i - agentsDeleted + 1], allCircleTableBoxes[indexSwitch + 1] = allCircleTableBoxes[indexSwitch + 1], allCircleTableBoxes[i - agentsDeleted + 1]
-            allLambdaTableBoxes[i - agentsDeleted + 1], allLambdaTableBoxes[indexSwitch + 1] = allLambdaTableBoxes[indexSwitch + 1], allLambdaTableBoxes[i - agentsDeleted + 1]
-          
-          elif allEditButtons[i - agentsDeleted][1] == True: ##Only one agent had a key associated with them (first one).
-            allCircleTableBoxes[indexSwitch + 1] = allCircleTableBoxes[i - agentsDeleted + 1]
-            allLambdaTableBoxes[indexSwitch + 1] = allLambdaTableBoxes[i - agentsDeleted + 1]
-            
-            del allCircleTableBoxes[i - agentsDeleted + 1]
-            del allLambdaTableBoxes[i - agentsDeleted + 1]
-          
-          elif allEditButtons[indexSwitch][1] == True: ##Only one agent had a key associated with them (second one).
-            allCircleTableBoxes[i - agentsDeleted + 1] = allCircleTableBoxes[indexSwitch + 1]
-            allLambdaTableBoxes[i - agentsDeleted + 1] = allLambdaTableBoxes[indexSwitch + 1] 
-            
-            del allCircleTableBoxes[indexSwitch + 1]
-            del allLambdaTableBoxes[indexSwitch + 1] 
-
-          ##Switch all the remaining data using tupple assignment.
-          allAgentCBS[i - agentsDeleted], allAgentCBS[indexSwitch] = allAgentCBS[indexSwitch], allAgentCBS[i - agentsDeleted]
-          allTitleCBS[i - agentsDeleted], allTitleCBS[indexSwitch] = allTitleCBS[indexSwitch], allTitleCBS[i - agentsDeleted]
-          
-          allFormatCBS[i - agentsDeleted], allFormatCBS[indexSwitch] = allFormatCBS[indexSwitch], allFormatCBS[i - agentsDeleted]
-          allRadioButtons[i - agentsDeleted], allRadioButtons[indexSwitch] = allRadioButtons[indexSwitch], allRadioButtons[i - agentsDeleted]
-          
-          allTextBoxCBSFrame[i - agentsDeleted], allTextBoxCBSFrame[indexSwitch] = allTextBoxCBSFrame[indexSwitch], allTextBoxCBSFrame[i - agentsDeleted]
-          allTextBoxCBS[i - agentsDeleted], allTextBoxCBS[indexSwitch] = allTextBoxCBS[indexSwitch], allTextBoxCBS[i - agentsDeleted]
-          
-          allConcreteScrollingArea[i - agentsDeleted], allConcreteScrollingArea[indexSwitch] = allConcreteScrollingArea[indexSwitch], allConcreteScrollingArea[i - agentsDeleted]      
-          allEntriesCBS[i - agentsDeleted], allEntriesCBS[indexSwitch] = allEntriesCBS[indexSwitch], allEntriesCBS[i - agentsDeleted]    
-          
-          allFillButtons[i - agentsDeleted], allFillButtons[indexSwitch] = allFillButtons[indexSwitch], allFillButtons[i - agentsDeleted]
-          
-          allCircleScrollingArea[i - agentsDeleted], allCircleScrollingArea[indexSwitch] = allCircleScrollingArea[indexSwitch], allCircleScrollingArea[i - agentsDeleted]
-          allCircleGridFrame[i - agentsDeleted], allCircleGridFrame[indexSwitch] = allCircleGridFrame[indexSwitch], allCircleGridFrame[i - agentsDeleted]
-          
-          allLambdaScrollingArea[i - agentsDeleted], allLambdaScrollingArea[indexSwitch] = allLambdaScrollingArea[indexSwitch], allLambdaScrollingArea[i - agentsDeleted]
-          allLambdaGridFrame[i - agentsDeleted], allLambdaGridFrame[indexSwitch] = allLambdaGridFrame[indexSwitch], allLambdaGridFrame[i - agentsDeleted]
-          
-          generatedCBS[i - agentsDeleted], generatedCBS[indexSwitch] = generatedCBS[indexSwitch], generatedCBS[i - agentsDeleted] 
-          generatedTables[i - agentsDeleted], generatedTables[indexSwitch] = generatedTables[indexSwitch], generatedTables[i - agentsDeleted]  
-          
-          allIsGoodCBS[i - agentsDeleted], allIsGoodCBS[indexSwitch] = allIsGoodCBS[indexSwitch], allIsGoodCBS[i - agentsDeleted]
-          allIsGoodTable[i - agentsDeleted], allIsGoodTable[indexSwitch] = allIsGoodTable[indexSwitch], allIsGoodTable[i - agentsDeleted]
-          
-          allCheckLabels[i - agentsDeleted], allCheckLabels[indexSwitch] = allCheckLabels[indexSwitch], allCheckLabels[i - agentsDeleted]   
-          
-          allEditButtons[i - agentsDeleted], allEditButtons[indexSwitch] = allEditButtons[indexSwitch], allEditButtons[i - agentsDeleted]
-          allFrames[i - agentsDeleted], allFrames[indexSwitch] = allFrames[indexSwitch], allFrames[i - agentsDeleted]           
-          
-          allPreviewPops[i - agentsDeleted], allPreviewPops[indexSwitch] = allPreviewPops[indexSwitch], allPreviewPops[i - agentsDeleted]
+        else: ##The agent is still present (but may be shifted).
+          swapList.append(oldAgentNames[i])
       
-          ##Append the agent that was swapped in the bigger index to the list, 
-          ##this way, when we will itearte back to that agent, no swapping will
-          ##occur.
-          swapList.append(agentNames[i - agentsDeleted]) 
-   
       ##Set False to the tables generated based on if new agents were added.
       for i in range(len(oldAgentNames) - agentsDeleted, len(agentNames)):
         generatedCBS.append(False)
         generatedTables.append(False)    
         
         ##Append None to create a new size to each of the lists.
-        allEditButtons.append(None)
-        allFrames.append(None)
+        allEditButtons.append((None, False))
+        allAgentWindows.append(None)
         
         allTitleCBS.append(None)
         allFormatCBS.append(None)        
@@ -311,16 +250,77 @@ def next_page():
         allCheckLabels.append(None)
         allPreviewPops.append(None)
       
+      for i in range(len(swapList)):
+        if swapList[i] != agentNames[i]: ##Means some agents have swapped places. We do not swap if it was already done.   
+          ##Find position of where the agent name belongs.
+          for j in range(i + 1, len(agentNames)): ##Postion to switch found if True.
+            if agentNames[j] == swapList[i]:
+              indexSwitch = j 
+              
+          ##Begin to switch the data for the dictionaries. If none of the agents had dictionaries, then there is no dictionary to shift.
+          if allEditButtons[i][1] == True and allEditButtons[indexSwitch][1] == True: ##Both agents had keys associated with them.
+            allCircleTableBoxes[i + 1], allCircleTableBoxes[indexSwitch + 1] = allCircleTableBoxes[indexSwitch + 1], allCircleTableBoxes[i + 1]
+            allLambdaTableBoxes[i + 1], allLambdaTableBoxes[indexSwitch + 1] = allLambdaTableBoxes[indexSwitch + 1], allLambdaTableBoxes[i+ 1]
+          
+          elif allEditButtons[i][1] == True: ##Only one agent had a key associated with them (first one).
+            allCircleTableBoxes[indexSwitch + 1] = allCircleTableBoxes[i  + 1]
+            allLambdaTableBoxes[indexSwitch + 1] = allLambdaTableBoxes[i  + 1]
+            
+            del allCircleTableBoxes[i  + 1]
+            del allLambdaTableBoxes[i  + 1]
+          
+          elif allEditButtons[indexSwitch][1] == True: ##Only one agent had a key associated with them (second one).
+            allCircleTableBoxes[i  + 1] = allCircleTableBoxes[indexSwitch + 1]
+            allLambdaTableBoxes[i  + 1] = allLambdaTableBoxes[indexSwitch + 1] 
+            
+            del allCircleTableBoxes[indexSwitch + 1]
+            del allLambdaTableBoxes[indexSwitch + 1] 
+    
+          ##Switch all the remaining data (lists) using tupple assignment.
+          allAgentCBS[i], allAgentCBS[indexSwitch] = allAgentCBS[indexSwitch], allAgentCBS[i]
+          allTitleCBS[i], allTitleCBS[indexSwitch] = allTitleCBS[indexSwitch], allTitleCBS[i]
+          
+          allFormatCBS[i], allFormatCBS[indexSwitch] = allFormatCBS[indexSwitch], allFormatCBS[i]
+          allRadioButtons[i], allRadioButtons[indexSwitch] = allRadioButtons[indexSwitch], allRadioButtons[i]
+          
+          allTextBoxCBSFrame[i], allTextBoxCBSFrame[indexSwitch] = allTextBoxCBSFrame[indexSwitch], allTextBoxCBSFrame[i]
+          allTextBoxCBS[i], allTextBoxCBS[indexSwitch] = allTextBoxCBS[indexSwitch], allTextBoxCBS[i]
+          
+          allConcreteScrollingArea[i], allConcreteScrollingArea[indexSwitch] = allConcreteScrollingArea[indexSwitch], allConcreteScrollingArea[i]      
+          allEntriesCBS[i], allEntriesCBS[indexSwitch] = allEntriesCBS[indexSwitch], allEntriesCBS[i]    
+          
+          allFillButtons[i], allFillButtons[indexSwitch] = allFillButtons[indexSwitch], allFillButtons[i]
+          
+          allCircleScrollingArea[i], allCircleScrollingArea[indexSwitch] = allCircleScrollingArea[indexSwitch], allCircleScrollingArea[i]
+          allCircleGridFrame[i], allCircleGridFrame[indexSwitch] = allCircleGridFrame[indexSwitch], allCircleGridFrame[i]
+          
+          allLambdaScrollingArea[i], allLambdaScrollingArea[indexSwitch] = allLambdaScrollingArea[indexSwitch], allLambdaScrollingArea[i]
+          allLambdaGridFrame[i], allLambdaGridFrame[indexSwitch] = allLambdaGridFrame[indexSwitch], allLambdaGridFrame[i]
+          
+          generatedCBS[i], generatedCBS[indexSwitch] = generatedCBS[indexSwitch], generatedCBS[i] 
+          generatedTables[i], generatedTables[indexSwitch] = generatedTables[indexSwitch], generatedTables[i]  
+          
+          allIsGoodCBS[i], allIsGoodCBS[indexSwitch] = allIsGoodCBS[indexSwitch], allIsGoodCBS[i]
+          allIsGoodTable[i], allIsGoodTable[indexSwitch] = allIsGoodTable[indexSwitch], allIsGoodTable[i]
+          
+          allCheckLabels[i], allCheckLabels[indexSwitch] = allCheckLabels[indexSwitch], allCheckLabels[i]   
+          
+          allEditButtons[i], allEditButtons[indexSwitch] = allEditButtons[indexSwitch], allEditButtons[i]
+          allAgentWindows[i], allAgentWindows[indexSwitch] = allAgentWindows[indexSwitch], allAgentWindows[i]           
+          
+          allPreviewPops[i], allPreviewPops[indexSwitch] = allPreviewPops[indexSwitch], allPreviewPops[i]
+          
       if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a different layout.
         moreThanOneAgent = True        
         
         if len(oldAgentNames) == 1 and oldAgentNames[0] in agentNames: ##If agent was single but now multiple, we need to remake the UI for that agent in the multiple agent page.
-          generatedTables[0] = False
-          generatedCBS[0] = False
+          newIndex = agentNames.index(oldAgentNames[0])
+          generatedTables[newIndex] = False
+          generatedCBS[newIndex] = False
           
         
         ##Special UI when more than one agent is entered.
-        create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
+        create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
                           allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
                           allTitleCBS, allFormatCBS, allEntriesCBS, allAgentCBS, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
                           generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon) 
@@ -335,7 +335,7 @@ def next_page():
           generatedCBS[0] = False        
           allFillButtons[0] = (None, None, buttonsFrame)
 
-        set_CBS_data(main, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, allFrames,  
+        set_CBS_data(main, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, allAgentWindows,  
                      allTitleCBS, allFormatCBS, allRadioButtons, allConcreteScrollingArea, 
                      allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, 0, allCBSTabContents)
         
@@ -388,12 +388,12 @@ def next_page():
       for i in range(len(agentNames)):
         if allEditButtons[i][1] == True:
           
-          buttonsClicked+=1
+          buttonsClicked += 1
       
       if buttonsClicked == len(agentNames):
 
         
-        isGoodCBS = check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS) #only checks if good for all, therefore not keeping track of individuals. But works :).
+        check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS) ##Note, return value not saved since it is only used for single agent CBS check.
 
         ##Create dictionaries to hold the values from tables.
         allCircleTableValues = get_empty_dict()
@@ -435,11 +435,11 @@ def next_page():
           
         else:
           incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, wrongAgents)
-          pageNum -=1
+          pageNum -= 1
       
       else:
         button_not_clicked(main, return_arrow)
-        pageNum -=1
+        pageNum -= 1
 
     elif not moreThanOneAgent: ##Only check tables.
       
@@ -606,7 +606,7 @@ def prev_page():
                                                                                                     allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
                                                                                                     allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
                                                                                                     allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, allEntriesCBS, 
-                                                                                                    allAgentCBS, allFrames, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
+                                                                                                    allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
                                                                                                     moreThanOneAgent, generatedTables, generatedCBS, boxIndex, 
                                                                                                     allCBSTabContents, allTableTabContents))
           allCheckLabels[i].pack(side = LEFT, anchor = N)
@@ -702,7 +702,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##Initialize lists to hold the fill with behaviour and fill with neutral stimuli buttons and the frames for them.
   allFillButtons = []
   
-  allFrames = [] ##Dictionary for all the pop-ups
+  allAgentWindows = [] ##Dictionary for all the pop-ups
   allCBSTabContents = {} ##Dictionary for everything inside CBSTab
   allTableTabContents = {} ##Dictionary for everything inside tableTab
   allEditButtons = [] ##Dictionary for all the edit buttons    

@@ -8,7 +8,7 @@ from CBS_mods import *
 from CBS_radio import *
 from set_data import *
 
-def create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrollingArea, allBevDict, 
+def create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, editScrollingArea, allBevDict, 
                       stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
                       allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 
                       allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
@@ -28,12 +28,13 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allFrames, editScrol
                                                                                 allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
                                                                                 allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
                                                                                 allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, 
-                                                                                allEntriesCBS, allAgentCBS, allFrames, allTextBoxCBS, allRadioButtons,
+                                                                                allEntriesCBS, allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons,
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
                                                                                 boxIndex, allCBSTabContents, allTableTabContents)) 
 
-        if allEditButtons[i] == None:
+        if allEditButtons[i][1] == False:
             allEditButtons[i] = editButton, False
+            
         else:
             allEditButtons[i] = editButton, allEditButtons[i][1]
 
@@ -52,7 +53,7 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
                      allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
                      allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
                      allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, allEntriesCBS, 
-                     allAgentCBS, allFrames, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
+                     allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
                      moreThanOneAgent, generatedTables, generatedCBS, boxIndex, 
                      allCBSTabContents, allTableTabContents):
     global editAgent      
@@ -63,7 +64,7 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
     if generatedCBS[boxIndex] == False:
         editAgent = Toplevel() ##Creating new window to edit agent specs
         editAgent.resizable(width = False, height = False) 
-        allFrames[boxIndex] = editAgent ##Store specific frame according to index.
+        allAgentWindows[boxIndex] = editAgent ##Store specific frame according to index.
         
         ##Collect screen (monitor) width and height to position the window in the center. 
         screenWidth = editAgent.winfo_screenwidth() 
@@ -73,11 +74,11 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         
         editAgent.geometry('%dx%d' % (windowSize, windowSize))
 
-        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(boxIndex, allEditButtons, allFrames)) ##Give a command to the X button of the window.
+        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(boxIndex, allEditButtons, allAgentWindows)) ##Give a command to the X button of the window.
         
         editButtonsFrame = Frame(editAgent) ##Making the save and cancel button
         
-        saveButton = Button(editButtonsFrame, text = "Done", command = lambda: close_edit(boxIndex, allEditButtons, allFrames), highlightthickness = 0)
+        saveButton = Button(editButtonsFrame, text = "Done", command = lambda: close_edit(boxIndex, allEditButtons, allAgentWindows), highlightthickness = 0)
 
         saveButton.pack(side = RIGHT, anchor = S)
         #cancelButton = Button(editButtonsFrame, text = "Clear", highlightthickness = 0)
@@ -95,18 +96,18 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         editTabs.pack(expand = 1, fill = BOTH)    
     else:
         
-        editAgent = allFrames[boxIndex]
-        editAgent.protocol("WM_DELETE_WINDOW", lambda boxIndex = boxIndex: close_edit(boxIndex, allEditButtons, allFrames))
-        allFrames[boxIndex].winfo_children()[0].winfo_children()[0].config(command = lambda: close_edit(boxIndex, allEditButtons, allFrames))
+        editAgent = allAgentWindows[boxIndex]
+        editAgent.protocol("WM_DELETE_WINDOW", lambda boxIndex = boxIndex: close_edit(boxIndex, allEditButtons, allAgentWindows))
+        allAgentWindows[boxIndex].winfo_children()[0].winfo_children()[0].config(command = lambda: close_edit(boxIndex, allEditButtons, allAgentWindows))
         
-        CBSTab = allFrames[boxIndex].winfo_children()[1].winfo_children()[0]
-        tableTab = allFrames[boxIndex].winfo_children()[1].winfo_children()[1]
+        CBSTab = allAgentWindows[boxIndex].winfo_children()[1].winfo_children()[0]
+        tableTab = allAgentWindows[boxIndex].winfo_children()[1].winfo_children()[1]
 
 
     """CBS Editing"""
     
     set_CBS_data(CBSTab, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, 
-                 allFrames, allTitleCBS, allFormatCBS, allRadioButtons, 
+                 allAgentWindows, allTitleCBS, allFormatCBS, allRadioButtons, 
                  allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, 
                  generatedCBS, moreThanOneAgent, boxIndex, allCBSTabContents)
     
@@ -118,15 +119,13 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
                    generatedTables, moreThanOneAgent, boxIndex, allTableTabContents)  
 
-def close_edit(boxIndex, allEditButtons, allFrames):
+def close_edit(boxIndex, allEditButtons, allAgentWindows):
     """ (tkinter.Tk) -> (none)
       
       Destroys the editAgent window 
     
     """
 
-    allFrames[boxIndex].withdraw()
+    allAgentWindows[boxIndex].withdraw()
 
     allEditButtons[boxIndex][0].config(state = NORMAL)
-
-

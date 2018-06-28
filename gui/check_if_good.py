@@ -448,7 +448,7 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIs
 
     ##Extract the radio button that was pressed for each window.
     whichRadio = allRadioButtons[boxIndex][2]
-  
+    print(whichRadio.get())
     ##Check which template is being used (either Rows or Box).
     if whichRadio.get() == 'Rows':
       for entry in range(1, allEntriesCBS[boxIndex][0, 0] + 1):
@@ -456,9 +456,8 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIs
         if allEntriesCBS[boxIndex][entry, 1].get() == ' ' * len(allEntriesCBS[boxIndex][entry, 1].get()):
           if goodCBS == True:
             goodCBS = False
-
-
-            
+          print('tomato')  
+          print(allEntriesCBS)
           ##If entry is invalid, change the background to white.
           allEntriesCBS[boxIndex][entry, 1].config(background = 'tomato')
     
