@@ -14,7 +14,7 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, edi
                       allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
                       allTitleCBS, allFormatCBS,allEntriesCBS, allAgentCBS, allTextBoxCBS, 
                       allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
-                      generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon):
+                      generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon, filled_icon):
     
     editScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
     editScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 80))
@@ -30,7 +30,7 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, edi
                                                                                 allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, 
                                                                                 allEntriesCBS, allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons,
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
-                                                                                boxIndex, allCBSTabContents, allTableTabContents)) 
+                                                                                boxIndex, allCBSTabContents, allTableTabContents, allCheckLabels, filled_icon)) 
 
         if allEditButtons[i][1] == False:
             allEditButtons[i] = editButton, False
@@ -55,11 +55,11 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
                      allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, allEntriesCBS, 
                      allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
                      moreThanOneAgent, generatedTables, generatedCBS, boxIndex, 
-                     allCBSTabContents, allTableTabContents):
+                     allCBSTabContents, allTableTabContents, allCheckLabels, filled_icon):
     global editAgent      
    
     allEditButtons[boxIndex][0].config(state = DISABLED)
-    allEditButtons[boxIndex] = allEditButtons[boxIndex][0], True 
+    allEditButtons[boxIndex] = allEditButtons[boxIndex][0], True
     
     if generatedCBS[boxIndex] == False:
         editAgent = Toplevel() ##Creating new window to edit agent specs
@@ -74,11 +74,11 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         
         editAgent.geometry('%dx%d' % (windowSize, windowSize))
 
-        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(boxIndex, allEditButtons, allAgentWindows)) ##Give a command to the X button of the window.
+        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(boxIndex, allEditButtons, allAgentWindows, allCheckLabels, filled_icon)) ##Give a command to the X button of the window.
         
         editButtonsFrame = Frame(editAgent) ##Making the save and cancel button
         
-        saveButton = Button(editButtonsFrame, text = "Done", command = lambda: close_edit(boxIndex, allEditButtons, allAgentWindows), highlightthickness = 0)
+        saveButton = Button(editButtonsFrame, text = "Done", command = lambda: close_edit(boxIndex, allEditButtons, allAgentWindows, allCheckLabels, filled_icon), highlightthickness = 0)
 
         saveButton.pack(side = RIGHT, anchor = S)
         #cancelButton = Button(editButtonsFrame, text = "Clear", highlightthickness = 0)
@@ -98,7 +98,7 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         
         editAgent = allAgentWindows[boxIndex]
         editAgent.protocol("WM_DELETE_WINDOW", lambda boxIndex = boxIndex: close_edit(boxIndex, allEditButtons, allAgentWindows))
-        allAgentWindows[boxIndex].winfo_children()[0].winfo_children()[0].config(command = lambda: close_edit(boxIndex, allEditButtons, allAgentWindows))
+        allAgentWindows[boxIndex].winfo_children()[0].winfo_children()[0].config(command = lambda: close_edit(boxIndex, allEditButtons, allAgentWindows, allCheckLabels, filled_icon))
         
         CBSTab = allAgentWindows[boxIndex].winfo_children()[1].winfo_children()[0]
         tableTab = allAgentWindows[boxIndex].winfo_children()[1].winfo_children()[1]
@@ -119,7 +119,7 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
                    generatedTables, moreThanOneAgent, boxIndex, allTableTabContents)  
 
-def close_edit(boxIndex, allEditButtons, allAgentWindows):
+def close_edit(boxIndex, allEditButtons, allAgentWindows, allCheckLabels, filled_icon):
     """ (tkinter.Tk) -> (none)
       
       Destroys the editAgent window 
@@ -127,5 +127,5 @@ def close_edit(boxIndex, allEditButtons, allAgentWindows):
     """
 
     allAgentWindows[boxIndex].withdraw()
-
+    allCheckLabels[boxIndex].config(image = filled_icon)
     allEditButtons[boxIndex][0].config(state = NORMAL)

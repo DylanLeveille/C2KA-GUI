@@ -323,7 +323,7 @@ def next_page():
         create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
                           allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
                           allTitleCBS, allFormatCBS, allEntriesCBS, allAgentCBS, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
-                          generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon) 
+                          generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon, filled_icon) 
         
         pageNum += 1 ##Add one to pageNum because we are skipping page 4.
 
@@ -608,7 +608,7 @@ def prev_page():
                                                                                                     allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, allEntriesCBS, 
                                                                                                     allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
                                                                                                     moreThanOneAgent, generatedTables, generatedCBS, boxIndex, 
-                                                                                                    allCBSTabContents, allTableTabContents))
+                                                                                                    allCBSTabContents, allTableTabContents, allCheckLabels))
           allCheckLabels[i].pack(side = LEFT, anchor = N)
           allEditButtons[i] = allEditButtons[i][0], True ##Change clicked to True for each button.      
           
@@ -747,6 +747,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   return_arrow = PhotoImage(file = "images/return_arrow.png")
   remove_x = PhotoImage(file = "images/remove_x.png")
   edit_icon = PhotoImage(file = "images/edit_icon.png")
+  filled_icon = PhotoImage(file = "images/filled_icon.png")
   view_icon = PhotoImage(file = "images/view_icon.png")
   save_icon = PhotoImage(file = "images/save_icon.png")
   incorrect_icon = PhotoImage(file = "images/incorrect_icon.png")
