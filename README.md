@@ -33,7 +33,7 @@ However, we recommend testing out the project with various different text entrie
 
 ### Example:
 
-Inserting the following information should generate the preview shown below.
+Inserting the following information should generate the preview shown below (single agent example).
 
 #### Stimuli: ips, abor, allo, help, noop.
 
