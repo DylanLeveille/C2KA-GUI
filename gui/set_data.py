@@ -99,10 +99,9 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     allEntriesCBS[boxIndex]= create_CBS_entries(allBevDict[boxIndex + 1], allConcreteScrollingArea[boxIndex][0].innerframe)
     
     if oldEntries != None:
-      if whichRadio.get() == 'Rows':
-        allEntriesCBS[boxIndex][1, 1].insert(0, oldEntries[1, 1].get())
-      else:
-        allTextBoxCBS[boxIndex].insert(END, oldTextBoxCBS.get("1.0", END))
+      allEntriesCBS[boxIndex][1, 1].insert(0, oldEntries[1, 1].get())
+      allTextBoxCBS[boxIndex].insert(END, oldTextBoxCBS.get("1.0", END))
+      if whichRadio.get() == 'Box':
         allConcreteScrollingArea[boxIndex][0].pack_forget()
         allTextBoxCBSFrame[boxIndex].pack()
 
