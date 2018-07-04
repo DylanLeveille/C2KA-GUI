@@ -122,7 +122,7 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
         allLambdaTableBoxes[i  + 1] = allLambdaTableBoxes[indexSwitch + 1] 
         
         del allCircleTableBoxes[indexSwitch + 1]
-        del allLambdaTableBoxes[indexSwitch + 1] 
+        del allLambdaTableBoxes[indexSwitch + 1]       
   
       ##Switch all the remaining data (lists) using tupple assignment.
       allAgentCBS[i], allAgentCBS[indexSwitch] = allAgentCBS[indexSwitch], allAgentCBS[i]
@@ -166,6 +166,13 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
       newIndex = agentNames.index(oldAgentNames[0])
       generatedTables[newIndex] = False
       generatedCBS[newIndex] = False
+      
+      ##Switch key position.
+      allCircleTableBoxes[newIndex + 1] = allCircleTableBoxes[1]
+      allLambdaTableBoxes[newIndex + 1] = allLambdaTableBoxes[1]
+      
+      del allCircleTableBoxes[1]
+      del allLambdaTableBoxes[1]
       
     editTitle.config(text = "Agent Specifications") 
     editTitle.pack()   
