@@ -166,7 +166,6 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
       newIndex = agentNames.index(oldAgentNames[0])
       generatedTables[newIndex] = False
       generatedCBS[newIndex] = False
-      allCheckLabels[newIndex].config(image='')
       
     editTitle.config(text = "Agent Specifications") 
     editTitle.pack()   
@@ -187,6 +186,7 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
       generatedTables[0] = False
       generatedCBS[0] = False
       allFillButtons[0] = (None, None, buttonsFrame)
+      allCheckLabels[0].config(image='')
     
     ##Set new title.  
     editTitle.config(text = "Agent Specifications: Concrete Behaviours")   

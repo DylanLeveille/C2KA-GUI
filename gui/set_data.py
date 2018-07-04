@@ -241,8 +241,8 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
   else: ##Table was already generated.
     if not moreThanOneAgent:
       ##Pack the fill buttons. Already packed when only one agent.
-      allFillButtons[boxIndex][0].pack(in_=allFillButtons[boxIndex][2], side = LEFT) 
-      allFillButtons[boxIndex][1].pack(in_=allFillButtons[boxIndex][2], side = RIGHT)
+      allFillButtons[boxIndex][0].pack(in_=allFillButtons[boxIndex][2], side = LEFT, expand = 1, fill = X) 
+      allFillButtons[boxIndex][1].pack(in_=allFillButtons[boxIndex][2], side = RIGHT, expand = 1, fill = X)
     
     allFillButtons[boxIndex][0].config(command = lambda: fill_bev(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1]))
     allFillButtons[boxIndex][1].config(command = lambda: fill_n(allBevDict[boxIndex + 1], stimDict, allLambdaTableBoxes[boxIndex + 1]))

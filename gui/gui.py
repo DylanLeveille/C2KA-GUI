@@ -480,9 +480,9 @@ def prev_page():
       allLambdaGridFrame[0].pack(side=TOP, anchor = SW) 
     
       ##Repack the next button, and the fillBev and fillN buttons.
-      allFillButtons[0][0].pack(in_=buttonsFrame, side = LEFT)
+      allFillButtons[0][0].pack(in_=buttonsFrame, side = LEFT, expand = 1, fill = X)
       nextButton.pack(in_=buttonsFrame, side = RIGHT) 
-      allFillButtons[0][1].pack(in_=buttonsFrame, side = RIGHT)
+      allFillButtons[0][1].pack(in_=buttonsFrame, side = RIGHT, expand = 1, fill = X)
   
   ##Decrease pageNum every time the previous button is clicked.
   pageNum -= 1

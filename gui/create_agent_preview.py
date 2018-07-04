@@ -61,7 +61,7 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
       textEntry = Text(textEntryFrame, wrap=NONE,
                   xscrollcommand=xscrollbarText.set,
                   yscrollcommand=yscrollbarText.set,
-                  width = 60)
+                  width = int(main.winfo_screenwidth()/32))
       
       textEntry.grid(row=0, column=0)
     
@@ -109,7 +109,7 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
     textEntry = Text(textEntryFrame, wrap=NONE,
                 xscrollcommand=xscrollbarText.set,
                 yscrollcommand=yscrollbarText.set,
-                width = 60)
+                width = int(main.winfo_screenwidth()/32))
     
     textEntry.grid(row=0, column=0)
   
@@ -137,7 +137,7 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
     
     ##Pack the button allowing the user to save the file if satisfied
     ##with the result.
-    saveButton.pack(in_=main, anchor = S)       
+    saveButton.pack(anchor = S)       
     
     ##Widgets must be returned to be unpacked later.
     return textEntryFrame, saveButton

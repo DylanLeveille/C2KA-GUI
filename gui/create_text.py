@@ -61,7 +61,7 @@ def create_text(agentName, agentBehaviour, concreteBehaviours, textBoxCBS,
   file.write("\n")
   
   ##Text for concrete behaviours.
-  file.write("begin CONCRETE BEHAVIOUR where\n")
+  file.write("begin CONCRETE_BEHAVIOUR where\n")
   
   if whichRadio.get() == 'Rows': ##User used rows for concrete behaviours.
     ##Iterate through concrete behaviours.
