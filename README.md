@@ -362,6 +362,10 @@ Do note that there is no guarantee that the program won't crash if uncommon char
 
 Ex: x + y; z is good, not x + y;z nor x+y;z .
 
+● The Filter agent is not recognized as an agent, but as a behaviour. 
+
+Ex: FILTER ; (IDLE + WAITPAY + WAITRST) as an agent behaviour will be recognized as four different behaviours by the program (FILTER is not taken to be an agent).
+
 ● The Neutral stimulis is represented by the capital N, and the Deactivation stimulus is represented by the capital D.
 
 ● In the circle table, entries don't need to be capitalized (the program will do this automatically once you submit the data).
