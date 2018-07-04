@@ -14,7 +14,7 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, edi
                       allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
                       allFormatCBS,allEntriesCBS, allAgentCBS, allTextBoxCBS, 
                       allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
-                      generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon, filled_icon):
+                      generatedTables, generatedCBS, edit_icon, filled_icon):
     
 
     editScrollingAreaTemp = superscroll.Scrolling_Area(main)
@@ -31,7 +31,7 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, edi
                                                                                 allLambdaGridFrame, allTextBoxCBSFrame, allFormatCBS, 
                                                                                 allEntriesCBS, allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons,
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
-                                                                                boxIndex, allCBSTabContents, allTableTabContents, allCheckLabels, filled_icon)) 
+                                                                                boxIndex, allCheckLabels, filled_icon)) 
 
         if allEditButtons[i][1] == False:
             allEditButtons[i] = editButton, False
@@ -55,9 +55,9 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
                      allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
                      allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
                      allLambdaGridFrame, allTextBoxCBSFrame, allFormatCBS, allEntriesCBS, 
-                     allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
-                     moreThanOneAgent, generatedTables, generatedCBS, boxIndex, 
-                     allCBSTabContents, allTableTabContents, allCheckLabels, filled_icon):
+                     allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons, 
+                     allConcreteScrollingArea, moreThanOneAgent, generatedTables,
+                     generatedCBS, boxIndex, allCheckLabels, filled_icon):
     global editAgent      
    
     allEditButtons[boxIndex][0].config(state = DISABLED)
@@ -111,7 +111,7 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
     set_CBS_data(CBSTab, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, 
                  allFormatCBS, allRadioButtons, 
                  allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, 
-                 generatedCBS, moreThanOneAgent, boxIndex, allCBSTabContents)
+                 generatedCBS, moreThanOneAgent, boxIndex)
     
     
     """Table Editing"""
@@ -119,7 +119,7 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
     set_table_data(tableTab, allBevDict, stimDict, allFillButtons, allCircleTableBoxes, 
                    allLambdaTableBoxes, allCircleScrollingArea, 
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
-                   generatedTables, moreThanOneAgent, boxIndex, allTableTabContents)  
+                   generatedTables, moreThanOneAgent, boxIndex)  
 
 def close_edit(boxIndex, allEditButtons, allAgentWindows, allCheckLabels, filled_icon):
     """ (tkinter.Tk) -> (none)

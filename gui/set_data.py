@@ -3,7 +3,6 @@ from CBS_mods import * ##Functions which modify the concrete behaviours page.
 from CBS_radio import *
 from create_table import * ##Functions which modify the table page.
 from fix_grids import * ##Functions which modifies the data currently stored in memory for the tables to match the data modified by the user.
-from check_if_good import *
 from entry_mods import *
 import vertSuperscroll
 import superscroll ##Module containing the widget allowing a vertical and horizontal scrollbar.
@@ -11,7 +10,7 @@ import superscroll ##Module containing the widget allowing a vertical and horizo
 def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, 
                  allFormatCBS, allRadioButtons, 
                  allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, 
-                 generatedCBS, moreThanOneAgent, boxIndex, allCBSTabContents):
+                 generatedCBS, moreThanOneAgent, boxIndex):
   
   """Editing CBS"""
   ##If no concrete behaviours were yet generated for the behaviours,
@@ -79,11 +78,6 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     ##Pack the two radio buttons in allRadioButtons as a tupple, including whichRadio.
     allRadioButtons[boxIndex] = (radioRowsCBS, radioBoxCBS, whichRadio)
     
-      
-
-
-    
-    
     ##Pack new labels for CBS.
     allAgentCBS[boxIndex] = Label(window, text = agentNames[boxIndex] + ' =>')
     allAgentCBS[boxIndex].pack(side = TOP, anchor = W) 
@@ -112,9 +106,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     allEntriesCBS[boxIndex][0, 0] = len(allBevDict[boxIndex + 1]) 
     
     ##Set generatedCBS to True.
-    generatedCBS[boxIndex] = True 
-    
-    allCBSTabContents[boxIndex] = window.winfo_children()      
+    generatedCBS[boxIndex] = True    
   
   ##If concrete behaviours page was already generated, it must be modified 
   ##if necessary to adapt to changes made on previous pages.
@@ -178,7 +170,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
 def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableBoxes, 
                    allLambdaTableBoxes, allCircleScrollingArea, 
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 
-                   generatedTables, moreThanOneAgent, boxIndex, allTableTabContents):
+                   generatedTables, moreThanOneAgent, boxIndex):
 
   if generatedTables[boxIndex] == False: 
     ##Creating scrolling areas and frames for both the circle and lambda tables.

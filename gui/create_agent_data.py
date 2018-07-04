@@ -1,14 +1,14 @@
 from create_agent_page import *
 
-def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons, 
+def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
                       allCheckLabels, allAgentWindows, editScrollingArea, allBevDict, 
                       stimDict, allFillButtons, oldAgentNames, agentNames, allCircleTableBoxes, 
                       allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 
-                      allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
-                      allFormatCBS,allEntriesCBS, allAgentCBS, allTextBoxCBS, 
+                      allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame,
+                      allFormatCBS, allEntriesCBS, allAgentCBS, allTextBoxCBS, 
                       allRadioButtons, allConcreteScrollingArea, generatedTables, 
-                      generatedCBS, allIsGoodCBS, allIsGoodTable, allCBSTabContents, 
-                      allTableTabContents, allPreviewPops, edit_icon, filled_icon, editTitle):
+                      generatedCBS, allIsGoodCBS, allIsGoodTable, 
+                      allPreviewPops, edit_icon, filled_icon, editTitle):
   
   ##A swap list to hold agents that may need swapping.
   swapList = []
@@ -165,7 +165,7 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
                       allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
                       allFormatCBS,allEntriesCBS, allAgentCBS, allTextBoxCBS, 
                       allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
-                      generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon, filled_icon) 
+                      generatedTables, generatedCBS, edit_icon, filled_icon) 
     
     pageNum += 1 ##Add one to pageNum because we are skipping page 4.
   
@@ -180,6 +180,6 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
     editTitle.pack()   
     set_CBS_data(main, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame,  
                  allFormatCBS, allRadioButtons, allConcreteScrollingArea, 
-                 allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, 0, allCBSTabContents)
+                 allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, 0)
   
   return moreThanOneAgent, pageNum

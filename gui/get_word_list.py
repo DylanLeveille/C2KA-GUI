@@ -1,6 +1,6 @@
 """Imported modules."""
 from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
-from check_if_good import* ##Functions which validate most of the data in the program.
+#from check_if_good import* ##Functions which validate most of the data in the program.
 import string ##Module containing functions to modify strings.
 
 """Functions that extract entries."""

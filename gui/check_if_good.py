@@ -2,7 +2,6 @@
 from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
 import vertSuperscroll ##Module containing the widget allowing a vertical scrollbar.
 from entry_mods import remove_stim ##Import the remove_stim() function to bind to each delete stim entry button.
-from winsound import * ##Sounds
 
 """Functions which validate entries/create pop-ups."""
 ##Function to warn user that current stims will be deleted.
@@ -112,7 +111,6 @@ def incorrect_stims(main, return_arrow):
     are invalid.
   
   """       
-  Beep(200, 200)
   global wrongStims
   ##Create pop-up window.
   wrongStims = Toplevel()
@@ -338,7 +336,7 @@ def check_if_good_agents(agentNames, agentEntries):
   
   if len(agentSet) < len(agentNames): ##If true, two or more agent names are the same.
     for agent in agentSet:
-      if agentNames.count(agent) > 1:
+      if agentNames.count(agent) > 1: ##Means the agent that comes multiple times is found.
         
         while agentNames.count(agent) != 0:
           index = agentNames.index(agent)
@@ -348,7 +346,7 @@ def check_if_good_agents(agentNames, agentEntries):
           
     return False
   
-  else:
+  else: ##No same agents.
     return True
 
 ##Pop-up when there are two or more agents with the same name.
