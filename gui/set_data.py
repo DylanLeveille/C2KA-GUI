@@ -9,18 +9,20 @@ import vertSuperscroll
 import superscroll ##Module containing the widget allowing a vertical and horizontal scrollbar.
 
 def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, 
-                 allAgentWindows, allTitleCBS, allFormatCBS, allRadioButtons, 
+                 allFormatCBS, allRadioButtons, 
                  allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, 
                  generatedCBS, moreThanOneAgent, boxIndex, allCBSTabContents):
   
   """Editing CBS"""
   ##If no concrete behaviours were yet generated for the behaviours,
   ##then we generate the rows for the CBS.
+  
+  oldEntries = allEntriesCBS[boxIndex]
+  oldTextBoxCBS = allTextBoxCBS[boxIndex]  
+  
   if generatedCBS[boxIndex] == False: 
     
     """Labels and Entries exclusive for CBS"""
-    ##Title for the concrete behaviours.
-    allTitleCBS[boxIndex] = Label(window, text='Concrete Behaviours')
     
     ##Frame for the two radio buttons.
     allFormatCBS[boxIndex] = Frame(window)
@@ -55,33 +57,57 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     whichRadio = StringVar()
     whichRadio.set('Rows')      
     
-    
     radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = whichRadio, value = 'Rows', 
                                  state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
                                  radioBoxCBS, allConcreteScrollingArea[boxIndex], allTextBoxCBSFrame[boxIndex], whichRadio))
-    radioRowsCBS.pack(in_=allFormatCBS[boxIndex], side = LEFT)
-      
+    
+    radioRowsCBS.pack(in_=allFormatCBS[boxIndex], side = LEFT) ##Pack the Buttons
+    
     ##Radio button for the alternate style of entering concrete behaviours.
     radioBoxCBS = Radiobutton(window, text = 'CBS Box', variable = whichRadio, value = 'Box', 
                               command = lambda: change_CBS(radioRowsCBS, radioBoxCBS, 
                               allConcreteScrollingArea[boxIndex], allTextBoxCBSFrame[boxIndex], whichRadio))
-    radioBoxCBS.pack(in_=allFormatCBS[boxIndex], side = RIGHT)    
     
+    radioBoxCBS.pack(in_=allFormatCBS[boxIndex], side = RIGHT)
+    
+    if allRadioButtons[boxIndex] != None:
+      radioRowsCBS.config(state = allRadioButtons[boxIndex][0].cget("state"))
+      radioBoxCBS.config(state = allRadioButtons[boxIndex][1].cget("state"))
+      whichRadio.set(allRadioButtons[boxIndex][2].get())
+      
+ 
     ##Pack the two radio buttons in allRadioButtons as a tupple, including whichRadio.
-    allRadioButtons[boxIndex] = (radioRowsCBS, radioBoxCBS, whichRadio)     
+    allRadioButtons[boxIndex] = (radioRowsCBS, radioBoxCBS, whichRadio)
+    
+      
+
+
+    
     
     ##Pack new labels for CBS.
     allAgentCBS[boxIndex] = Label(window, text = agentNames[boxIndex] + ' =>')
-    allTitleCBS[boxIndex].pack(side = TOP) 
-    allAgentCBS[boxIndex].pack(side = TOP, anchor = W)     
+    allAgentCBS[boxIndex].pack(side = TOP, anchor = W) 
+    
     
     ##Create a vertical scrolling area for the rows.
     allConcreteScrollingArea[boxIndex] = [vertSuperscroll.Scrolling_Area(window, width=1, height=1)]
-    allConcreteScrollingArea[boxIndex][0].pack(expand=1, fill = BOTH)  
+    allConcreteScrollingArea[boxIndex][0].pack(expand=1, fill = BOTH)
     
+    
+
     ##Call create_CBS_entries() to create the rows in the CBS scrolling area.
     allEntriesCBS[boxIndex]= create_CBS_entries(allBevDict[boxIndex + 1], allConcreteScrollingArea[boxIndex][0].innerframe)
     
+    if oldEntries != None:
+      if whichRadio.get() == 'Rows':
+        allEntriesCBS[boxIndex][1, 1].insert(0, oldEntries[1, 1].get())
+      else:
+        allTextBoxCBS[boxIndex].insert(END, oldTextBoxCBS.get("1.0", END))
+        allConcreteScrollingArea[boxIndex][0].pack_forget()
+        allTextBoxCBSFrame[boxIndex].pack()
+
+        
+        
     ##Save the number of CBS in the allBevDict dictionary at key (0, 0) since
     ##that coordinate is unused.
     allEntriesCBS[boxIndex][0, 0] = len(allBevDict[boxIndex + 1]) 
@@ -93,46 +119,62 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
   
   ##If concrete behaviours page was already generated, it must be modified 
   ##if necessary to adapt to changes made on previous pages.
-  else:       
+  else:    
+    ##Get a copy of the entries to check if any modifications are necessary once fix_CBS() is called.
+    oldEntriesCBS = allEntriesCBS[boxIndex].copy()
+    
     ##fix_CBS() function will modify the data scructures related to CBS.
     allEntriesCBS[boxIndex] = fix_CBS(allBevDict[boxIndex + 1], allConcreteScrollingArea[boxIndex][0].innerframe, allEntriesCBS[boxIndex]) 
     
-    ##Create a temporary scrolling area that will be later used as the main scrolling
-    ##area. This is done in order to destroy the previous scrolling area
-    ##at the end of the else statement once all the necessary widgets were
-    ##saved from the old frame.
-    concreteScrollingAreaTemp = vertSuperscroll.Scrolling_Area(window, width = 1, height = 1)
-    
-    ##calling recreate_CBS_entries() to recreate the CBS rows in the new 
-    ##temporary frame.
-    allEntriesCBS[boxIndex] = recreate_CBS_entries(allBevDict[boxIndex + 1], allEntriesCBS[boxIndex], concreteScrollingAreaTemp.innerframe) 
-    
-    ##Destroy the old scrolling area for the CBS.
-    allConcreteScrollingArea[boxIndex][0].destroy() 
-    
-    ##Asign to the new scrolling area.
-    allConcreteScrollingArea[boxIndex] = [concreteScrollingAreaTemp]    
-    
-    if not moreThanOneAgent: ##Re-pack title labels if True.    
-      allTitleCBS[boxIndex].pack(side = TOP) 
-      allAgentCBS[boxIndex].pack(side = TOP, anchor = W) 
+    if oldEntriesCBS != allEntriesCBS[boxIndex]: ##Means changes were made.
+      ##Create a temporary scrolling area that will be later used as the main scrolling
+      ##area. This is done in order to destroy the previous scrolling area
+      ##at the end of the else statement once all the necessary widgets were
+      ##saved from the old frame.
+      concreteScrollingAreaTemp = vertSuperscroll.Scrolling_Area(window, width = 1, height = 1)
       
-      allFormatCBS[boxIndex].pack(side = BOTTOM, anchor = S, expand = True)    
+      ##calling recreate_CBS_entries() to recreate the CBS rows in the new 
+      ##temporary frame.
+      allEntriesCBS[boxIndex] = recreate_CBS_entries(allBevDict[boxIndex + 1], allEntriesCBS[boxIndex], concreteScrollingAreaTemp.innerframe) 
       
-    else: ##more than one agent.
-      allRadioButtons[boxIndex][0].config(command = lambda: change_CBS(allRadioButtons[boxIndex][0], 
-                                 allRadioButtons[boxIndex][1], allConcreteScrollingArea[boxIndex], allTextBoxCBSFrame[boxIndex], allRadioButtons[boxIndex][2]))
-      allRadioButtons[boxIndex][1].config(command = lambda: change_CBS(allRadioButtons[boxIndex][0], 
-                                 allRadioButtons[boxIndex][1], allConcreteScrollingArea[boxIndex], allTextBoxCBSFrame[boxIndex], allRadioButtons[boxIndex][2]))      
-      allAgentWindows[boxIndex].deiconify()
+      ##Destroy the old scrolling area for the CBS.
+      allConcreteScrollingArea[boxIndex][0].destroy() 
       
-    ##Now pack the correct CBS layout.
-    if allRadioButtons[boxIndex][2].get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
-      ##Pack the new scrolling area and the new frame for the CBS.
-      concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
-    
-    else: ##Repack the text box. 
-      allTextBoxCBSFrame[boxIndex].pack()        
+      ##Asign to the new scrolling area.
+      allConcreteScrollingArea[boxIndex] = [concreteScrollingAreaTemp]    
+      
+      if not moreThanOneAgent: ##Re-pack title labels if True.    
+        allAgentCBS[boxIndex].pack(side = TOP, anchor = W) 
+        
+        allFormatCBS[boxIndex].pack(side = BOTTOM, anchor = S, expand = True)    
+        
+      else: ##more than one agent.
+        allRadioButtons[boxIndex][0].config(command = lambda: change_CBS(allRadioButtons[boxIndex][0], 
+                                   allRadioButtons[boxIndex][1], allConcreteScrollingArea[boxIndex], allTextBoxCBSFrame[boxIndex], allRadioButtons[boxIndex][2]))
+        allRadioButtons[boxIndex][1].config(command = lambda: change_CBS(allRadioButtons[boxIndex][0], 
+                                   allRadioButtons[boxIndex][1], allConcreteScrollingArea[boxIndex], allTextBoxCBSFrame[boxIndex], allRadioButtons[boxIndex][2]))      
+        
+      ##Now pack the correct CBS layout.
+      if allRadioButtons[boxIndex][2].get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
+        ##Pack the new scrolling area and the new frame for the CBS.
+        concreteScrollingAreaTemp.pack(expand=1, fill = BOTH)
+      
+      else: ##Repack the text box. 
+        allTextBoxCBSFrame[boxIndex].pack()     
+        
+    else: ##No changes to tables.      
+      if not moreThanOneAgent: ##Re-pack the labels when one agent only.  
+        allAgentCBS[boxIndex].pack(side = TOP, anchor = W) 
+        
+        allFormatCBS[boxIndex].pack(side = BOTTOM, anchor = S, expand = True)   
+        
+        ##Now pack the correct CBS layout.
+        if allRadioButtons[boxIndex][2].get() == 'Rows': ##Repack the scrolling area if the user was previously using that display.     
+          ##Pack the new scrolling area and the new frame for the CBS.
+          allConcreteScrollingArea[boxIndex][0].pack(expand=1, fill = BOTH)
+        
+        else: ##Repack the text box. 
+          allTextBoxCBSFrame[boxIndex].pack()        
 
 def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableBoxes, 
                    allLambdaTableBoxes, allCircleScrollingArea, 
@@ -151,6 +193,7 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
     
     screenWidth = window.winfo_screenwidth() 
     
+    oldFrame = allCircleGridFrame[boxIndex]
     ##Button to fill circle table with beahviour in each row and button to fill
     ##lambda table with neutral stimulis is initialized here in a tupple. The tupple
     ##also contains the buttons frame.
@@ -179,12 +222,16 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
     lambdaGridFrame = Frame(lambdaScrollingArea[0].innerframe) 
     lambdaTableLabel = Label(lambdaGridFrame, text = b'\xce\xbb'.decode('utf-8')) ##Decoding the code yields the lambda string.  
     lambdaTableLabel.grid(row = 0, column = 0)   
-  
-    ##Create the data structures to hold the table entries and
-    ##create the boxes within the frames.
-    allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1] = create_table(allBevDict[boxIndex + 1], stimDict,
-                                                    circleGridFrame, 
-                                                    lambdaGridFrame)
+    if oldFrame == None:  
+      ##Create the data structures to hold the table entries and
+      ##create the boxes within the frames.
+      allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1] = create_table(allBevDict[boxIndex + 1], stimDict,
+                                                      circleGridFrame, 
+                                                      lambdaGridFrame)
+    else:
+      allCircleTableBoxes[boxIndex + 1], allLambdaTableBoxes[boxIndex + 1] = recreate_table(allBevDict[boxIndex + 1], stimDict, allCircleTableBoxes[boxIndex + 1], 
+                                                                                            allLambdaTableBoxes[boxIndex + 1], circleGridFrame, 
+                                                                                            lambdaGridFrame)         
     ##pack the new table frames.   
     circleGridFrame.pack(side=TOP, anchor = NW) 
     lambdaGridFrame.pack(side=TOP, anchor = SW) 
@@ -196,7 +243,9 @@ def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableB
     ##Keep track of table's current lenght and width
     ##in one of the dictionaries at coordinate (0, 0),
     ##since that key is not in use.
-    allCircleTableBoxes[boxIndex + 1][0, 0] = len(allBevDict[1]), len(stimDict)  
+    allCircleTableBoxes[boxIndex + 1][0, 0] = len(allBevDict[1]), len(stimDict) 
+    
+ 
       
   else: ##Table was already generated.
     if not moreThanOneAgent:

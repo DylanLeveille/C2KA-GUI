@@ -49,9 +49,9 @@ def specify_stim(main, stimList, numStims, stimScrollingArea, remove_x, return_a
     ##Disable main window until pop up is closed
     warningStims.grab_set()
     
-    Label(warningStims, text = 'This action will permenantly delete the current stimuli').pack(side = TOP)
+    Label(warningStims, text = 'This action will permenantly delete the current stimuli', font = "Calibri").pack(side = TOP)
 
-    pressToContinue = Button(warningStims, text = "Continue", highlightthickness = 0, 
+    pressToContinue = Button(warningStims, text = "Continue", highlightthickness = 0, font = "Calibri", 
                           command = lambda: return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove_x))
     
     pressToClose = Button(warningStims, image = return_arrow, border = 0, highlightthickness = 0, 
@@ -97,7 +97,7 @@ def incorrect_stim_num(main, return_arrow):
   ##Disable main window until pop up is closed
   wrongStimNum.grab_set()
   
-  Label(wrongStimNum, text = 'Please enter a valid number of stimuli').pack(side = TOP)
+  Label(wrongStimNum, text = 'Please enter a valid number of stimuli', font = "Calibri").pack(side = TOP)
   
   pressToClose = Button(wrongStimNum, image = return_arrow, border = 0, 
                         command = lambda: return_to_stim_num(main), highlightthickness = 0)
@@ -139,8 +139,8 @@ def incorrect_stims(main, return_arrow):
   ##Disable main window until pop up is closed
   wrongStims.grab_set()
   
-  Label(wrongStims, text = 'Please enter at least one valid stimulus').pack(side = TOP)
-  Label(wrongStims, text = 'or remove invalid stimuli').pack(side = TOP)
+  Label(wrongStims, text = 'Please enter at least one valid stimulus', font = "Calibri").pack(side = TOP)
+  Label(wrongStims, text = 'or remove invalid stimuli', font = "Calibri").pack(side = TOP)
   
   pressToClose = Button(wrongStims, image = return_arrow, border = 0,
                         command = lambda: return_to_stims(main), highlightthickness = 0)
@@ -182,7 +182,7 @@ def incorrect_agent(main, return_arrow):
   ##Disable main window until pop up is closed
   wrongAgent.grab_set()
     
-  Label(wrongAgent, text = 'Please enter one valid agent').pack(side = TOP)
+  Label(wrongAgent, text = 'Please enter one valid agent', font = "Calibri").pack(side = TOP)
     
   pressToClose = Button(wrongAgent, image = return_arrow, border = 0, 
                         command = lambda: return_to_bevs_agent(main), highlightthickness = 0)
@@ -224,8 +224,8 @@ def incorrect_bevs(main, return_arrow):
   ##Disable main window until pop up is closed
   wrongBevs.grab_set()
                             
-  Label(wrongBevs, text = 'Please enter at least one valid behaviour').pack(side = TOP)
-  Label(wrongBevs, text = 'or remove invalid behaviours').pack(side = TOP)
+  Label(wrongBevs, text = 'Please enter at least one valid behaviour', font = "Calibri").pack(side = TOP)
+  Label(wrongBevs, text = 'or remove invalid behaviours', font = "Calibri").pack(side = TOP)
     
   pressToClose = Button(wrongBevs, image = return_arrow, border = 0, 
                         command = lambda: return_to_bevs_bevs(main), highlightthickness = 0)
@@ -269,14 +269,14 @@ def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, numWrong):
   if not moreThanOneAgent:  
     wrongCBS.wm_title("Incorrect Concrete Behaviour")
     
-    Label(wrongCBS, text = 'Please enter at least one valid concrete behaviour').pack(side = TOP)
+    Label(wrongCBS, text = 'Please enter at least one valid concrete behaviour', font = "Calibri").pack(side = TOP)
   
-    Label(wrongCBS, text = 'or remove invalid concrete behaviour').pack(side = TOP) 
+    Label(wrongCBS, text = 'or remove invalid concrete behaviour', font = "Calibri").pack(side = TOP) 
 
   else:
-    wrongCBS.wm_title("Fix Agents")
+    wrongCBS.wm_title("Fix Agents", font = "Calibri")
     
-    Label(wrongCBS, text = 'ERROR! Fix %d Agents' %(numWrong)).pack(side = TOP)
+    Label(wrongCBS, text = 'ERROR! Fix %d Agents' %(numWrong), font = "Calibri").pack(side = TOP)
   pressToClose = Button(wrongCBS, image = return_arrow, border = 0, 
                         command = lambda: return_to_CBS(main), highlightthickness = 0)
 
@@ -318,7 +318,7 @@ def button_not_clicked(main, return_arrow):
   ##Disable main window until pop up is closed
   buttonNotClicked.grab_set()
   
-  Label(buttonNotClicked, text = 'Please fill out all agent specifcations').pack(side = TOP)
+  Label(buttonNotClicked, text = 'Please fill out all agent specifcations', font = "Calibri").pack(side = TOP)
 
   pressToClose = Button(buttonNotClicked, image = return_arrow, border = 0, 
                         command = lambda: return_to_edit(main), highlightthickness = 0)
@@ -386,7 +386,7 @@ def same_agent(main, return_arrow):
   ##Disable main window until pop up is closed
   sameAgent.grab_set()
     
-  Label(sameAgent, text = 'Please remove duplicate agents').pack(side = TOP)
+  Label(sameAgent, text = 'Please remove duplicate agents', font = "Calibri").pack(side = TOP)
     
   pressToClose = Button(sameAgent, image = return_arrow, border = 0, 
                         command = lambda: return_to_bevs_same(main), highlightthickness = 0)
@@ -427,7 +427,7 @@ def dont_go_back(main, return_arrow):
   ##Disable main window until pop up is closed
   closePops.grab_set()
     
-  Label(closePops, text = 'Please close all pop-ups').pack(side = TOP)
+  Label(closePops, text = 'Please close all pop-ups', font = "Calibri").pack(side = TOP)
     
   pressToClose = Button(closePops, image = return_arrow, border = 0, 
                         command = lambda: cancel_previous_page(main), highlightthickness = 0)
@@ -450,7 +450,7 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIs
 
     ##Extract the radio button that was pressed for each window.
     whichRadio = allRadioButtons[boxIndex][2]
-    print(whichRadio.get())
+
     ##Check which template is being used (either Rows or Box).
     if whichRadio.get() == 'Rows':
       for entry in range(1, allEntriesCBS[boxIndex][0, 0] + 1):
@@ -458,8 +458,7 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIs
         if allEntriesCBS[boxIndex][entry, 1].get() == ' ' * len(allEntriesCBS[boxIndex][entry, 1].get()):
           if goodCBS == True:
             goodCBS = False
-          print('tomato')  
-          print(allEntriesCBS)
+
           ##If entry is invalid, change the background to white.
           allEntriesCBS[boxIndex][entry, 1].config(background = 'tomato')
     
@@ -581,9 +580,9 @@ def incorrect_table(main, numInvalid, return_arrow):
   ##Disable main window until pop up is closed
   invalidEntryPop.grab_set()
   
-  Label(invalidEntryPop, text = 'Invalid Entries:').pack(side = TOP)
+  Label(invalidEntryPop, text = 'Invalid Entries:', font = "Calibri").pack(side = TOP)
   invalidEntriesLabel = Label(invalidEntryPop, text = str(numInvalid) + 
-                              ' entries to fix')
+                              ' entries to fix', font = "Calibri")
   invalidEntriesLabel.pack(side = TOP)
   
   pressToClose = Button(invalidEntryPop, image = return_arrow, border = 0, 
@@ -618,7 +617,7 @@ def return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove
   stimScrollingArea[0] = vertSuperscroll.Scrolling_Area(main)
   stimScrollingArea[0].pack(expand = 1, fill=BOTH)
   
-  stimTitle = Label(stimScrollingArea[0].innerframe, text='Please Enter The Stimuli')
+  stimTitle = Label(stimScrollingArea[0].innerframe, text='Please Enter The Stimuli', font = "Calibri")
   stimTitle.pack(side = TOP) 
       
   for i in range(numStims):

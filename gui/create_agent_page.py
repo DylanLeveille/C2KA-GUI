@@ -9,25 +9,26 @@ from CBS_radio import *
 from set_data import *
 
 def create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, editScrollingArea, allBevDict, 
-                      stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
+                      stimDict, allFillButtons, oldAgentNames, agentNames, allCircleTableBoxes, 
                       allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 
                       allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
-                      allTitleCBS, allFormatCBS,allEntriesCBS, allAgentCBS, allTextBoxCBS, 
+                      allFormatCBS,allEntriesCBS, allAgentCBS, allTextBoxCBS, 
                       allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
                       generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon, filled_icon):
     
-    editScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
+
+    editScrollingAreaTemp = superscroll.Scrolling_Area(main)
     editScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 80))
 
     for i in range(len(agentNames)):
         editFrame = Frame(editScrollingAreaTemp.innerframe, pady = 20, highlightbackground = "black", highlightcolor = "black", highlightthickness = 1)
         editLabel = Label(editFrame, text = agentNames[i], justify = LEFT, font = ("Times", 16), padx = 15)
-        completeLabel = Label(editFrame)
+        completeLabel = Label(editFrame, width = 11)
         editButton = Button(editFrame, image = edit_icon, border = 0, highlightthickness = 0,
                                   command = lambda boxIndex=i: edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
                                                                                 allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
                                                                                 allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
-                                                                                allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, 
+                                                                                allLambdaGridFrame, allTextBoxCBSFrame, allFormatCBS, 
                                                                                 allEntriesCBS, allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons,
                                                                                 allConcreteScrollingArea, moreThanOneAgent, generatedTables, generatedCBS, 
                                                                                 boxIndex, allCBSTabContents, allTableTabContents, allCheckLabels, filled_icon)) 
@@ -46,13 +47,14 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, edi
         editButton.pack(side = RIGHT, anchor = N, padx = 20)
         completeLabel.pack(side = RIGHT, anchor = N)
         editFrame.pack(anchor = W, fill = X)
-        editScrollingArea[0] = editScrollingAreaTemp  
+        editScrollingArea[0] = editScrollingAreaTemp
+
     
 
 def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
                      allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
                      allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
-                     allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, allEntriesCBS, 
+                     allLambdaGridFrame, allTextBoxCBSFrame, allFormatCBS, allEntriesCBS, 
                      allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
                      moreThanOneAgent, generatedTables, generatedCBS, boxIndex, 
                      allCBSTabContents, allTableTabContents, allCheckLabels, filled_icon):
@@ -95,9 +97,9 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
         
         editTabs.pack(expand = 1, fill = BOTH)    
     else:
-        
         editAgent = allAgentWindows[boxIndex]
-        editAgent.protocol("WM_DELETE_WINDOW", lambda boxIndex = boxIndex: close_edit(boxIndex, allEditButtons, allAgentWindows))
+        editAgent.deiconify()
+        editAgent.protocol("WM_DELETE_WINDOW", lambda: close_edit(boxIndex, allEditButtons, allAgentWindows, allCheckLabels, filled_icon))
         allAgentWindows[boxIndex].winfo_children()[0].winfo_children()[0].config(command = lambda: close_edit(boxIndex, allEditButtons, allAgentWindows, allCheckLabels, filled_icon))
         
         CBSTab = allAgentWindows[boxIndex].winfo_children()[1].winfo_children()[0]
@@ -107,7 +109,7 @@ def edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDi
     """CBS Editing"""
     
     set_CBS_data(CBSTab, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, 
-                 allAgentWindows, allTitleCBS, allFormatCBS, allRadioButtons, 
+                 allFormatCBS, allRadioButtons, 
                  allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, 
                  generatedCBS, moreThanOneAgent, boxIndex, allCBSTabContents)
     

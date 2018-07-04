@@ -8,6 +8,7 @@ from tkinter import * ##Import the tkinter module to allow construction of the G
 from check_if_good import * ##Functions which validate most of the data in the program.
 from entry_mods import * ##Functions which modify entry boxes.
 from get_word_list import * ##Functions which parse an entry box and returns lists of words.
+from create_agent_data import *
 from create_agent_page import *
 from create_agent_preview import *
 from set_data import *
@@ -51,7 +52,6 @@ def next_page():
   global allRadioButtons
   global concreteBehaviours ##Dict to hold parsed concrete behaviours
   
-  global allTitleCBS
   global allFormatCBS
   
   global allFillButtons
@@ -62,10 +62,6 @@ def next_page():
   global allEditButtons
   
   global allCircleTableBoxes ##Dict to hold entry boxes and labels of circle table for all agents.
-  global allLambdaTableBoxes ##Dict to hold entry boxes and labels of lambda table for all agents.
-  
- # global circleTableValues ##Dict to hold values from circle table.   #Might not need this...
- # global lambdaTableValues ##Dict to hold values from lambda table.   #Might not need this...
   
   global allCircleScrollingArea ##Scrolling area for circle table.
   global allLambdaScrollingArea ##Scrolling area for lambda table.
@@ -74,8 +70,6 @@ def next_page():
   global allLambdaGridFrame ##Global frame for the lambda table.
   
   global moreThanOneAgent ##Boolean to keep track of if there is more than one agent inputted.
-  
- # global wrongAgents ##Count for the number of incorrect agents (only if multiple)
   
   global allIsGoodCBS 
   global allIsGoodTable
@@ -102,6 +96,7 @@ def next_page():
       ##Set new page by unpacking widgets on page 1.
       stimScrollingArea[0].pack_forget()
       addStim.pack_forget()
+      stimTitle.pack_forget()
       stimFrame.pack_forget()
       
       ##Pack the new previous button.
@@ -109,6 +104,7 @@ def next_page():
       
       ##Pack new scrolling area for the agent and its behaviours,
       ##and pack the button to add an agent.
+      agentTitle.pack()
       agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))        
       
       addAgent.pack(in_=buttonsFrame, side = TOP)
@@ -167,177 +163,24 @@ def next_page():
    
     if agentsGood:
       ##Before going to the next page, extract the full text describing 
-      ##the agents' behaviour (used when create the text file).
+      ##the agents' behaviour (used hen create the text file).
       agentBehaviours = extract_full_behaviour(agentFrames['agentBev'])
       
       ##Set new page by unpacking scrolling area on page 2 and the add agent button.
+      agentTitle.pack_forget()
       agentScrollingArea[0].pack_forget()      
       addAgent.pack_forget()
-      
-      ##A swap list to hold agents that may need swapping.
-      swapList = []
-      
-      ##Keep track of agents deleted.
-      agentsDeleted = 0
-      ##Remove generated tables and CBS based on if agents were removed. Since we used lists, the indices will shift automatically.
-      for i in range(len(oldAgentNames)):
-        if oldAgentNames[i] not in agentNames: ##Checks if any agents were removed.
-          
-          if allEditButtons[i - agentsDeleted][1] == True: ##Means dictionaries were made for that agent.
-            del allCircleTableBoxes[i - agentsDeleted + 1]
-            del allLambdaTableBoxes[i - agentsDeleted + 1]          
-          
-          del allAgentCBS[i - agentsDeleted]
-          del allTitleCBS[i - agentsDeleted]
-          del allFormatCBS[i - agentsDeleted]     
-          del allRadioButtons[i - agentsDeleted]
-          del allTextBoxCBSFrame[i - agentsDeleted]
-          del allTextBoxCBS[i - agentsDeleted]
-          del allConcreteScrollingArea[i - agentsDeleted]      
-          del allEntriesCBS[i - agentsDeleted]      
-          del allFillButtons[i - agentsDeleted]
-          del allCircleScrollingArea[i - agentsDeleted] 
-          del allCircleGridFrame[i - agentsDeleted]
-          del allLambdaScrollingArea[i - agentsDeleted] 
-          del allLambdaGridFrame[i - agentsDeleted] 
-          del generatedCBS[i - agentsDeleted] 
-          del generatedTables[i - agentsDeleted]          
-          del allIsGoodCBS[i - agentsDeleted]
-          del allIsGoodTable[i - agentsDeleted]
-          del allCheckLabels[i - agentsDeleted]
-          del allPreviewPops[i - agentsDeleted]  
-          del allEditButtons[i - agentsDeleted]
-          del allAgentWindows[i - agentsDeleted]          
-          
-          for j in range(i - agentsDeleted + 1, len(oldAgentNames) - agentsDeleted): ##Shift all the keys down by 1.
-            key = j + 1
-            if key in allCircleTableBoxes.keys():
-              allCircleTableBoxes[key - 1] = allCircleTableBoxes[key]
-              del allCircleTableBoxes[key]
-              
-              allLambdaTableBoxes[key - 1] = allLambdaTableBoxes[key]
-              del allLambdaTableBoxes[key]              
-              
-          agentsDeleted += 1
-        
-        else: ##The agent is still present (but may be shifted).
-          swapList.append(oldAgentNames[i])
-      
-      ##Set False to the tables generated based on if new agents were added.
-      for i in range(len(oldAgentNames) - agentsDeleted, len(agentNames)):
-        generatedCBS.append(False)
-        generatedTables.append(False)    
-        
-        ##Append None to create a new size to each of the lists.
-        allEditButtons.append((None, False))
-        allAgentWindows.append(None)
-        
-        allTitleCBS.append(None)
-        allFormatCBS.append(None)        
-        allRadioButtons.append(None)
-        allConcreteScrollingArea.append(None)   
-        allEntriesCBS.append(None)    
-        allTextBoxCBSFrame.append(None)
-        allTextBoxCBS.append(None) 
-        allAgentCBS.append(None) 
-        allFillButtons.append((None, None, buttonsFrame))
-        allCircleScrollingArea.append(None)
-        allLambdaScrollingArea.append(None)
-        allCircleGridFrame.append(None) 
-        allLambdaGridFrame.append(None) 
-        allIsGoodCBS.append(True) 
-        allIsGoodTable.append(True)
-        allCheckLabels.append(None)
-        allPreviewPops.append(None)
-      
-      for i in range(len(swapList)):
-        if swapList[i] != agentNames[i]: ##Means some agents have swapped places. We do not swap if it was already done.   
-          ##Find position of where the agent name belongs.
-          for j in range(i + 1, len(agentNames)): ##Postion to switch found if True.
-            if agentNames[j] == swapList[i]:
-              indexSwitch = j 
-              
-          ##Begin to switch the data for the dictionaries. If none of the agents had dictionaries, then there is no dictionary to shift.
-          if allEditButtons[i][1] == True and allEditButtons[indexSwitch][1] == True: ##Both agents had keys associated with them.
-            allCircleTableBoxes[i + 1], allCircleTableBoxes[indexSwitch + 1] = allCircleTableBoxes[indexSwitch + 1], allCircleTableBoxes[i + 1]
-            allLambdaTableBoxes[i + 1], allLambdaTableBoxes[indexSwitch + 1] = allLambdaTableBoxes[indexSwitch + 1], allLambdaTableBoxes[i+ 1]
-          
-          elif allEditButtons[i][1] == True: ##Only one agent had a key associated with them (first one).
-            allCircleTableBoxes[indexSwitch + 1] = allCircleTableBoxes[i  + 1]
-            allLambdaTableBoxes[indexSwitch + 1] = allLambdaTableBoxes[i  + 1]
-            
-            del allCircleTableBoxes[i  + 1]
-            del allLambdaTableBoxes[i  + 1]
-          
-          elif allEditButtons[indexSwitch][1] == True: ##Only one agent had a key associated with them (second one).
-            allCircleTableBoxes[i  + 1] = allCircleTableBoxes[indexSwitch + 1]
-            allLambdaTableBoxes[i  + 1] = allLambdaTableBoxes[indexSwitch + 1] 
-            
-            del allCircleTableBoxes[indexSwitch + 1]
-            del allLambdaTableBoxes[indexSwitch + 1] 
-    
-          ##Switch all the remaining data (lists) using tupple assignment.
-          allAgentCBS[i], allAgentCBS[indexSwitch] = allAgentCBS[indexSwitch], allAgentCBS[i]
-          allTitleCBS[i], allTitleCBS[indexSwitch] = allTitleCBS[indexSwitch], allTitleCBS[i]
-          
-          allFormatCBS[i], allFormatCBS[indexSwitch] = allFormatCBS[indexSwitch], allFormatCBS[i]
-          allRadioButtons[i], allRadioButtons[indexSwitch] = allRadioButtons[indexSwitch], allRadioButtons[i]
-          
-          allTextBoxCBSFrame[i], allTextBoxCBSFrame[indexSwitch] = allTextBoxCBSFrame[indexSwitch], allTextBoxCBSFrame[i]
-          allTextBoxCBS[i], allTextBoxCBS[indexSwitch] = allTextBoxCBS[indexSwitch], allTextBoxCBS[i]
-          
-          allConcreteScrollingArea[i], allConcreteScrollingArea[indexSwitch] = allConcreteScrollingArea[indexSwitch], allConcreteScrollingArea[i]      
-          allEntriesCBS[i], allEntriesCBS[indexSwitch] = allEntriesCBS[indexSwitch], allEntriesCBS[i]    
-          
-          allFillButtons[i], allFillButtons[indexSwitch] = allFillButtons[indexSwitch], allFillButtons[i]
-          
-          allCircleScrollingArea[i], allCircleScrollingArea[indexSwitch] = allCircleScrollingArea[indexSwitch], allCircleScrollingArea[i]
-          allCircleGridFrame[i], allCircleGridFrame[indexSwitch] = allCircleGridFrame[indexSwitch], allCircleGridFrame[i]
-          
-          allLambdaScrollingArea[i], allLambdaScrollingArea[indexSwitch] = allLambdaScrollingArea[indexSwitch], allLambdaScrollingArea[i]
-          allLambdaGridFrame[i], allLambdaGridFrame[indexSwitch] = allLambdaGridFrame[indexSwitch], allLambdaGridFrame[i]
-          
-          generatedCBS[i], generatedCBS[indexSwitch] = generatedCBS[indexSwitch], generatedCBS[i] 
-          generatedTables[i], generatedTables[indexSwitch] = generatedTables[indexSwitch], generatedTables[i]  
-          
-          allIsGoodCBS[i], allIsGoodCBS[indexSwitch] = allIsGoodCBS[indexSwitch], allIsGoodCBS[i]
-          allIsGoodTable[i], allIsGoodTable[indexSwitch] = allIsGoodTable[indexSwitch], allIsGoodTable[i]
-          
-          allCheckLabels[i], allCheckLabels[indexSwitch] = allCheckLabels[indexSwitch], allCheckLabels[i]   
-          
-          allEditButtons[i], allEditButtons[indexSwitch] = allEditButtons[indexSwitch], allEditButtons[i]
-          allAgentWindows[i], allAgentWindows[indexSwitch] = allAgentWindows[indexSwitch], allAgentWindows[i]           
-          
-          allPreviewPops[i], allPreviewPops[indexSwitch] = allPreviewPops[indexSwitch], allPreviewPops[i]
-          
-      if len(agentFrames['agentNames']) > 1: ##More than one agent calls for a different layout.
-        moreThanOneAgent = True        
-        
-        if len(oldAgentNames) == 1 and oldAgentNames[0] in agentNames: ##If agent was single but now multiple, we need to remake the UI for that agent in the multiple agent page.
-          newIndex = agentNames.index(oldAgentNames[0])
-          generatedTables[newIndex] = False
-          generatedCBS[newIndex] = False
-          
-        
-        ##Special UI when more than one agent is entered.
-        create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, editScrollingArea, allBevDict, stimDict, allFillButtons, agentNames, allCircleTableBoxes, 
-                          allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame, 
-                          allTitleCBS, allFormatCBS, allEntriesCBS, allAgentCBS, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, moreThanOneAgent, 
-                          generatedTables, generatedCBS, allCBSTabContents, allTableTabContents, edit_icon, filled_icon) 
-        
-        pageNum += 1 ##Add one to pageNum because we are skipping page 4.
-
-      else: ##Only one agent.            
-        moreThanOneAgent = False
-     
-        if len(oldAgentNames) > 1 and agentNames[0] in oldAgentNames: ##If agent was in multiple agents but now single, we need to remake the UI for that agent in the single agent page.
-          generatedTables[0] = False
-          generatedCBS[0] = False        
-          allFillButtons[0] = (None, None, buttonsFrame)
-
-        set_CBS_data(main, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, allAgentWindows,  
-                     allTitleCBS, allFormatCBS, allRadioButtons, allConcreteScrollingArea, 
-                     allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, 0, allCBSTabContents)
+         
+      ##Create and modify all of the agents data based on the entered information and their order.
+      moreThanOneAgent, pageNum = create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
+                                                    allCheckLabels, allAgentWindows, editScrollingArea, allBevDict, 
+                                                    stimDict, allFillButtons, oldAgentNames, agentNames, allCircleTableBoxes, 
+                                                    allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 
+                                                    allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame,
+                                                    allFormatCBS, allEntriesCBS, allAgentCBS, allTextBoxCBS, 
+                                                    allRadioButtons, allConcreteScrollingArea, generatedTables, 
+                                                    generatedCBS, allIsGoodCBS, allIsGoodTable, allCBSTabContents, 
+                                                    allTableTabContents, allPreviewPops, edit_icon, filled_icon, editTitle)
         
       ##Save agents in old agents in case user returns to page 2 WITHOUT going to page 1.
       oldAgentNames = agentNames.copy()  
@@ -365,10 +208,9 @@ def next_page():
         allTextBoxCBSFrame[0].pack_forget()
       
       ##Unpack widgets available to both radio buttons.  
-      allTitleCBS[0].pack_forget()
       allAgentCBS[0].pack_forget()
       allFormatCBS[0].pack_forget()
-
+      editTitle.config(text = "Agent Specifications: Tables") 
       set_table_data(main, allBevDict, stimDict, allFillButtons, allCircleTableBoxes,
                      allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 
                      allCircleGridFrame, allLambdaGridFrame, generatedTables, 
@@ -380,8 +222,9 @@ def next_page():
     ##Create dictionaries to hold the values from tables.
     allCircleTableValues = get_empty_dict()
     allLambdaTableValues = get_empty_dict()
-    isPageGood = True 
-    wrongAgents = 0
+    
+    isPageGood = True ##Assume entire page is good.
+    wrongAgents = 0 ##Assume no agents are wrong (to be used in a pop-up to tell user how many are wrong if any).
     
     if moreThanOneAgent:
       buttonsClicked = 0
@@ -415,13 +258,13 @@ def next_page():
             allCheckLabels[j].config(image = incorrect_icon)
             isPageGood = False
             wrongAgents += 1
-            
-          
+                    
           else:
             allCheckLabels[j].config(image = correct_icon)
         
         
         if isPageGood:
+          editTitle.config(text = "Agent Text Preview")
           ##Iterate through each edit button to change their text and command functions.
           for i in range(len(allEditButtons)):
             allEditButtons[i][0].config(image = view_icon, command = lambda boxIndex = i:create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEntriesCBS, 
@@ -451,9 +294,9 @@ def next_page():
       isGoodTable, numInvalid = check_if_good_table(allBevDict, stimDict, allCircleTableBoxes, 
                                         allLambdaTableBoxes, allCircleTableValues, 
                                         allLambdaTableValues, allIsGoodTable)      
-      
       ##If the table is good, proceed.
-      if isGoodTable: 
+      if isGoodTable:
+        editTitle.config(text = "Agent Text Preview")
         ##Forget table scrolling areas.
         allCircleScrollingArea[0][0].pack_forget()
         allLambdaScrollingArea[0][0].pack_forget()
@@ -498,15 +341,17 @@ def prev_page():
   """PAGE 2 to PAGE 1."""
   if pageNum == 2:
     ##Repack the scrolling area for the stimuli.
+    stimTitle.pack()
     stimScrollingArea[0].pack(expand=1, fill=BOTH)     
    
     ##Set new page by unpacking addAgent button and the scrolling area for the agents.
     agentScrollingArea[0].pack_forget()
     addAgent.pack_forget()
-    
+    agentTitle.pack_forget()
     ##Unpack the previous button since it it not necessary on page 1.
     prevButton.pack_forget()
     
+
     ##Pack buttons for stimuli and frame to specify number of stimuli.
     stimFrame.pack(side = BOTTOM, anchor = S, expand = True, pady = 50)
 
@@ -515,6 +360,7 @@ def prev_page():
   """PAGE 3 to PAGE 2.""" 
   if pageNum == 3: ##Only True when one agent only.
     ##Repack the agent scrolling area and the add agent button.
+    agentTitle.pack()
     agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))
     addAgent.pack(in_=buttonsFrame, side = TOP)
     
@@ -527,8 +373,8 @@ def prev_page():
       ##Forget the text box frame.
       allTextBoxCBSFrame[0].pack_forget()
    
-    ##Forget the title and radio button frame regardless of which radio button was pressed.  
-    allTitleCBS[0].pack_forget()
+    ##Forget the title and radio button frame regardless of which radio button was pressed.
+    editTitle.pack_forget()
     allAgentCBS[0].pack_forget()      
     allFormatCBS[0].pack_forget()
   
@@ -550,9 +396,9 @@ def prev_page():
         pageNum += 1
       
       else:  
-        print('well...do what you gotta do')
+        print('well...do what you gotta do') ##Easter egg.
         editScrollingArea[0].pack_forget() 
-
+        editTitle.pack_forget()
         ##Repack the agent scrolling area and the add agent button.       
         agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))  
         addAgent.pack(in_=buttonsFrame, side = TOP)      
@@ -570,9 +416,10 @@ def prev_page():
       ##Forget the fillBev and fillN button.
       allFillButtons[0][0].pack_forget()
       allFillButtons[0][1].pack_forget()
+      
+      editTitle.config(text = "Agent Specifications: Concrete Behaviours") 
    
       ##Pack widgets related to CBS page.
-      allTitleCBS[0].pack(side = TOP)
       allAgentCBS[0].pack(side = TOP, anchor = W)  
 
       if allRadioButtons[0][2].get() == 'Rows': ##User was using rowsCBS.
@@ -599,24 +446,26 @@ def prev_page():
         
         pageNum += 1   
       
-      else:  
+      else:
+        editTitle.config(text = "Agent Specifications")
         ##Iterate through each edit button to change their text and command functions.
         for i in range(len(allEditButtons)):
           allEditButtons[i][0].config(image = edit_icon, command = lambda boxIndex = i:edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
                                                                                                     allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
                                                                                                     allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
-                                                                                                    allLambdaGridFrame, allTextBoxCBSFrame, allTitleCBS, allFormatCBS, allEntriesCBS, 
+                                                                                                    allLambdaGridFrame, allTextBoxCBSFrame, allFormatCBS, allEntriesCBS, 
                                                                                                     allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
                                                                                                     moreThanOneAgent, generatedTables, generatedCBS, boxIndex, 
-                                                                                                    allCBSTabContents, allTableTabContents, allCheckLabels))
-          allCheckLabels[i].pack(side = LEFT, anchor = N)
+                                                                                                    allCBSTabContents, allTableTabContents, allCheckLabels, filled_icon))
+          allCheckLabels[i].pack(side = RIGHT, anchor = N)
           allEditButtons[i] = allEditButtons[i][0], True ##Change clicked to True for each button.      
           
-          ##Repack the next button.
-          nextButton.pack(in_=buttonsFrame, side = RIGHT)          
+        ##Repack the next button.
+        nextButton.pack(in_=buttonsFrame, side = RIGHT)          
       
     else: ##One agent only.    
       ##Forget text preview box and save button.
+      editTitle.config(text = "Agent Specifications: Tables")
       textEntryFrame.pack_forget()
       saveButton.pack_forget()
     
@@ -693,9 +542,6 @@ if __name__ == '__main__': ##only start program when running gui.py
   allTextBoxCBS = []
   allTextBoxCBSFrame = []
   
-  ##List to hold the labels for the CBS titles.
-  allTitleCBS = []
-  
   ##List to hold the frame for the CBS radio buttons.
   allFormatCBS = []
   
@@ -752,7 +598,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   save_icon = PhotoImage(file = "images/save_icon.png")
   incorrect_icon = PhotoImage(file = "images/incorrect_icon.png")
   correct_icon = PhotoImage(file = "images/correct_icon.png")
-  entry_font = ('Comic Sans MS', 11)
+  entry_font = ('Calibri', 11)
 
   """Defining Buttons available on each page.""" 
   ##Next Button (will not be available on page 5).
@@ -763,17 +609,20 @@ if __name__ == '__main__': ##only start program when running gui.py
   prevButton = Button(main, command = prev_page, image = left_arrow, width = int(screenWidth/76.8), height = int(screenWidth/76.8), border = 0, highlightthickness = 0)
   
   """Label and Buttons exclusive to page 1."""  
+  
+  ##Title for the stimuli on page 1.
+  stimTitle = Label(main, text='Please Enter The Stimuli', font = 'Calibri')
+  stimTitle.pack(side = TOP, padx = (0, int(screenWidth/240)))
+  
   ##The scrolling area is at index zero of the stimScrollingArea list, this way, 
   ##the scrolling area can be passed by reference and be modified by other functions.
   stimScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
   stimScrollingArea[0].pack(expand = 1, fill = BOTH)
 
-  ##Title for the stimuli on page 1.
-  stimTitle = Label(stimScrollingArea[0].innerframe, text='Please Enter The Stimuli')
-  stimTitle.pack(side = TOP)
+
   
   ##Label, button and entry box to generate specified number of stimuli.
-  enterStimLabel = Label(main, text = 'Enter # of stimuli : ')
+  enterStimLabel = Label(main, text = 'Enter # of stimuli : ', font = "Calibri")
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
   enterStimButton = Button(main, image = check_mark, border = 0, width = int(screenWidth/76.8), height = int(screenWidth/76.8), 
@@ -797,20 +646,20 @@ if __name__ == '__main__': ##only start program when running gui.py
   agentScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
   
   ##Add agent entry Button.
-  addAgent = Button(main, text = 'Add new agent', 
+  addAgent = Button(main, text = 'Add new agent',
                    command = lambda: add_agent(main, agentFrames, agentScrollingArea, remove_x), 
                    width = 23, highlightthickness = 0)  
   
   ##Make a title for the frame.
-  agentTitle = Label(agentScrollingArea[0].innerframe, text='Please Enter The Agents')
-  agentTitle.pack()
+  agentTitle = Label(main, text='Please Enter The Agents', font = "Calibri")
+
   
   """Scrolling area for the edit page of multiple agents."""
   editScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
   
   ##Make a title for the frame.
-  editTitle = Label(editScrollingArea[0].innerframe, text='Please Edit The Agents')  #Not working...
-  editTitle.pack()
+  editTitle = Label(main, text='Agent Specifications', font = "Calibri")
+
   
   """Loop the main window."""
   main.mainloop()

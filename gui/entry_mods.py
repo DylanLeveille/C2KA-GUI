@@ -18,9 +18,6 @@ def add_stim(main, stimList, stimScrollingArea, remove_x):
   stimScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
   stimScrollingAreaTemp.pack(expand = 1, fill=BOTH)
   
-  ##Make a new title for the frame.
-  stimTitle = Label(stimScrollingAreaTemp.innerframe, text='Please Enter The Stimuli')
-  stimTitle.pack(side = TOP) 
   
   ##Generate the boxes.    
   for i in range(len(stimList)):
@@ -78,10 +75,7 @@ def remove_stim(main, stimList, stimScrollingArea, boxIndex, remove_x):
   ##Make a new frame capable of scrolling to the new entry box.
   stimScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
   stimScrollingAreaTemp.pack(expand = 1, fill=BOTH)
-  
-  ##Make a new title for the frame.
-  stimTitle = Label(stimScrollingAreaTemp.innerframe, text='Please Enter The Stimuli')
-  stimTitle.pack(side = TOP)
+
    
   ##Delete entry at specified index in the frame lsit and stimuli list. 
   del stimList[boxIndex]         
@@ -125,10 +119,6 @@ def add_agent(main, agentFrames, agentScrollingArea, remove_x):
   ##Make a new frame capable of scrolling to the new agent frames.
   agentScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
   agentScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 80))
-  
-  ##Make a new title for the frame.
-  agentTitle = Label(agentScrollingAreaTemp.innerframe, text='Please Enter The Agents')
-  agentTitle.pack(side = TOP) 
   
   ##Generate the agents.    
   for i in range(len(agentFrames['agentNames'])):
@@ -203,10 +193,7 @@ def remove_agent(main, agentFrames, agentScrollingArea, boxIndex, remove_x):
   ##Make a new frame capable of scrolling to the new entry box.
   agentScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
   agentScrollingAreaTemp.pack(expand = 1, fill=BOTH, pady = (0, 80))
-  
-  ##Make a new title for the frame.
-  agentTitle = Label(agentScrollingAreaTemp.innerframe, text='Please Enter The Agents')
-  agentTitle.pack(side = TOP) 
+
    
   ##Delete agent at specified index in both lists. 
   del agentFrames['agentNames'][boxIndex]         
