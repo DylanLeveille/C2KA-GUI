@@ -23,7 +23,7 @@ def create_agent_page(main, allEditButtons, allCheckLabels, allAgentWindows, edi
     for i in range(len(agentNames)):
         editFrame = Frame(editScrollingAreaTemp.innerframe, pady = 20, highlightbackground = "black", highlightcolor = "black", highlightthickness = 1)
         editLabel = Label(editFrame, text = agentNames[i], justify = LEFT, font = ("Times", 16), padx = 15)
-        completeLabel = Label(editFrame, width = 11)
+        completeLabel = Label(editFrame, padx = 15)
         editButton = Button(editFrame, image = edit_icon, border = 0, highlightthickness = 0,
                                   command = lambda boxIndex=i: edit_agent_specs(main, allEditButtons, editScrollingArea, allBevDict, stimDict, 
                                                                                 allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 

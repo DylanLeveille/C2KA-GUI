@@ -274,7 +274,7 @@ def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, numWrong):
     Label(wrongCBS, text = 'or remove invalid concrete behaviour', font = "Calibri").pack(side = TOP) 
 
   else:
-    wrongCBS.wm_title("Fix Agents", font = "Calibri")
+    wrongCBS.wm_title("Fix Agents")
     
     Label(wrongCBS, text = 'ERROR! Fix %d Agents' %(numWrong), font = "Calibri").pack(side = TOP)
   pressToClose = Button(wrongCBS, image = return_arrow, border = 0, 
@@ -616,9 +616,6 @@ def return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove
   ##by the user.
   stimScrollingArea[0] = vertSuperscroll.Scrolling_Area(main)
   stimScrollingArea[0].pack(expand = 1, fill=BOTH)
-  
-  stimTitle = Label(stimScrollingArea[0].innerframe, text='Please Enter The Stimuli', font = "Calibri")
-  stimTitle.pack(side = TOP) 
       
   for i in range(numStims):
     stimEntryFrame = Frame(stimScrollingArea[0].innerframe)

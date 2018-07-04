@@ -8,6 +8,7 @@ from tkinter import * ##Import the tkinter module to allow construction of the G
 from check_if_good import * ##Functions which validate most of the data in the program.
 from entry_mods import * ##Functions which modify entry boxes.
 from get_word_list import * ##Functions which parse an entry box and returns lists of words.
+from fix_dict_order import *
 from create_agent_data import *
 from create_agent_page import *
 from create_agent_preview import *
@@ -93,6 +94,9 @@ def next_page():
       pageNum -= 1 ##Decrease pageNum by one to stay on current page.    
      
     else: ##User inputted valid stimuli.
+      ##Get a logical order for the stimul; ex: AVG2 AVG1 becomes AVG1 AVG2
+      stimDict = fix_dict_order(stimDict)
+      
       ##Set new page by unpacking widgets on page 1.
       stimScrollingArea[0].pack_forget()
       addStim.pack_forget()
@@ -148,6 +152,10 @@ def next_page():
           pageNum -= 1    
        
       else: ##Entry is good.
+        ##Get a logical order for the stimul; ex: AVG2 AVG1 becomes AVG1 AVG2
+        allBevDict[i + 1] = fix_dict_order(allBevDict[i + 1])        
+        
+        ##Change entry box volour back to white.
         agentFrames['agentBev'][i].config(bg = 'white')
         
     if agentsGood:  ##If there is still no error

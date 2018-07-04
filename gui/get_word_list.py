@@ -36,7 +36,11 @@ def build_stim_dict(stimList):
     stimEntryList = stimList[i].get().split()
     if len(stimEntryList) > 1:
       isBad = True
-
+      
+    elif stimList[i].get() in hist: ##Means it's in the dictionary already.  
+      if isBad == False:
+        isBad = True
+        
     ##Test to see if it is a number only.
     try:
         float(stimList[i].get())
@@ -48,7 +52,8 @@ def build_stim_dict(stimList):
       ##Return if there is an invalid symbol inside the word.
       for character in stimList[i].get():
         if character.upper() not in symbolsList:
-          isBad = True
+          if isBad == False:
+            isBad = True
   
     ##Background configured to tomato-red since it is a bad entry.
     if isBad:
@@ -61,7 +66,7 @@ def build_stim_dict(stimList):
       ##Background configured to white since it is a good entry.
       stimList[i].config(bg = 'white')
       ##Make sure entry is not empty.
-      if stimList[i].get() not in hist and stimList[i].get() != ' ' * len(stimList[i].get()):
+      if stimList[i].get() != ' ' * len(stimList[i].get()):
         hist[index] = stimList[i].get().replace(' ', '')
         index += 1
           
@@ -161,7 +166,7 @@ def build_bev_dict(agentBevs):
   return allBevDict  
 
 ##Function to correctly extract the agent behaviour.
-def extract_full_behaviour(agentBevs): #Must be used -> not yet in gui.py
+def extract_full_behaviour(agentBevs): 
   """ (list) -> (dict)
     
     Takes the agent behaviour entries, and extracts the 
