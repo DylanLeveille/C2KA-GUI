@@ -372,6 +372,10 @@ Ex: FILTER ; (IDLE + WAITPAY + WAITRST) as an agent behaviour will be recognized
 
 ● A backup copy of the agent specification can be found in the agent_text_backup folder in the main program's folder (next to the executable) in case the user forgets to save the file.
 
+## Dependency graph
+
+The graph can be found in the documentation foder. It is important to note that the Tkinter module was left out due to virtually all of the functions being dependent on that module. 
+
 ## Built With
 
 * [Python](https://www.python.org/) - The programming language used.
