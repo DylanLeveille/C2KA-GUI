@@ -167,12 +167,13 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
       generatedTables[newIndex] = False
       generatedCBS[newIndex] = False
       
-      ##Switch key position.
-      allCircleTableBoxes[newIndex + 1] = allCircleTableBoxes[1]
-      allLambdaTableBoxes[newIndex + 1] = allLambdaTableBoxes[1]
+      if len(allCircleTableBoxes) == 1: ##Means there was a created dictionary for the tables.
+        ##Switch key position.
+        allCircleTableBoxes[newIndex + 1] = allCircleTableBoxes[1]
+        allLambdaTableBoxes[newIndex + 1] = allLambdaTableBoxes[1]
       
-      del allCircleTableBoxes[1]
-      del allLambdaTableBoxes[1]
+        del allCircleTableBoxes[1]
+        del allLambdaTableBoxes[1]
       
     editTitle.config(text = "Agent Specifications") 
     editTitle.pack()   
