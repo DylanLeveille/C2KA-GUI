@@ -6,16 +6,11 @@ GUI to Assist the C2KA TOOL.
 """Imported modules."""
 from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
 from check_if_good import * ##Functions which validate most of the data in the program.
-from entry_mods import * ##Functions which modify entry boxes.
 from get_word_list import * ##Functions which parse an entry box and returns lists of words.
-from fix_dict_order import *
-from create_agent_data import *
-from create_agent_page import *
-from create_agent_preview import *
-from set_data import *
-from CBS_radio import * ##Functions that set the CBS page depending on which radio button is clicked.
-from create_text import * ##A module containing the function that creates the final product (text file).
-from create_save_file import * ##A module that contains the function to allow the text file to be saved to a certain directory. 
+from fix_dict_order import * ##Orders the dictionary words in logical order. Ex: AVG2, AVG1 becomes AVG1, AVG2.
+from create_agent_data import * ##Function to add, remove, or switch the data structures for each agent entered.
+from create_agent_page import * ##Functions to create the multiple agent page.
+from create_agent_preview import * ##Function that sets the preview page for the text file.
 import vertSuperscroll ##Module containing the widget allowing a vertical scrollbar.
 import superscroll ##Module containing the widget allowing a vertical and horizontal scrollbar.
 
@@ -35,9 +30,6 @@ def next_page():
   """
   global pageNum ##Keeps track of the page number.
   
-  global saveButton
-  global textEntryFrame
-  
   global stimDict ##Dictionary to hold final entries of entered stimuli.
   global allBevDict ##Dictionary to hold agent behaviours.
   
@@ -45,24 +37,17 @@ def next_page():
   global agentNames ##Record entries for the name of the agents.
   global agentBehaviours ##Record entries for the behaviour of the agents.
   
-  global allConcreteScrollingArea ##Scrolling area for the concrete behaviours (CBS).
+  global allEditButtons ##List that holds all of the edit buttons for the multiple agents page.
   
+  global allConcreteScrollingArea ##Scrolling area for the concrete behaviours (CBS).
   global allEntriesCBS ##Dict to hold concrete behaviour labels and entries.
   global allTextBoxCBS ##Dict to hold textbox text for concrete behaviours
   
-  global allRadioButtons
+  global allRadioButtons ##List to hold all of the radio button pairs for each agent.
   global concreteBehaviours ##Dict to hold parsed concrete behaviours
+  global allFormatCBS ##List that hols all the frames for the CBS radio buttons of each agent.
   
-  global allFormatCBS
-  
-  global allFillButtons
-  
-  global allAgentWindows
-  global allCBSTabContents
-  global allTableTabContents
-  global allEditButtons
-  
-  global allCircleTableBoxes ##Dict to hold entry boxes and labels of circle table for all agents.
+  global allFillButtons ##List to hold all fillN and fillBev buttons for each agent's tables.
   
   global allCircleScrollingArea ##Scrolling area for circle table.
   global allLambdaScrollingArea ##Scrolling area for lambda table.
@@ -72,10 +57,14 @@ def next_page():
   
   global moreThanOneAgent ##Boolean to keep track of if there is more than one agent inputted.
   
-  global allIsGoodCBS 
-  global allIsGoodTable
+  global allIsGoodCBS ##List to keep track of which concrete behaviours are good for each agent.
+  global allIsGoodTable ##List to keep track of which tables are good for each agent.
   
-  global allPreviewPops ##List to hold the pop-up windows for each agent specification
+  global allAgentWindows ##List which holds all of the windows for the edit agent specifications.
+  global allPreviewPops ##List to hold the pop-up windows for each agent's txet file.
+  
+  global saveButton ##The button that saves the text file (for single agent only).
+  global textEntryFrame ##The text frame that previews the text file to the user (for single agent only).
 
   global generatedTables ##List to keep track of tables that were already generated for each agent.
   global generatedCBS ##List to keep track of Bool variables to check if CBS were generated.
@@ -187,8 +176,8 @@ def next_page():
                                                     allCircleGridFrame, allLambdaGridFrame, allTextBoxCBSFrame,
                                                     allFormatCBS, allEntriesCBS, allAgentCBS, allTextBoxCBS, 
                                                     allRadioButtons, allConcreteScrollingArea, generatedTables, 
-                                                    generatedCBS, allIsGoodCBS, allIsGoodTable, allCBSTabContents, 
-                                                    allTableTabContents, allPreviewPops, edit_icon, filled_icon, editTitle)
+                                                    generatedCBS, allIsGoodCBS, allIsGoodTable, 
+                                                    allPreviewPops, edit_icon, filled_icon, editTitle)
         
       ##Save agents in old agents in case user returns to page 2 WITHOUT going to page 1.
       oldAgentNames = agentNames.copy()  
@@ -218,11 +207,13 @@ def next_page():
       ##Unpack widgets available to both radio buttons.  
       allAgentCBS[0].pack_forget()
       allFormatCBS[0].pack_forget()
+      
+      ##Set the table page.
       editTitle.config(text = "Agent Specifications: Tables") 
       set_table_data(main, allBevDict, stimDict, allFillButtons, allCircleTableBoxes,
                      allLambdaTableBoxes, allCircleScrollingArea, allLambdaScrollingArea, 
                      allCircleGridFrame, allLambdaGridFrame, generatedTables, 
-                     moreThanOneAgent, 0, allTableTabContents)
+                     moreThanOneAgent, 0)
     
   """PAGE 4 to PAGE 5."""
   if pageNum == 4:
@@ -235,15 +226,14 @@ def next_page():
     wrongAgents = 0 ##Assume no agents are wrong (to be used in a pop-up to tell user how many are wrong if any).
     
     if moreThanOneAgent:
-      buttonsClicked = 0
+      buttonsClicked = 0 ##Asumme no buttons were clicked.
+      
       for i in range(len(agentNames)):
         if allEditButtons[i][1] == True:
-          
-          buttonsClicked += 1
+          buttonsClicked += 1 ##Number of buttons clicked is increased.
       
-      if buttonsClicked == len(agentNames):
+      if buttonsClicked == len(agentNames): ##Means that all the agents were editted if True.
 
-        
         check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIsGoodCBS) ##Note, return value not saved since it is only used for single agent CBS check.
 
         ##Create dictionaries to hold the values from tables.
@@ -261,18 +251,22 @@ def next_page():
                                           allLambdaTableBoxes, allCircleTableValues, 
                                           allLambdaTableValues, allIsGoodTable)
 
-        for j in range(len(agentNames)):
+        for j in range(len(agentNames)): ##Iterate to check if both concrete behaviours and tables are good for each agent.
+          
           if allIsGoodCBS[j] == False or allIsGoodTable[j] == False:
             allCheckLabels[j].config(image = incorrect_icon)
-            isPageGood = False
+            
+            if isPageGood:
+              isPageGood = False
+            
             wrongAgents += 1
                     
           else:
-            allCheckLabels[j].config(image = correct_icon)
+            allCheckLabels[j].config(image = correct_icon)   
         
-        
-        if isPageGood:
-          editTitle.config(text = "Agent Text Preview")
+        if isPageGood: ## Means wrongAgents is 0.
+          editTitle.config(text = "Agent Text Preview") ##New title.
+          
           ##Iterate through each edit button to change their text and command functions.
           for i in range(len(allEditButtons)):
             allEditButtons[i][0].config(image = view_icon, command = lambda boxIndex = i:create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEntriesCBS, 
@@ -284,11 +278,11 @@ def next_page():
             
             nextButton.pack_forget() ##Forget the next button since we are at the last page.
           
-        else:
+        else: ##Means there is at least one bad agent.
           incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, wrongAgents)
           pageNum -= 1
       
-      else:
+      else: ##Means there is at least one agent that wasn't editted.
         button_not_clicked(main, return_arrow)
         pageNum -= 1
 
@@ -462,9 +456,9 @@ def prev_page():
                                                                                                     allFillButtons, agentNames, allCircleTableBoxes, allLambdaTableBoxes, 
                                                                                                     allCircleScrollingArea, allLambdaScrollingArea, allCircleGridFrame, 
                                                                                                     allLambdaGridFrame, allTextBoxCBSFrame, allFormatCBS, allEntriesCBS, 
-                                                                                                    allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons, allConcreteScrollingArea, 
-                                                                                                    moreThanOneAgent, generatedTables, generatedCBS, boxIndex, 
-                                                                                                    allCBSTabContents, allTableTabContents, allCheckLabels, filled_icon))
+                                                                                                    allAgentCBS, allAgentWindows, allTextBoxCBS, allRadioButtons, 
+                                                                                                    allConcreteScrollingArea,  moreThanOneAgent, generatedTables, 
+                                                                                                    generatedCBS, boxIndex, allCheckLabels, filled_icon))
           allCheckLabels[i].pack(side = RIGHT, anchor = N)
           allEditButtons[i] = allEditButtons[i][0], True ##Change clicked to True for each button.      
           
@@ -531,6 +525,8 @@ if __name__ == '__main__': ##only start program when running gui.py
   agentFrames['agentNames'] = []
   agentFrames['agentBev'] = []  
   
+  allEditButtons = [] ##Dictionary for all the edit agent buttons (multiple agents page). 
+  
   ##List to hold CBS labels for the agent name.
   allAgentCBS = []
   
@@ -554,12 +550,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   allFormatCBS = []
   
   ##Initialize lists to hold the fill with behaviour and fill with neutral stimuli buttons and the frames for them.
-  allFillButtons = []
-  
-  allAgentWindows = [] ##Dictionary for all the pop-ups
-  allCBSTabContents = {} ##Dictionary for everything inside CBSTab
-  allTableTabContents = {} ##Dictionary for everything inside tableTab
-  allEditButtons = [] ##Dictionary for all the edit buttons    
+  allFillButtons = []    
   
   ##Bind these to empty lists to allow them to be passed as arguments.
   allCircleScrollingArea = []
@@ -576,23 +567,22 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##List to check if the table was generated.
   generatedTables = []
   
+  ##List for all the edit agents pop-ups.
+  allAgentWindows = [] 
+  
   ##List to hold the preview pop-ups for the text files (for multiple agents).
   allPreviewPops = []
-   
+  
+  ##Lists to keep track of the validation of the CBS and tables of each agent. 
   allIsGoodCBS = [] 
-   
   allIsGoodTable = [] 
   
+  ##List to hold the icon next to each agent (on multiple agents page).
   allCheckLabels = []
     
   ##Frame to hold the main buttons
   buttonsFrame = Frame(main)
   buttonsFrame.pack(side = BOTTOM, anchor = S, fill = X, pady = (5, 0))
-  
-  ##Frame for the stim number Label, button and entry box (to specify
-  ##a number of stimuli to be generated).
-  stimFrame = Frame(main)
-  stimFrame.pack(side = BOTTOM, anchor = S, expand = True, pady = 50)
   
   """Pictures and Fonts used for Buttons and Entries"""
   check_mark = PhotoImage(file = "images/check_mark.png")
@@ -617,6 +607,10 @@ if __name__ == '__main__': ##only start program when running gui.py
   prevButton = Button(main, command = prev_page, image = left_arrow, width = int(screenWidth/76.8), height = int(screenWidth/76.8), border = 0, highlightthickness = 0)
   
   """Label and Buttons exclusive to page 1."""  
+  ##Frame for the stim number Label, button and entry box (to specify
+  ##a number of stimuli to be generated).
+  stimFrame = Frame(main)
+  stimFrame.pack(side = BOTTOM, anchor = S, expand = True, pady = 50)  
   
   ##Title for the stimuli on page 1.
   stimTitle = Label(main, text='Please Enter The Stimuli', font = 'Calibri')
@@ -627,8 +621,6 @@ if __name__ == '__main__': ##only start program when running gui.py
   stimScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
   stimScrollingArea[0].pack(expand = 1, fill = BOTH)
 
-
-  
   ##Label, button and entry box to generate specified number of stimuli.
   enterStimLabel = Label(main, text = 'Enter # of stimuli : ', font = "Calibri")
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
