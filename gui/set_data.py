@@ -1,27 +1,26 @@
-from tkinter import *
+"""Imported modules."""
+from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
 from CBS_mods import * ##Functions which modify the concrete behaviours page.
-from CBS_radio import *
+from CBS_radio import * ##Function to switch between CBS layouts.
 from create_table import * ##Functions which modify the table page.
 from fix_grids import * ##Functions which modifies the data currently stored in memory for the tables to match the data modified by the user.
-from entry_mods import *
-import vertSuperscroll
+from entry_mods import * ##Functions which modify user entries.
+import vertSuperscroll ##Module containing the widget allowing a vertical scrollbar.
 import superscroll ##Module containing the widget allowing a vertical and horizontal scrollbar.
 
+""""Functions that organize data for the agents."""
+##Function to set concrete behaviour information.
 def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame, 
                  allFormatCBS, allRadioButtons, 
                  allConcreteScrollingArea, allEntriesCBS, allTextBoxCBS, 
                  generatedCBS, moreThanOneAgent, boxIndex):
   
-  """Editing CBS"""
-  ##If no concrete behaviours were yet generated for the behaviours,
-  ##then we generate the rows for the CBS.
-  
   oldEntries = allEntriesCBS[boxIndex]
   oldTextBoxCBS = allTextBoxCBS[boxIndex]  
   
+  ##If no concrete behaviours were yet generated for the behaviours,
+  ##then we generate the rows for the CBS.  
   if generatedCBS[boxIndex] == False: 
-    
-    """Labels and Entries exclusive for CBS"""
     
     ##Frame for the two radio buttons.
     allFormatCBS[boxIndex] = Frame(window)
@@ -57,8 +56,8 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     whichRadio.set('Rows')      
     
     radioRowsCBS = Radiobutton(window, text = 'CBS Rows', variable = whichRadio, value = 'Rows', 
-                                 state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
-                                 radioBoxCBS, allConcreteScrollingArea[boxIndex], allTextBoxCBSFrame[boxIndex], whichRadio))
+                               state = 'disabled', command = lambda: change_CBS(radioRowsCBS, 
+                               radioBoxCBS, allConcreteScrollingArea[boxIndex], allTextBoxCBSFrame[boxIndex], whichRadio))
     
     radioRowsCBS.pack(in_=allFormatCBS[boxIndex], side = LEFT) ##Pack the Buttons
     
@@ -167,6 +166,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
         else: ##Repack the text box. 
           allTextBoxCBSFrame[boxIndex].pack()        
 
+##Function to set table information.
 def set_table_data(window, allBevDict, stimDict, allFillButtons, allCircleTableBoxes, 
                    allLambdaTableBoxes, allCircleScrollingArea, 
                    allLambdaScrollingArea, allCircleGridFrame, allLambdaGridFrame, 

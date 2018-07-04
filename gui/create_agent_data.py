@@ -1,5 +1,7 @@
-from create_agent_page import *
+"""Imported modules."""
+from create_agent_page import * ##Function that creates the multiple agents page.
 
+"""Create data for the agents."""
 def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
                       allCheckLabels, allAgentWindows, editScrollingArea, allBevDict, 
                       stimDict, allFillButtons, oldAgentNames, agentNames, allCircleTableBoxes, 
@@ -9,6 +11,13 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
                       allRadioButtons, allConcreteScrollingArea, generatedTables, 
                       generatedCBS, allIsGoodCBS, allIsGoodTable, 
                       allPreviewPops, edit_icon, filled_icon, editTitle):
+  """ 
+  
+    Allows the configuration of the data 
+    for each agent based on new, removed and/or 
+    switched agents.
+  
+  """  
   
   ##A swap list to hold agents that may need swapping.
   swapList = []
@@ -88,7 +97,8 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
     allPreviewPops.append(None)
     
     dataSwap.append(None) ##Appending None to dataSwap to indicate the 'new' agents and their data.
-    
+   
+  ##Iterate through each agent in the swapList to see if they need swapping.  
   for i in range(len(swapList)):
     if swapList[i] != agentNames[i]: ##Means some agents have swapped places. We do not swap if it was already done.   
       ##Find position of where the agent name belongs in the data.
@@ -156,6 +166,8 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
       newIndex = agentNames.index(oldAgentNames[0])
       generatedTables[newIndex] = False
       generatedCBS[newIndex] = False
+      allCheckLabels[newIndex].config(image='')
+      
     editTitle.config(text = "Agent Specifications") 
     editTitle.pack()   
     ##Special UI when more than one agent is entered.
@@ -175,9 +187,12 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
       generatedTables[0] = False
       generatedCBS[0] = False
       allFillButtons[0] = (None, None, buttonsFrame)
-     
+    
+    ##Set new title.  
     editTitle.config(text = "Agent Specifications: Concrete Behaviours")   
     editTitle.pack()   
+    
+    ##Set CBS data.
     set_CBS_data(main, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame,  
                  allFormatCBS, allRadioButtons, allConcreteScrollingArea, 
                  allEntriesCBS, allTextBoxCBS, generatedCBS, moreThanOneAgent, 0)
