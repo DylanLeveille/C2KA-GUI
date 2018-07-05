@@ -12,7 +12,7 @@ def create_text(agentName, agentBehaviour, concreteBehaviours, textBoxCBS,
   
   """        
   ##Create file if it does not exist.
-  file = open("agent_text_backup./agentspec.txt", "w+") 
+  file = open("agent_text_backup/agentspec.txt", "w+") 
     
   ##Text for the agent.
   file.write("begin AGENT where\n")
