@@ -1,15 +1,28 @@
 begin AGENT where
-    kk := K
+    aa := A
 end
 
 begin NEXT_BEHAVIOUR where
-    (i, K) = K
+    (a, A) = A
 end
 
 begin NEXT_STIMULUS where
-    (i, K) = N
+    (a, A) = N
 end
 
 begin CONCRETE_BEHAVIOUR where
-    K => [ k ]
+    aa => [ as
+            saf
+            sd
+            fg
+            cv
+            cvx
+            xb
+            xc
+            xbc
+            bxc
+            xbc
+            cbx
+            xb
+            xcb ]
 end

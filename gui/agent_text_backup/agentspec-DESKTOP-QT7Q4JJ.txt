@@ -1,0 +1,34 @@
+begin AGENT where
+    a := A
+end
+
+begin NEXT_BEHAVIOUR where
+    (a, A) = A
+end
+
+begin NEXT_STIMULUS where
+    (a, A) = N
+end
+
+begin CONCRETE_BEHAVIOUR where
+    a => [ dfs
+           dfs
+           fsd
+           fsd
+           fsd
+           sfd
+           fsd
+           sfd
+           dfs
+           sfd
+           sfd
+           sfd
+           fsd
+           sfd
+           sfd
+           sfd
+           sfd
+           sdf
+           sfd
+           sdf ]
+end

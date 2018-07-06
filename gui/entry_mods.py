@@ -13,6 +13,7 @@ def add_stim(main, stimList, stimScrollingArea, remove_x):
   """ 
   ##Make a new frame capable of scrolling to the new entry box.
   stimScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
+  stimScrollingAreaTemp.canvas.config(height = int(main.winfo_screenheight()/4.32))
   stimScrollingAreaTemp.pack(expand = 1, fill=BOTH)  
   
   ##Generate the boxes.    
@@ -70,6 +71,7 @@ def remove_stim(main, stimList, stimScrollingArea, boxIndex, remove_x):
   
   ##Make a new frame capable of scrolling to the new entry box.
   stimScrollingAreaTemp = vertSuperscroll.Scrolling_Area(main)
+  stimScrollingAreaTemp.canvas.config(height = int(main.winfo_screenheight()/4.32))
   stimScrollingAreaTemp.pack(expand = 1, fill=BOTH)
 
    

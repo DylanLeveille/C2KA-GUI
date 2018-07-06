@@ -61,7 +61,7 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
       textEntry = Text(textEntryFrame, wrap=NONE,
                   xscrollcommand=xscrollbarText.set,
                   yscrollcommand=yscrollbarText.set,
-                  width = int(main.winfo_screenwidth()/32))
+                  width = int(main.winfo_screenwidth()/33), height = int(main.winfo_screenheight()/52))
       
       textEntry.grid(row=0, column=0)
     
@@ -90,7 +90,7 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
     else:
       allPreviewPops[boxIndex].deiconify() ##Bring back the withdrawn window.
  
-  else: ##One Agent.
+  else: ##One Agent.    
     ##Create the save button.
     saveButton = Button(main, image = save_icon, border = 0, command = lambda: create_save_file(textEntry.get(1.0, END)))      
     
@@ -109,7 +109,7 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
     textEntry = Text(textEntryFrame, wrap=NONE,
                 xscrollcommand=xscrollbarText.set,
                 yscrollcommand=yscrollbarText.set,
-                width = int(main.winfo_screenwidth()/32))
+                width = int(main.winfo_screenwidth()/33), height = int(main.winfo_screenheight()/52))
     
     textEntry.grid(row=0, column=0)
   
@@ -135,9 +135,7 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
     ##Pack the text entry frame to give a preview to the user.
     textEntryFrame.pack(expand = True)
     
-    ##Pack the button allowing the user to save the file if satisfied
-    ##with the result.
-    saveButton.pack(anchor = S)       
+  
     
     ##Widgets must be returned to be unpacked later.
     return textEntryFrame, saveButton
