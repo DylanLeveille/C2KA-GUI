@@ -167,7 +167,7 @@ def create_agent_data(main, pageNum, agentFrames, buttonsFrame, allEditButtons,
       generatedTables[newIndex] = False
       generatedCBS[newIndex] = False
       
-      if len(allCircleTableBoxes) == 1 and newIndex!= 0: ##Means there was a created dictionary for the tables.
+      if len(allCircleTableBoxes) == 1 and newIndex!= 0 and allEditButtons[newIndex][1] == False : ##Means there was a created dictionary for the tables in single agents before the user went to multiple agents.
         ##Switch key position.
         allCircleTableBoxes[newIndex + 1] = allCircleTableBoxes[1]
         allLambdaTableBoxes[newIndex + 1] = allLambdaTableBoxes[1]

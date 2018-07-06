@@ -495,7 +495,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   """Code related to the main program's window."""
   main = Tk() ##The main window for the program.
   main.title("C2KA GUI") ##Title for the main window.
-  #main.resizable(width = False, height = False) ##The main window is not resizeable.
+  main.resizable(width = False, height = False) ##The main window is not resizeable.
   mainStyle = ttk.Style()
   mainStyle.theme_use("clam")
   
