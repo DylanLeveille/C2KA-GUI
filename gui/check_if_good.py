@@ -456,13 +456,26 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIs
         if allEntriesCBS[boxIndex][entry, 1].get() == ' ' * len(allEntriesCBS[boxIndex][entry, 1].get()):
           if goodCBS == True:
             goodCBS = False
-
-          ##If entry is invalid, change the background to white.
-          allEntriesCBS[boxIndex][entry, 1].config(background = 'tomato')
-    
+          ##If entry is invalid, change the background to tomato.
+          allEntriesCBS[boxIndex][entry, 1].config(background = 'tomato')          
         else:
           ##If entry is valid, change the backgound to white.
           allEntriesCBS[boxIndex][entry, 1].config(background = 'white')
+          
+        try:
+          float(allEntriesCBS[boxIndex][entry, 1].get())
+          if goodCBS == True:
+            goodCBS = False
+          ##If entry is invalid, change the background to tomato.
+          allEntriesCBS[boxIndex][entry, 1].config(background = 'tomato')  
+          
+        except ValueError:
+          ##Need to include something for ValueError, does not do anything
+          if allEntriesCBS[boxIndex][entry, 1].cget('background') == 'blue':
+            print('hi')
+            
+              
+       
   
     else: ##Concrete behaviours was on box display.
       ##Create list of texbox lines, filters out empty lines.
@@ -472,13 +485,20 @@ def check_if_good_CBS(main, allEntriesCBS, allRadioButtons, allTextBoxCBS, allIs
       if len(textBoxWords) == 0:
         if goodCBS == True:
           goodCBS = False 
-
+      for word in textBoxWords:
+        try:
+          float(word)
+          if goodCBS == True:
+            goodCBS = False        
+            
+        except ValueError:
+          ##Check to see if the number of 'if' equals to the number of 'fi' and check if there 
+          ##are any 'if' as well.  
+          if textBoxWords.count('if') != textBoxWords.count('fi'):   
+            if goodCBS == True:
+              goodCBS = False          
+          ##Return if there is an invalid symbol inside the word.
       
-      ##Check to see if the number of 'if' equals to the number of 'fi' and check if there 
-      ##are any 'if' as well.  
-      if textBoxWords.count('if') != textBoxWords.count('fi'):   
-        if goodCBS == True:
-          goodCBS = False
 
     allIsGoodCBS[boxIndex] = goodCBS
   if allIsGoodCBS.count(False) > 0:
