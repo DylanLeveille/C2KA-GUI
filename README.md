@@ -32,7 +32,7 @@ No automated tests available due to the nature of this project.
 
 However, we recommend testing out the project with various different text entries and to attempt producing the result shown in the example below.
 
-We do not recommend using the program with a resolution less than 1280x720. 
+We do not recommend using the program with a resolution less than 1280x720 since some buttons and scrolling areas may not be properly displayed. 
 
 ### Example:
 
