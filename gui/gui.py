@@ -319,7 +319,9 @@ def next_page():
                                                                      agentBehaviours, allTextBoxCBS, allCircleTableValues, 
                                                                      allLambdaTableValues, stimDict, allBevDict, allRadioButtons,
                                                                      save_icon, return_arrow, moreThanOneAgent, 0)
-      
+        ##Pack the button allowing the user to save the file if satisfied
+        ##with the result.
+        saveButton.pack(in_ = buttonsFrame, anchor = SE)           
       ##Table is not good.
       else:
         ##Deliver a pop-up to the user to warn of invalid entries in the table.
@@ -493,7 +495,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   """Code related to the main program's window."""
   main = Tk() ##The main window for the program.
   main.title("C2KA GUI") ##Title for the main window.
-  main.resizable(width = False, height = False) ##The main window is not resizeable.
+  #main.resizable(width = False, height = False) ##The main window is not resizeable.
   mainStyle = ttk.Style()
   mainStyle.theme_use("clam")
   
@@ -606,11 +608,11 @@ if __name__ == '__main__': ##only start program when running gui.py
 
   """Defining Buttons available on each page.""" 
   ##Next Button (will not be available on page 5).
-  nextButton = Button(main, command = next_page, image = right_arrow, width = int(screenWidth/76.8), height = int(screenWidth/76.8), border = 0, highlightthickness = 0)
+  nextButton = Button(main, command = next_page, image = right_arrow, border = 0, highlightthickness = 0)
   nextButton.pack(in_=buttonsFrame, side = RIGHT, anchor = E)
 
   ##Prev Button (will not be availible on page 1).
-  prevButton = Button(main, command = prev_page, image = left_arrow, width = int(screenWidth/76.8), height = int(screenWidth/76.8), border = 0, highlightthickness = 0)
+  prevButton = Button(main, command = prev_page, image = left_arrow, border = 0, highlightthickness = 0)
   
   """Label and Buttons exclusive to page 1."""  
   ##Frame for the stim number Label, button and entry box (to specify
@@ -625,13 +627,14 @@ if __name__ == '__main__': ##only start program when running gui.py
   ##The scrolling area is at index zero of the stimScrollingArea list, this way, 
   ##the scrolling area can be passed by reference and be modified by other functions.
   stimScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
+  stimScrollingArea[0].canvas.config(height = windowSize/2)
   stimScrollingArea[0].pack(expand = 1, fill = BOTH)
 
   ##Label, button and entry box to generate specified number of stimuli.
   enterStimLabel = Label(main, text = 'Enter # of stimuli : ', font = label_font)
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
-  enterStimButton = Button(main, image = check_mark, border = 0, width = int(screenWidth/76.8), height = int(screenWidth/76.8), 
+  enterStimButton = Button(main, image = check_mark, border = 0, 
                            command = lambda: specify_stim(main, stimList, enterStimBox.get(), stimScrollingArea, remove_x, return_arrow), 
                            highlightthickness = 0)
   enterStimButton.pack(in_=stimFrame, side = RIGHT, anchor = N)

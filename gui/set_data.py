@@ -40,7 +40,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     allTextBoxCBS[boxIndex] = Text(allTextBoxCBSFrame[boxIndex], wrap=NONE,
                 xscrollcommand=xscrollbarCBS.set,
                 yscrollcommand=yscrollbarCBS.set,
-                width = 60)
+                width = int(window.winfo_screenwidth()/33), height = int(window.winfo_screenheight()/52))
     
     allTextBoxCBS[boxIndex].grid(row=0, column=0)
     

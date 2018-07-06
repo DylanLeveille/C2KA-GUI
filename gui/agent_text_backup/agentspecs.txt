@@ -1,0 +1,22 @@
+begin AGENT where
+    A := A + B
+end
+
+begin NEXT_BEHAVIOUR where
+    (s, A) = A
+    (s, B) = B
+    (t, A) = A
+    (t, B) = B
+end
+
+begin NEXT_STIMULUS where
+    (s, A) = N
+    (s, B) = N
+    (t, A) = N
+    (t, B) = N
+end
+
+begin CONCRETE_BEHAVIOUR where
+    A => [ asdf ]
+    B => [ sdf ]
+end
