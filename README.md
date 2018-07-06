@@ -1,3 +1,4 @@
+
 # GUI to Assist the C2KA TOOL
 
 This project consists of a graphical user interface (GUI) to assist the C2KA tool (developed by Dr. Jason Jaskolka). With simple entries, the GUI can generate a text file describing an agent’s specification.  
@@ -30,6 +31,8 @@ Please note there are known issues with OS X, Python's Tkinter module and the th
 No automated tests available due to the nature of this project. 
 
 However, we recommend testing out the project with various different text entries and to attempt producing the result shown in the example below.
+
+We do not recommend using the program with a resolution less than 1280x720. 
 
 ### Example:
 
