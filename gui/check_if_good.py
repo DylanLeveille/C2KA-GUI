@@ -48,7 +48,7 @@ def specify_stim(main, stimList, numStims, stimScrollingArea, remove_x, return_a
     ##Disable main window until pop up is closed
     warningStims.grab_set()
     
-    Label(warningStims, text = 'This action will permenantly delete the current stimuli', font = "Calibri").pack(side = TOP)
+    Label(warningStims, text = 'This action will delete the current stimuli', font = "Calibri").pack(side = TOP)
 
     pressToContinue = Button(warningStims, text = "Continue", highlightthickness = 0, font = "Calibri", 
                           command = lambda: return_to_stims_deletion(main, stimList, numStims, stimScrollingArea, remove_x))
@@ -128,7 +128,7 @@ def incorrect_stims(main, return_arrow):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.
-  wrongStims.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
+  wrongStims.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/3, 
                                     positionRight, positionDown)) 
   
   wrongStims.resizable(width = False, height = False) ##The window is not resizeable.
@@ -212,7 +212,7 @@ def incorrect_bevs(main, return_arrow):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.  
-  wrongBevs.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
+  wrongBevs.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/3, 
                                       positionRight, positionDown)) 
     
   wrongBevs.resizable(width = False, height = False) ##The window is not resizeable.
@@ -257,7 +257,7 @@ def incorrect_CBS(main, moreThanOneAgent, allIsGoodCBS, return_arrow, numWrong):
   positionDown = screenHeight/2 - windowSize/2
 
   ##Set the window size using the geometry() method.
-  wrongCBS.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
+  wrongCBS.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/3, 
                                     positionRight, positionDown)) 
 
   wrongCBS.resizable(width = False, height = False) ##The window is not resizeable.
@@ -568,7 +568,7 @@ def incorrect_table(main, numInvalid, return_arrow):
   positionDown = screenHeight/2 - windowSize/2
   
   ##Set the window size using the geometry() method.
-  invalidEntryPop.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/4, 
+  invalidEntryPop.geometry('%dx%d+%d+%d' % (windowSize*1.5, windowSize/3, 
                                             positionRight, positionDown))    
   
   invalidEntryPop.resizable(width = False, height = False) ##The window is not resizeable.
