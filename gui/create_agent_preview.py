@@ -81,7 +81,7 @@ def create_agent_preview(main, allEditButtons, allPreviewPops, agentNames, allEn
       textEntry.config(state = 'normal')
       ##Remove the previous text to insert new one.
       textEntry.delete(1.0, END)
-      textEntry.insert(INSERT, open("agent_text_backup./agentspec.txt", "r").read())
+      textEntry.insert(INSERT, open("agent_text_backup/agentspec.txt", "r").read())
       ##Configure the text entry so that it cannot be modified.
       textEntry.config(state="disabled")
       ##Pack the text entry frame to give a preview to the user.
