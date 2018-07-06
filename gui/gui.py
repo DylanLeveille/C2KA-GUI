@@ -5,6 +5,7 @@ GUI to Assist the C2KA TOOL.
 
 """Imported modules."""
 from tkinter import * ##Import the tkinter module to allow construction of the GUI interface.
+import tkinter.font as tkFont ##Sub-module used to extract the default font size.  
 from check_if_good import * ##Functions which validate most of the data in the program.
 from get_word_list import * ##Functions which parse an entry box and returns lists of words.
 from fix_dict_order import * ##Orders the dictionary words in logical order. Ex: AVG2, AVG1 becomes AVG1, AVG2.
@@ -584,7 +585,11 @@ if __name__ == '__main__': ##only start program when running gui.py
   buttonsFrame = Frame(main)
   buttonsFrame.pack(side = BOTTOM, anchor = S, fill = X, pady = (5, 0))
   
-  """Pictures and Fonts used for Buttons and Entries"""
+  """Extract default font size."""
+  defaultFont = tkFont.nametofont("TkDefaultFont")
+  defaultFontSize = defaultFont.cget('size') 
+  
+  """Pictures and Fonts used for Buttons and Entries."""
   check_mark = PhotoImage(file = "images/check_mark.png")
   right_arrow = PhotoImage(file="images/right_arrow.png")
   left_arrow = PhotoImage(file="images/left_arrow.png")
@@ -596,7 +601,8 @@ if __name__ == '__main__': ##only start program when running gui.py
   save_icon = PhotoImage(file = "images/save_icon.png")
   incorrect_icon = PhotoImage(file = "images/incorrect_icon.png")
   correct_icon = PhotoImage(file = "images/correct_icon.png")
-  entry_font = ('Calibri', 11)
+  label_font = ('Calibri', int(defaultFontSize * 1.4))
+  entry_font = ('Calibri', int(defaultFontSize * 1.3))
 
   """Defining Buttons available on each page.""" 
   ##Next Button (will not be available on page 5).
@@ -613,7 +619,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   stimFrame.pack(side = BOTTOM, anchor = S, expand = True, pady = 50)  
   
   ##Title for the stimuli on page 1.
-  stimTitle = Label(main, text='Please Enter The Stimuli', font = 'Calibri')
+  stimTitle = Label(main, text='Please Enter The Stimuli', font = label_font)
   stimTitle.pack(side = TOP, padx = (0, int(screenWidth/240)))
   
   ##The scrolling area is at index zero of the stimScrollingArea list, this way, 
@@ -622,7 +628,7 @@ if __name__ == '__main__': ##only start program when running gui.py
   stimScrollingArea[0].pack(expand = 1, fill = BOTH)
 
   ##Label, button and entry box to generate specified number of stimuli.
-  enterStimLabel = Label(main, text = 'Enter # of stimuli : ', font = "Calibri")
+  enterStimLabel = Label(main, text = 'Enter # of stimuli : ', font = label_font)
   enterStimLabel.pack(in_=stimFrame, side = LEFT)
   
   enterStimButton = Button(main, image = check_mark, border = 0, width = int(screenWidth/76.8), height = int(screenWidth/76.8), 
@@ -651,14 +657,14 @@ if __name__ == '__main__': ##only start program when running gui.py
                    width = 23, highlightthickness = 0)  
   
   ##Make a title for the frame.
-  agentTitle = Label(main, text='Please Enter The Agents', font = "Calibri")
+  agentTitle = Label(main, text='Please Enter The Agents', font = label_font)
 
   
   """Scrolling area for the edit page of multiple agents."""
   editScrollingArea = [vertSuperscroll.Scrolling_Area(main)]
   
   ##Make a title for the frame.
-  editTitle = Label(main, text='Agent Specifications', font = "Calibri")
+  editTitle = Label(main, text='Agent Specifications', font = label_font)
 
   
   """Loop the main window."""
