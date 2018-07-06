@@ -347,8 +347,11 @@ def prev_page():
   if pageNum == 2:
     ##Repack the scrolling area for the stimuli.
     stimTitle.pack()
+    
+    ##Pack buttons for stimuli and frame to specify number of stimuli.
+    stimFrame.pack(side = BOTTOM, anchor = S, expand = True, pady = 50)
     stimScrollingArea[0].pack(expand=1, fill=BOTH)     
-   
+
     ##Set new page by unpacking addAgent button and the scrolling area for the agents.
     agentScrollingArea[0].pack_forget()
     addAgent.pack_forget()
@@ -357,8 +360,7 @@ def prev_page():
     prevButton.pack_forget()
     
 
-    ##Pack buttons for stimuli and frame to specify number of stimuli.
-    stimFrame.pack(side = BOTTOM, anchor = S, expand = True, pady = 50)
+
 
     addStim.pack(in_=buttonsFrame, side = LEFT)
 
@@ -366,8 +368,9 @@ def prev_page():
   if pageNum == 3: ##Only True when one agent only.
     ##Repack the agent scrolling area and the add agent button.
     agentTitle.pack()
-    agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))
     addAgent.pack(in_=buttonsFrame, side = TOP)
+    agentScrollingArea[0].pack(expand = 1, fill = BOTH, pady = (0, 80))
+
     
     ##Checking which widgets to unpack from the window.
     if (allRadioButtons[0][2].get() == 'Rows'): ##Radio button was on rowsCBS.
