@@ -68,7 +68,7 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     
     radioBoxCBS.pack(in_=allFormatCBS[boxIndex], side = RIGHT)
     
-    if allRadioButtons[boxIndex] != None:
+    if allRadioButtons[boxIndex] != None: ##If True, this means the agent use to exist as multiple or single.
       radioRowsCBS.config(state = allRadioButtons[boxIndex][0].cget("state"))
       radioBoxCBS.config(state = allRadioButtons[boxIndex][1].cget("state"))
       whichRadio.set(allRadioButtons[boxIndex][2].get())
@@ -86,23 +86,19 @@ def set_CBS_data(window, agentNames, allBevDict, allAgentCBS, allTextBoxCBSFrame
     allConcreteScrollingArea[boxIndex] = [vertSuperscroll.Scrolling_Area(window, width=1, height=1)]
     allConcreteScrollingArea[boxIndex][0].pack(expand=1, fill = BOTH)
     
-    
-
-    ##Call create_CBS_entries() to create the rows in the CBS scrolling area.
-    allEntriesCBS[boxIndex]= create_CBS_entries(allBevDict[boxIndex + 1], allConcreteScrollingArea[boxIndex][0].innerframe)
-    
-    if oldEntries != None:
-      allEntriesCBS[boxIndex][1, 1].insert(0, oldEntries[1, 1].get())
-      allTextBoxCBS[boxIndex].insert(END, oldTextBoxCBS.get("1.0", END))
+    if oldEntries != None: ##If True, this means the agent use to exist as multiple or single.
+      recreate_CBS_entries(allBevDict[boxIndex + 1], allEntriesCBS[boxIndex], allConcreteScrollingArea[boxIndex][0].innerframe)
       if whichRadio.get() == 'Box':
         allConcreteScrollingArea[boxIndex][0].pack_forget()
         allTextBoxCBSFrame[boxIndex].pack()
-
+    
+    else:
+      ##Call create_CBS_entries() to create the rows in the CBS scrolling area.
+      allEntriesCBS[boxIndex]= create_CBS_entries(allBevDict[boxIndex + 1], allConcreteScrollingArea[boxIndex][0].innerframe)        
         
-        
-    ##Save the number of CBS in the allBevDict dictionary at key (0, 0) since
-    ##that coordinate is unused.
-    allEntriesCBS[boxIndex][0, 0] = len(allBevDict[boxIndex + 1]) 
+      ##Save the number of CBS in the allBevDict dictionary at key (0, 0) since
+      ##that coordinate is unused.
+      allEntriesCBS[boxIndex][0, 0] = len(allBevDict[boxIndex + 1]) 
     
     ##Set generatedCBS to True.
     generatedCBS[boxIndex] = True    
