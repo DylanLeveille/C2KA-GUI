@@ -8,7 +8,7 @@ This project consists of a graphical user interface (GUI) to assist the C2KA too
 2.	Open a python IDE (using a version of Python 3.6).
 3.	Run the main program by compiling the gui.py file in the IDE.
 
-Note: Steps 2 and 3 may be skipped by starting the executable found in the project folder (Not yet implemented). 
+Note: Steps 2 and 3 may be skipped by starting the executable found in the project folder. 
 
 ### Prerequisites *(ideas borrowed from Dr. Bailey's course outline for SYSC 1005, Carleton University)
 
@@ -378,6 +378,27 @@ Ex: FILTER ; (IDLE + WAITPAY + WAITRST) as an agent behaviour will be recognized
 ## Dependency graph
 
 The graph can be found in the documentation foder. It is important to note that the Tkinter module was left out due to virtually all of the functions being dependent on that module. 
+
+## Making an executable
+
+An executable for Windows and Mac are availible for use. If these do not work (or you would prefer making your own), then please refer to the follwing steps or watch a quick short video on how to do so from the following link:
+https://www.youtube.com/watch?v=lOIJIk_maO4 (Video is on Windows, but steps are still relevant for any OS).
+
+1. Install the right version of pyinstaller for your operating system from the pyinstaller website (found in the Built With section of this document).
+
+2. Change your environement variables by adding a path to the Scripts folder of the python directory of the version you are using.
+
+3. Open a terminal and type: pip install pyinstaller . This will make pyinstaller available to you.
+
+4. Change the terminal's directory to the location of the gui.py module foiund in the gui folder of this project.
+
+5. Type: pyinstaller -w -F gui.py 
+
+6. Once completed, you will have an executable ready in a dist folder that was created by pyinstaller. You can make a new folder next to the Windows and Mac ones and copy paste that executable in there. The build folder made and the gui.spec file made can be safely deleted.
+
+7. In the folder you place the executable in, please also copy the images and agent_text_backup folder (which can both be found in the Windows and Mac folders). 
+
+8. The executable is now ready for use.
 
 ## Built With
 
