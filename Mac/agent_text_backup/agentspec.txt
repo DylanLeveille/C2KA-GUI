@@ -1,0 +1,15 @@
+begin AGENT where
+    m := ,K,
+end
+
+begin NEXT_BEHAVIOUR where
+    (y, K) = K
+end
+
+begin NEXT_STIMULUS where
+    (y, K) = N
+end
+
+begin CONCRETE_BEHAVIOUR where
+    K => [ l ]
+end
